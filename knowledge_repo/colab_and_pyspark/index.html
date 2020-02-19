@@ -81,6 +81,8 @@
 <li><a href="#working-with-joins">Working with joins</a></li>
 <li><a href="#hands-on-again">Hands-on again!</a></li>
 <li><a href="#rdd">RDD</a></li>
+<li><a href="#user-defined-functions-udf">User-Defined Functions (UDF)</a></li>
+<li><a href="#common-questions">Common Questions</a></li>
 </ol>
 </div>
 </div>
@@ -3314,10 +3316,64 @@ For example, let's say you have a set of numbers. You can reduce this to its sum
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='user-defined-functions-udf'></a></p>
+<h1 id="User-Defined-Functions-(UDF)">User-Defined Functions (UDF)<a class="anchor-link" href="#User-Defined-Functions-(UDF)">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>PySpark User-Defined Functions (UDFs) help you convert your python code into a scalable version of itself. It comes in handy more than you can imagine, but beware, as the performance is less when you compare it with pyspark functions. You can view examples of how UDF works <a href="https://docs.databricks.com/spark/latest/spark-sql/udf-python.html">here</a>. What I will give in this section is some theory on how it works, and why it is slower.</p>
+<p>When you try to run a UDF in PySpark, each executor creates a python process. Data will be serialised and deserialised between each executor and python. This leads to lots of performance impact and overhead on spark jobs, making it less efficent than using spark dataframes. Apart from this, sometimes you might have memory issues while using UDFs. The Python worker consumes huge off-heap memory and so it often leads to memoryOverhead, thereby failing your job. Keeping these in mind, I wouldn't recommend using them, but at the end of the day, your choice.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='common-questions'></a></p>
+<h1 id="Common-Questions">Common Questions<a class="anchor-link" href="#Common-Questions">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Recommeded-IDE">Recommeded IDE<a class="anchor-link" href="#Recommeded-IDE">&#182;</a></h3><p>I personally prefer <a href="https://www.jetbrains.com/pycharm/">PyCharm</a> while coding in Python/PySpark. It's based on IntelliJ IDEA so it has a lot of features! And the main advantage I have felt is the ease of installing pyspark and other packages. You can customize it with themes and plugins, and it lets you enhance productivity while coding by providing some features like suggestions, Local VCS etc.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Submitting-a-spark-job">Submitting a spark job<a class="anchor-link" href="#Submitting-a-spark-job">&#182;</a></h3><p>The python syntax for running jobs is: <code>python &lt;file_name&gt;.py &lt;arg1&gt; &lt;arg2&gt; ...</code><br>
+But when you submit a spark job you have to use <code>spark-submit</code> to run the application.</p>
+<p>Here is a simple example of a spark-submit command:<br>
+<code>spark-submit filename.py --named_argument 'arguemnt value'</code><br>
+Here, named_argument is an arguemnt that you are reading from inside your script.</p>
+<p>There are other options you can pass in the command, like:<br>
+<code>--py-files</code> which helps you pass a python file to read in your file,<br>
+<code>--files</code> which helps pass other files like txt or config,<br>
+<code>--deploy-mode</code> which tells wether to deploy your worker node on cluster or locally
+<code>--conf</code> which helps pass different configurations, like memoryOverhead, dynamicAllocation etc.</p>
+<p>There is an <a href="https://spark.apache.org/docs/latest/submitting-applications.html">entire page</a> in spark documentation dedicated to this. I highly recommend you go through it once.</p>
+
+</div>
+</div>
+</div>
     </div>
   </div>
 </body>
 
+
+<br><br>
+   <p style="font-size:8pt; line-height:10pt; font-family: 'Cambria','times roman',serif;">This site provides applications using data that has been modified for use from its original source, www.cityofchicago.org, the official website of the City of Chicago. The City of Chicago makes no claims as to the content, accuracy, timeliness, or completeness of any of the data provided at this site. The data provided at this site is subject to change at any time. It is understood that the data provided at this site is being used at one’s own risk.</p>
  
 
 
