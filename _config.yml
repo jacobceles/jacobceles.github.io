@@ -48,9 +48,9 @@ author:
 # Add links to the sidebar.
 menu:
   - title:             Education
-    url:               /blog/
+    url:               /education_skills/
   # - title:             Blog
-  #   url:               /example/
+  #   url:               /blog/
   # - title:             Skills & Experience
   #   url:               /example/
 
