@@ -25,16 +25,16 @@ image: /assets/img/blog/hydejack-8.png
 
 Hi! I'm Jacob. Welcome to my website!
 
-I like building things. Does that sound too board? 
+I like building things. Does that sound too broad? 
 
-Hmm, if I were to be narrow it down, I would say there are two basic things which gets me going:
+Hmm, if I were to narrow it down, I would say there are two basic things which gets me going:
 >**Design. Code.**
 
 Back in college I journeyed through most technologies (Web development, Android development, Machine learning and more), to find a true passion, and finally after 5 years of messing around, I realized that I am just another guy who likes building things, truly an Engineer. 
 
 Out of the languages I have learned, my favourite would be Python. Working as a Big Data Engineer at the moment. I do a bit of Android development in my free time, mostly because I like designing UIs. I would say my expertise lies in Enterprise level Data Analytics and Designing and Building of data flow pipelines.
 
-When I'm not doing anything tech, I like to spent my time visiting new Brew Pubs and trying out all kinds of foods. If I'm not doing that I am probably watching a new TV series. Pop and Jazz are my two most music genres, and my favourite YouTubers are [MKBHD] and [Mrinal].
+When I'm not doing anything tech, I like to spent my time visiting new Brew Pubs and trying out all kinds of foods. If I'm not doing that I am probably watching a new TV series. Pop and Jazz are my two favourite music genres, and my favourite YouTubers are [MKBHD] and [Mrinal].
 
 Feel free to hit me up!
 
