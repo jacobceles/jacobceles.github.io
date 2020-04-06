@@ -1,0 +1,3 @@
+---
+layout: education_skills
+---
