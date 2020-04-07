@@ -1633,6 +1633,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .heading {
 	font-family: Roboto Slab,Helvetica,Arial,sans-serif;
 }
 
+// Education
 .education-block {
     max-width: 700px;
     margin: 0 auto 30px auto;
@@ -1659,6 +1660,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .heading {
     }
 }
 
+// Skills
 #skills {
     padding: 1px 15px;
     text-align: center;
@@ -1681,3 +1683,30 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .heading {
         font-size: 1.2em;
     }
 }
+
+// Experience
+.experience-block {
+    max-width: 700px;
+    margin: 0 auto 30px auto;
+    text-align: left;
+
+    h3 {
+        font-weight: 500;
+        float: left;
+        margin: 0;
+    }
+
+    span {
+        color: #74808a;
+        float: right;
+    }
+
+    h4 {
+        color: #74808a;
+        clear: both;
+        font-weight: 500;
+        margin: 0 0 15px 0;
+    }
+}
+
+
