@@ -47,10 +47,10 @@ author:
 
 # Add links to the sidebar.
 menu:
-  - title:             Education
+  - title:             Education & Skills
     url:               /education_skills/
-  # - title:             Blog
-  #   url:               /blog/
+  - title:             Experience
+    url:               /experience/
   # - title:             Skills & Experience
   #   url:               /example/
 
