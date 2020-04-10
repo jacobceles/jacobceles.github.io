@@ -1715,6 +1715,10 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .heading {
   text-decoration: none !important;
   margin: 10px auto;
 
+  a:link, a:visited {
+    color: #343a40;
+  }
+
   .card-img-top {
     border-radius: 15px 15px 0 0;
   }
