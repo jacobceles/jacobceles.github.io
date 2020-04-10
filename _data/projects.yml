@@ -1,0 +1,28 @@
+- project :
+    name: Introduction to Google Colab and PySpark
+    tools: [pyspark, colaboratory, colab-notebook, dataframe]
+    image: https://spark.apache.org/docs/latest/api/python/_static/spark-logo-hd.png
+    description: A tutorial written by me to help big data engineers ramp up faster and get them familiar with PySpark dataframes and functions.
+    external_url: https://jacobcelestine.com/knowledge_repo/colab_and_pyspark/
+
+- project :
+    name: App De`Vitae
+    tools: [android, java]
+    description: An application which acts as a fitness assistant, by monitoring parameters of the user and his diet. Features include medicine reminder, calorie calculator, real time diet menu generator, analysis and much more.
+    external_url: https://github.com/jacobceles/AppDe-Vitae
+
+- project :
+    name: Hipster Wallpaper
+    tools: [android, java, php]
+    description: A simple wallpaper app with hipster wallpapers!
+
+- project :
+    name: Autovia
+    tools: [html, css, php, javascript]
+    description: A website that helps people find the perfect car for them.
+    external_url: https://github.com/jacobceles/Autovia
+
+- project :
+    name: MyBooksDB
+    tools: [html, css, php, javascript]
+    description: Social networking platform built for those who love books.It includes all features expected of a social networking website like messaging, searching and following users, and some additional features like price comparison, description, rating and reviews for a book.
