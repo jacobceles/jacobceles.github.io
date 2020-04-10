@@ -9,7 +9,6 @@
     name: App De`Vitae
     tools: [android, java]
     description: An application which acts as a fitness assistant, by monitoring parameters of the user and his diet. Features include medicine reminder, calorie calculator, real time diet menu generator, analysis and much more.
-    external_url: https://github.com/jacobceles/AppDe-Vitae
 
 - project :
     name: Hipster Wallpaper
