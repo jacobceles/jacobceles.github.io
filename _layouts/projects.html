@@ -230,30 +230,35 @@
                   <div class="hr pb0"></div>
                </header>
                <div class="card-columns m-3 mt-5">
-                  {% for _ in site.data.projects %}
-                  {% assign project = _.project %}
-                  {%- assign project_name  = project.name -%}
-                  {%- assign project_img   = project.image -%}
-                  {%- assign project_desc  = project.description -%}
-                  {%- assign project_tools = project.tools -%}
-                  {%- assign project_url = project.external_url -%}
-                  <div class="wow animated fadeIn" data-wow-delay=".15s">
-                     <div class="project card text-dark">
-                        {%- if project_url -%}
-                     <a href="{{ project_url }}" target="_blank"></a>
-                        {%- endif -%}
-                        {%- if project_img -%}
-                        <img id="{{ project_name }}-img" class="card-img-top" src="{{ project_img }}" alt="{{ project_name }}" />
-                        {%- endif -%}
-                        <div class="card-body">
-                           <h3 id="{{ project_name }}-name" class="card-title">{{ project_name }}</h5>
-                           <h6 id="{{ project_name }}-desc" class="card-text">{{ project_desc }}</h6>
-                           <p id="{{ project_name }}-tools" class="card-text">
-                              {%- for tool in project_tools -%}
-                              <span class="badge badge-pill text-primary border border-primary ml-1">{{ tool }}</span>
-                              {%- endfor -%}
-                           </p>
-                        </div>
+               {% for _ in site.data.projects %}
+               {% assign project = _.project %}
+               {%- assign project_name  = project.name -%}
+               {%- assign project_img   = project.image -%}
+               {%- assign project_desc  = project.description -%}
+               {%- assign project_tools = project.tools -%}
+               {%- assign project_url = project.external_url -%}
+               <div class="wow animated fadeIn" data-wow-delay=".15s">
+                  <div class="project card text-dark">
+                     {%- if project_img -%}
+                     <img id="{{ project_name }}-img" class="card-img-top" src="{{ project_img }}" alt="{{ project_name }}" />
+                     {%- endif -%}
+                     <div class="card-body">
+                        <h4 id="{{ project_name }}-name" class="card-title">
+                           {%- if project_url -%}
+                           <a href="{{ project_url }}" target="_blank">
+                           {%- endif -%}
+                           {{ project_name }}
+                           {%- if project_url -%}
+                           </a>
+                           {%- endif -%}
+                        </h4>
+                        <h6 id="{{ project_name }}-desc" class="card-text">{{ project_desc }}</h6>
+                        <p id="{{ project_name }}-tools" class="card-text">
+                           {%- for tool in project_tools -%}
+                           <span class="badge badge-pill text-primary border border-primary ml-1">{{ tool }}</span>
+                           {%- endfor -%}
+                        </p>
+                     </div>
                   </div>
                   {% endfor %}
                </div>
@@ -309,6 +314,7 @@
       <template id="_permalink-template" hidden>
          <a href="#" class="permalink">
          <span class="sr-only">Permalink</span>
+         <span class="icon-link"></span>
          </a>
       </template>
    </body>
