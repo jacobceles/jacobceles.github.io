@@ -238,7 +238,10 @@
                   {%- assign project_tools = project.tools -%}
                   {%- assign project_url = project.external_url -%}
                   <div class="wow animated fadeIn" data-wow-delay=".15s">
-                     <a href="{{ project_url }}" class="project card text-dark">
+                     <div class="project card text-dark">
+                        {%- if project_url -%}
+                     <a href="{{ project_url }}" target="_blank"></a>
+                        {%- endif -%}
                         {%- if project_img -%}
                         <img id="{{ project_name }}-img" class="card-img-top" src="{{ project_img }}" alt="{{ project_name }}" />
                         {%- endif -%}
@@ -251,7 +254,6 @@
                               {%- endfor -%}
                            </p>
                         </div>
-                     </a>
                   </div>
                   {% endfor %}
                </div>
@@ -307,7 +309,6 @@
       <template id="_permalink-template" hidden>
          <a href="#" class="permalink">
          <span class="sr-only">Permalink</span>
-         <span class="icon-link"></span>
          </a>
       </template>
    </body>
