@@ -20,7 +20,7 @@ hide_description: true
 cover: true
 
 # TODO
-image: /assets/img/blog/hydejack-8.png
+image: /assets/icons/icon.png
 ---
 
 Hi! I'm Jacob. Welcome to my website!
