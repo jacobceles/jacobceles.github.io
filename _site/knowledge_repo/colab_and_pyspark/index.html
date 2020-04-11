@@ -1,0 +1,3380 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8" />
+
+<title>Colab and PySpark</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<link rel="stylesheet" href="default.css">
+
+<!-- Loading mathjax macro -->
+<!-- Load mathjax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS_HTML"></script>
+    <!-- MathJax configuration -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        // Center justify equations in code and markdown cells. Elsewhere
+        // we use CSS to left justify single line equations in code cells.
+        displayAlign: 'center',
+        "HTML-CSS": {
+            styles: {'.MathJax_Display': {"margin": 0}},
+            linebreaks: { automatic: true }
+        }
+    });
+    </script>
+    <!-- End of mathjax configuration --></head>
+<body>
+  <div tabindex="-1" id="notebook" class="border-box-sizing">
+    <div class="container" id="notebook-container">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1><center>Introduction to Google Colab and PySpark</center></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Table-Of-Contents:">Table Of Contents:<a class="anchor-link" href="#Table-Of-Contents:">&#182;</a></h2><ol>
+<li><a href="#objective">Objective</a></li>
+<li><a href="#prerequisite">Prerequisite</a></li>
+<li><a href="#notes-from-the-author">Notes from the author</a></li>
+<li><a href="#big-data-pyspark-and-colaboratory">Big data, PySpark and Colaboratory</a></li>
+    <ol>
+        <li><a href="#big-data">Big data</a></li>
+        <li><a href="#pyspark">PySpark</a></li>
+        <li><a href="#colaboratory">Colaboratory</a></li>
+    </ol>
+<li><a href="#jupyter-notebook-basics">Jupyter notebook basics</a></li>
+    <ol>
+        <li><a href="#code-cells">Code cells</a></li>
+        <li><a href="#text-cells">Text cells</a></li>
+        <li><a href="#access-to-the-shell">Access to the shell</a></li>
+        <li><a href="#install-spark">Install Spark</a></li>
+    </ol>
+<li><a href="#loading-dataset">Loading Dataset</a></li>
+<li><a href="#working-with-the-dataframe-api">Working with the DataFrame API</a></li>
+    <ol>
+        <li><a href="#viewing-dataframe">Viewing Dataframe</a></li>
+        <li><a href="#schema-of-a-dataframe">Schema of a DataFrame</a></li>
+        <li><a href="#working-with-columns">Working with columns</a></li>
+        <li><a href="#working-with-rows">Working with Rows</a></li>
+    </ol>
+<li><a href="#hands-on-questions">Hands-on Questions</a></li>
+<li><a href="#functions">Functions</a></li>
+    <ol>
+        <li><a href="#string-functions">String Functions</a></li>
+        <li><a href="#numeric-functions">Numeric functions</a></li>
+        <li><a href="#date">Date</a></li>
+    </ol>
+<li><a href="#working-with-dates">Working with Dates</a></li>
+<li><a href="#working-with-joins">Working with joins</a></li>
+<li><a href="#hands-on-again">Hands-on again!</a></li>
+<li><a href="#rdd">RDD</a></li>
+<li><a href="#user-defined-functions-udf">User-Defined Functions (UDF)</a></li>
+<li><a href="#common-questions">Common Questions</a></li>
+</ol>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='objective'></a></p>
+<h2 id="Objective">Objective<a class="anchor-link" href="#Objective">&#182;</a></h2><p>The objective of this notebook is to:</p>
+<blockquote><li>Give a proper understanding about the different PySpark functions available. </li>
+<li>A short introduction to Google Colab, as that is the platform on which this notebook is written on. </li>
+</blockquote>
+<p>Once you complete this notebook, you should be able to write pyspark programs in an efficent way. The ideal way to use this is by going through the examples given and then trying them on Colab. At the end there are a few hands on questions which you can use to evaluate yourself.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='prerequisite'></a></p>
+<h2 id="Prerequisite">Prerequisite<a class="anchor-link" href="#Prerequisite">&#182;</a></h2><blockquote><p><li>Although some theory about pyspark and big data will be given in this notebook, I recommend everyone to read more about it and have a deeper understanding on how the functions get executed and the relevance of big data in the current scenario.</p>
+<p><li>A good understanding on python will be an added bonus.</p>
+</blockquote>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='notes-from-the-author'></a></p>
+<h3 id="Notes-from-the-author">Notes from the author<a class="anchor-link" href="#Notes-from-the-author">&#182;</a></h3><p>This tutorial was made using Google Colab so the code you see here is meant to run on a colab notebook. <br>
+It goes through basic <a href="https://spark.apache.org/docs/latest/api/python/index.html">PySpark Functions</a> and a short introduction on how to use <a href="https://colab.research.google.com/notebooks/basic_features_overview.ipynb">Colab</a>. <br>
+If you want to view my colab notebook for this particular tutorial, you can view it <a href="https://colab.research.google.com/drive/1G894WS7ltIUTusWWmsCnF_zQhQqZCDOc">here</a>. The viewing experience and readability is much better there. <br>
+If you want to try out things with this notebook as a base, feel free to download it from my repo <a href="https://github.com/jacobceles/knowledge-repo/blob/master/pyspark/Colab%20and%20PySpark.ipynb">here</a> and then use it with jupyter notebook.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='big-data-pyspark-and-colaboratory'></a></p>
+<h2 id="Big-data,-PySpark-and-Colaboratory">Big data, PySpark and Colaboratory<a class="anchor-link" href="#Big-data,-PySpark-and-Colaboratory">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='big-data'></a></p>
+<h3 id="Big-data">Big data<a class="anchor-link" href="#Big-data">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Big data usually means data of such huge volume that normal data storage solutions cannot efficently store and process it. In this era, data is being generated at an absurd rate. Data is collected for each movement a person makes. The bulk of big data comes from three primary sources:</p>
+<ol>
+   <li>Social data</li> 
+   <li>Machine data</li> 
+   <li>Transactional data</li>
+</ol><p>Some common examples for the sources of such data include internet searches, facebook posts, doorbell cams, smartwatches, online shopping history etc. Every action creates data, it is just a matter of of there is a way to collect them or not.  But what's interesting is that out of all this data collected, not even 5% of it is being used fully. There is a huge demand for big data professionals in the industry. Even though the number of graduates with a specialization in big data are rising, the problem is that they don't have the practical knowledge about big data scenarios, which leads to bad architecutres and inefficent methods of processing data.</p>
+<blockquote><p>If you are interested to know more about the landscape and technologies involved, here is <a href="https://hostingtribunal.com/blog/big-data-stats/">an article</a> which I found really interesting!</p>
+</blockquote>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='pyspark'></a></p>
+<h3 id="PySpark">PySpark<a class="anchor-link" href="#PySpark">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If you are working in the field of big data, you must have definelty heard of spark. If you look at the <a href="https://spark.apache.org/">Apache Spark</a> website, you will see that it is said to be a <code>Lightning-fast unified analytics engine</code>. PySPark is a flavour of Spark used for processing and analysing massive volumes of data. If you are familiar with python and have tried it for huge datasets, you should know that the execution time can get ridiculous. Enter PySpark!</p>
+<p>Imagine your data resides in a distributed manner at different places. If you try brining your data to one point and executing your code there, not only would that be inefficent, but also cause memory issues. Now let's say your code goes to the data rather than the data coming to where your code. This will help avoid unneccesary data movement which will thereby decrease the running time.</p>
+<p>PySpark is the Python API of Spark; which means it can do almost all the things python can. Machine learning(ML) pipelines, exploratory data analysis (at scale), ETLs for data platform, and much more! And all of them in a distributed manner. One of the best parts of pyspark is that if you are already familiar with python, it's really easy to learn.</p>
+<p>Apart from PySpark, there is another language called Scala used for big data processing. Scala is frequently over 10 times faster than Python is native for Hadoop as its based on JVM. But PySpark is getting adopted at a fast rate because of the ease of use, easier learning curve and ML capabilities.</p>
+<p>I will briefly explain how a PySpark job works, but I strongly recommend you read more about the <a href="https://data-flair.training/blogs/how-apache-spark-works/">architecture</a> and how everything works. Now, before I get into it, let me talk about some <u>basic jargons</u> first:</p>
+<p><b>Cluster</b> is a set of loosely or tightly connected computers that work together so that they can be viewed as a single system.</p>
+<p><b>Hadoop</b> is an open source, scalable, and fault tolerant framework written in Java. It efficiently processes large volumes of data on a cluster of commodity hardware. Hadoop is not only a storage system but is a platform for large data storage as well as processing.</p>
+<p><b>HDFS</b> (Hadoop distributed file system). It is one of the world's most reliable storage system. HDFS is a Filesystem of Hadoop designed for storing very large files running on a cluster of commodity hardware.</p>
+<p><b>MapReduce</b> is a data Processing framework, which has 2 phases - Mapper and Reducer. The map procedure performs filtering and sorting, and the reduce method performs a summary operation. It usually runs on a hadoop cluster.</p>
+<p><b>Transformation</b> refers to the operations applied on a dataset to create a new dataset. Filter, groupBy and map are the examples of transformations.</p>
+<p><b>Actions</b> Actions refer to an operation which instructs Spark to perform computation and send the result back to driver. This is an example of action.</p>
+<p>Alright! Now that that's out of the way, let me explain how a spark job runs. In simple terma, each time you submit a pyspark job, the code gets internally converted into a MapReduce program and gets executed in the Java virtual machine. Now one of the thoughts that might be popping in your mind will probably be: <br><code>So the code gets converted into a MapReduce program. Wouldn't that mean MapReduce is faster than pySpark?</code><br> Well, the answer is a big NO. This is what makes spark jobs special. Spark is capable of handling a massive amount of data at a time, in it's distributed environment. It does this through <u>in-memory processing</u>, which is what makes it almost 100 times faster than Hadoop. Another factor which amkes it fast is <u>Lazy Evaluation</u>. Spark delays its evaluation as much as it can. Each time you  submit a job, spark creates an action plan for how to execute the code, and then does nothing. Finally, when you ask for the result(i.e, calls an action), it executes the plan, which is basically all the transofrmations you have mentioned in your code. That's basically the gist of it.</p>
+<p>Now lastly, I want to talk about on more thing. Spark mainly consists of 4 modules:</p>
+<ol>
+    <li>Spark SQL - helps to write  spark programs using SQL like queries.</li>
+    <li>Spark Streaming - is an extension of the core Spark API that enables scalable, high-throughput, fault-tolerant stream processing of live data streams. used heavily in processing of social media data.</li>
+    <li>Spark MLLib - is the machine learning component of SPark. It helps train ML models on massive datasets with very high efficeny. </li>
+    <li>Spark GraphX - is the visualization component of Spark. It enables users to view data both as graphs and as collections without data movement or duplication.</li>
+</ol><p>Hopefully this image gives a better idea of what I am talking about:
+<img alt="Spark Modules" src="https://2s7gjr373w3x22jf92z99mgm5w-wpengine.netdna-ssl.com/wp-content/uploads/2015/11/spark-streaming-datanami.png" /></p>
+<p><center><font color='#666956'>Source: Datanami</font><center></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='colaboratory'></a></p>
+<h3 id="Colaboratory">Colaboratory<a class="anchor-link" href="#Colaboratory">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In the words of Google: <br>
+<code>Colaboratory, or “Colab” for short, is a product from Google Research. Colab allows anybody to write and execute arbitrary python code through the browser, and is especially well suited to machine learning, data analysis and education. More technically, Colab is a hosted Jupyter notebook service that requires no setup to use, while providing free access to computing resources including GPUs.</code></p>
+<p>The reason why I used colab is because of its shareability and free GPU. Yeah you read that right. A FREE GPU! Additionally, it helps use different Google services conveniently. It saves to Google Drive and all the services are very closely related. I recommend you go through the offical <a href="https://colab.research.google.com/notebooks/basic_features_overview.ipynb">overview documentation</a> if you want to know more about it.
+If you have more questions about colab, please <a href="https://research.google.com/colaboratory/faq.html">refer this link</a></p>
+<blockquote><p>While using a colab notebook, you will need an active internet connection to keep a session alive. If you lose the connection you will have to download the datasets again.</p>
+</blockquote>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='jupyter-notebook-basics'></a></p>
+<h2 id="Jupyter-notebook-basics">Jupyter notebook basics<a class="anchor-link" href="#Jupyter-notebook-basics">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='code-cells'></a></p>
+<h3 id="Code-cells">Code cells<a class="anchor-link" href="#Code-cells">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="mi">2</span><span class="o">*</span><span class="mi">3</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[1]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>6</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">&quot;Hello!&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Hello!
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='text-cells'></a></p>
+<h3 id="Text-cells">Text cells<a class="anchor-link" href="#Text-cells">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Hello world!</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='access-to-the-shell'></a></p>
+<h2 id="Access-to-the-shell">Access to the shell<a class="anchor-link" href="#Access-to-the-shell">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">ls</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre><span class="ansi-blue-fg">Backup DAGs</span>/
+Colab_and_PySpark.ipynb
+<span class="ansi-blue-fg">Reference</span>/
+~$ctory Audit_AS-IS Process_03142019.docx
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">pwd</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[5]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>u&#39;/Users/jcele1/Downloads&#39;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='install-spark'></a></p>
+<h2 id="Install-Spark">Install Spark<a class="anchor-link" href="#Install-Spark">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="o">!</span>apt-get update
+<span class="o">!</span>apt-get install openjdk-8-jdk-headless -qq &gt; /dev/null
+<span class="o">!</span>wget -q http://archive.apache.org/dist/spark/spark-2.4.4/spark-2.4.4-bin-hadoop2.7.tgz
+<span class="o">!</span>tar xf spark-2.4.4-bin-hadoop2.7.tgz
+<span class="o">!</span>pip install -q findspark
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>/bin/sh: apt-get: command not found
+/bin/sh: apt-get: command not found
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;JAVA_HOME&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;/usr/lib/jvm/java-8-openjdk-amd64&quot;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SPARK_HOME&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;/content/spark-2.4.4-bin-hadoop2.7&quot;</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="o">!</span>ls
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">findspark</span>
+<span class="n">findspark</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="kn">from</span> <span class="nn">pyspark</span> <span class="kn">import</span> <span class="n">SparkContext</span>
+
+<span class="n">sc</span> <span class="o">=</span> <span class="n">SparkContext</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="n">sc</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[0]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+
+        <div>
+            <p><b>SparkContext</b></p>
+
+            <p><a href="http://1bf9dca3a06e:4040">Spark UI</a></p>
+
+            <dl>
+              <dt>Version</dt>
+                <dd><code>v2.4.4</code></dd>
+              <dt>Master</dt>
+                <dd><code>local[*]</code></dd>
+              <dt>AppName</dt>
+                <dd><code>pyspark-shell</code></dd>
+            </dl>
+        </div>
+        
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">pyspark</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span> 
+<span class="n">spark</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[0]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+
+            <div>
+                <p><b>SparkSession - in-memory</b></p>
+                
+        <div>
+            <p><b>SparkContext</b></p>
+
+            <p><a href="http://1bf9dca3a06e:4040">Spark UI</a></p>
+
+            <dl>
+              <dt>Version</dt>
+                <dd><code>v2.4.4</code></dd>
+              <dt>Master</dt>
+                <dd><code>local[*]</code></dd>
+              <dt>AppName</dt>
+                <dd><code>pyspark-shell</code></dd>
+            </dl>
+        </div>
+        
+            </div>
+        
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='loading-dataset'></a></p>
+<h1 id="Loading-Dataset">Loading Dataset<a class="anchor-link" href="#Loading-Dataset">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Downloading and preprocessing Chicago&#39;s Reported Crime Data</span>
+<span class="o">!</span>wget https://data.cityofchicago.org/api/views/w98m-zvie/rows.csv?accessType<span class="o">=</span>DOWNLOAD
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>--2020-01-22 04:20:04--  https://data.cityofchicago.org/api/views/w98m-zvie/rows.csv?accessType=DOWNLOAD
+Resolving data.cityofchicago.org (data.cityofchicago.org)... 52.206.140.199, 52.206.68.26, 52.206.140.205
+Connecting to data.cityofchicago.org (data.cityofchicago.org)|52.206.140.199|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [text/csv]
+Saving to: ‘rows.csv?accessType=DOWNLOAD’
+
+rows.csv?accessType     [              &lt;=&gt;   ]  58.56M  3.32MB/s    in 18s     
+
+2020-01-22 04:20:23 (3.29 MB/s) - ‘rows.csv?accessType=DOWNLOAD’ saved [61404826]
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="o">!</span>ls
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&#39;rows.csv?accessType=DOWNLOAD&#39;	 spark-2.4.4-bin-hadoop2.7
+ sample_data			 spark-2.4.4-bin-hadoop2.7.tgz
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#Renaming the downloaded file</span>
+<span class="o">!</span>mv rows.csv?accessType<span class="o">=</span>DOWNLOAD reported-crimes.csv
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s1">&#39;reported-crimes.csv&#39;</span><span class="p">,</span><span class="n">header</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>+--------+-----------+--------------------+--------------------+----+--------------------+--------------------+--------------------+------+--------+----+--------+----+--------------+--------+------------+------------+----+--------------------+--------+---------+--------+
+|      ID|Case Number|                Date|               Block|IUCR|        Primary Type|         Description|Location Description|Arrest|Domestic|Beat|District|Ward|Community Area|FBI Code|X Coordinate|Y Coordinate|Year|          Updated On|Latitude|Longitude|Location|
++--------+-----------+--------------------+--------------------+----+--------------------+--------------------+--------------------+------+--------+----+--------+----+--------------+--------+------------+------------+----+--------------------+--------+---------+--------+
+|11955940|   JD121140|07/31/2019 09:00:...|  026XX S HALSTED ST|1154|  DECEPTIVE PRACTICE|FINANCIAL IDENTIT...|  SMALL RETAIL STORE| false|   false|0913|     009|  11|            60|      11|        null|        null|2019|01/20/2020 03:52:...|    null|     null|    null|
+|11956035|   JD121288|09/10/2019 12:01:...|070XX S STONY ISL...|1582|OFFENSE INVOLVING...|   CHILD PORNOGRAPHY|           RESIDENCE| false|   false|0332|     003|   5|            43|      17|        null|        null|2019|01/20/2020 03:52:...|    null|     null|    null|
+|11956045|   JD121237|12/15/2019 12:00:...|      069XX S ADA ST|0610|            BURGLARY|      FORCIBLE ENTRY|           RESIDENCE| false|   false|0734|     007|   6|            67|      05|        null|        null|2019|01/20/2020 03:52:...|    null|     null|    null|
+|11956146|   JD121344|12/31/2019 12:00:...|   016XX S THROOP ST|0610|            BURGLARY|      FORCIBLE ENTRY|           RESIDENCE| false|   false|1233|     012|  25|            31|      05|        null|        null|2019|01/20/2020 03:52:...|    null|     null|    null|
+|11956304|   JD121233|11/27/2019 10:35:...|   002XX W GOETHE ST|0810|               THEFT|           OVER $500|           RESIDENCE| false|   false|1821|     018|   2|             8|      06|        null|        null|2019|01/20/2020 03:52:...|    null|     null|    null|
++--------+-----------+--------------------+--------------------+----+--------------------+--------------------+--------------------+------+--------+----+--------+----+--------------+--------+------------+------------+----+--------------------+--------+---------+--------+
+only showing top 5 rows
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='working-with-the-dataframe-api'></a></p>
+<h1 id="Working-with-the-Dataframe-API">Working with the Dataframe API<a class="anchor-link" href="#Working-with-the-Dataframe-API">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='viewing-dataframe'></a></p>
+<h2 id="Viewing-Dataframe">Viewing Dataframe<a class="anchor-link" href="#Viewing-Dataframe">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In Spark, you have a couple of options to view the DataFrame(DF).</p>
+<ol>
+<li>take(3) will return a list of three row objects. </li>
+<li>df.collect() will get all of the data from the entire DataFrame . Be careful when using it, because if you have a large data set when you run collect, you can easily crash the driver node. </li>
+<li>If you want Spark to print out your DataFrame in a nice format, then try df.show() with the number of rows as paramter. </li>
+</ol>
+<p>N.B: The limit function <strong>returns a new DataFrame</strong>  by taking the first n rows.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='schema-of-a-dataframe'></a></p>
+<h2 id="Schema-of-a-DataFrame">Schema of a DataFrame<a class="anchor-link" href="#Schema-of-a-DataFrame">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">dtypes</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[0]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[(&#39;ID&#39;, &#39;string&#39;),
+ (&#39;Case Number&#39;, &#39;string&#39;),
+ (&#39;Date&#39;, &#39;string&#39;),
+ (&#39;Block&#39;, &#39;string&#39;),
+ (&#39;IUCR&#39;, &#39;string&#39;),
+ (&#39;Primary Type&#39;, &#39;string&#39;),
+ (&#39;Description&#39;, &#39;string&#39;),
+ (&#39;Location Description&#39;, &#39;string&#39;),
+ (&#39;Arrest&#39;, &#39;string&#39;),
+ (&#39;Domestic&#39;, &#39;string&#39;),
+ (&#39;Beat&#39;, &#39;string&#39;),
+ (&#39;District&#39;, &#39;string&#39;),
+ (&#39;Ward&#39;, &#39;string&#39;),
+ (&#39;Community Area&#39;, &#39;string&#39;),
+ (&#39;FBI Code&#39;, &#39;string&#39;),
+ (&#39;X Coordinate&#39;, &#39;string&#39;),
+ (&#39;Y Coordinate&#39;, &#39;string&#39;),
+ (&#39;Year&#39;, &#39;string&#39;),
+ (&#39;Updated On&#39;, &#39;string&#39;),
+ (&#39;Latitude&#39;, &#39;string&#39;),
+ (&#39;Longitude&#39;, &#39;string&#39;),
+ (&#39;Location&#39;, &#39;string&#39;)]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>root
+ |-- ID: string (nullable = true)
+ |-- Case Number: string (nullable = true)
+ |-- Date: string (nullable = true)
+ |-- Block: string (nullable = true)
+ |-- IUCR: string (nullable = true)
+ |-- Primary Type: string (nullable = true)
+ |-- Description: string (nullable = true)
+ |-- Location Description: string (nullable = true)
+ |-- Arrest: string (nullable = true)
+ |-- Domestic: string (nullable = true)
+ |-- Beat: string (nullable = true)
+ |-- District: string (nullable = true)
+ |-- Ward: string (nullable = true)
+ |-- Community Area: string (nullable = true)
+ |-- FBI Code: string (nullable = true)
+ |-- X Coordinate: string (nullable = true)
+ |-- Y Coordinate: string (nullable = true)
+ |-- Year: string (nullable = true)
+ |-- Updated On: string (nullable = true)
+ |-- Latitude: string (nullable = true)
+ |-- Longitude: string (nullable = true)
+ |-- Location: string (nullable = true)
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Defining a schema</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">StructType</span><span class="p">,</span> <span class="n">StructField</span><span class="p">,</span> <span class="n">StringType</span><span class="p">,</span> <span class="n">TimestampType</span><span class="p">,</span> <span class="n">BooleanType</span><span class="p">,</span> <span class="n">DoubleType</span><span class="p">,</span> <span class="n">IntegerType</span>
+<span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[0]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[&#39;ID&#39;,
+ &#39;Case Number&#39;,
+ &#39;Date&#39;,
+ &#39;Block&#39;,
+ &#39;IUCR&#39;,
+ &#39;Primary Type&#39;,
+ &#39;Description&#39;,
+ &#39;Location Description&#39;,
+ &#39;Arrest&#39;,
+ &#39;Domestic&#39;,
+ &#39;Beat&#39;,
+ &#39;District&#39;,
+ &#39;Ward&#39;,
+ &#39;Community Area&#39;,
+ &#39;FBI Code&#39;,
+ &#39;X Coordinate&#39;,
+ &#39;Y Coordinate&#39;,
+ &#39;Year&#39;,
+ &#39;Updated On&#39;,
+ &#39;Latitude&#39;,
+ &#39;Longitude&#39;,
+ &#39;Location&#39;]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">labels</span> <span class="o">=</span> <span class="p">[</span>
+     <span class="p">(</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span><span class="n">StringType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;Case Number&#39;</span><span class="p">,</span><span class="n">StringType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span><span class="n">TimestampType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;Block&#39;</span><span class="p">,</span><span class="n">StringType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;IUCR&#39;</span><span class="p">,</span><span class="n">StringType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;Primary Type&#39;</span><span class="p">,</span><span class="n">StringType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;Description&#39;</span><span class="p">,</span><span class="n">StringType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;Location Description&#39;</span><span class="p">,</span><span class="n">StringType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;Arrest&#39;</span><span class="p">,</span><span class="n">StringType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;Domestic&#39;</span><span class="p">,</span><span class="n">BooleanType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;Beat&#39;</span><span class="p">,</span><span class="n">StringType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;District&#39;</span><span class="p">,</span><span class="n">StringType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;Ward&#39;</span><span class="p">,</span><span class="n">StringType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;Community Area&#39;</span><span class="p">,</span><span class="n">StringType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;FBI Code&#39;</span><span class="p">,</span><span class="n">StringType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;X Coordinate&#39;</span><span class="p">,</span><span class="n">StringType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;Y Coordinate&#39;</span><span class="p">,</span><span class="n">StringType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;Year&#39;</span><span class="p">,</span><span class="n">IntegerType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;Updated On&#39;</span><span class="p">,</span><span class="n">StringType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;Latitude&#39;</span><span class="p">,</span><span class="n">DoubleType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;Longitude&#39;</span><span class="p">,</span><span class="n">DoubleType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;Location&#39;</span><span class="p">,</span><span class="n">StringType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;Historical Wards 2003-2015&#39;</span><span class="p">,</span><span class="n">StringType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;Zip Codes&#39;</span><span class="p">,</span><span class="n">StringType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;Community Areas&#39;</span><span class="p">,</span><span class="n">StringType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;Census Tracts&#39;</span><span class="p">,</span><span class="n">StringType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;Wards&#39;</span><span class="p">,</span><span class="n">StringType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;Boundaries - ZIP Codes&#39;</span><span class="p">,</span><span class="n">StringType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;Police Districts&#39;</span><span class="p">,</span><span class="n">StringType</span><span class="p">()),</span>
+     <span class="p">(</span><span class="s1">&#39;Police Beats&#39;</span><span class="p">,</span><span class="n">StringType</span><span class="p">())</span>
+<span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">schema</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">([</span><span class="n">StructField</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">])</span>
+<span class="n">schema</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[0]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>StructType(List(StructField(ID,StringType,true),StructField(Case Number,StringType,true),StructField(Date,TimestampType,true),StructField(Block,StringType,true),StructField(IUCR,StringType,true),StructField(Primary Type,StringType,true),StructField(Description,StringType,true),StructField(Location Description,StringType,true),StructField(Arrest,StringType,true),StructField(Domestic,BooleanType,true),StructField(Beat,StringType,true),StructField(District,StringType,true),StructField(Ward,StringType,true),StructField(Community Area,StringType,true),StructField(FBI Code,StringType,true),StructField(X Coordinate,StringType,true),StructField(Y Coordinate,StringType,true),StructField(Year,IntegerType,true),StructField(Updated On,StringType,true),StructField(Latitude,DoubleType,true),StructField(Longitude,DoubleType,true),StructField(Location,StringType,true),StructField(Historical Wards 2003-2015,StringType,true),StructField(Zip Codes,StringType,true),StructField(Community Areas,StringType,true),StructField(Census Tracts,StringType,true),StructField(Wards,StringType,true),StructField(Boundaries - ZIP Codes,StringType,true),StructField(Police Districts,StringType,true),StructField(Police Beats,StringType,true)))</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s1">&#39;reported-crimes.csv&#39;</span><span class="p">,</span><span class="n">schema</span><span class="o">=</span><span class="n">schema</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+<span class="c1"># The schema comes as we gave!</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>root
+ |-- ID: string (nullable = true)
+ |-- Case Number: string (nullable = true)
+ |-- Date: timestamp (nullable = true)
+ |-- Block: string (nullable = true)
+ |-- IUCR: string (nullable = true)
+ |-- Primary Type: string (nullable = true)
+ |-- Description: string (nullable = true)
+ |-- Location Description: string (nullable = true)
+ |-- Arrest: string (nullable = true)
+ |-- Domestic: boolean (nullable = true)
+ |-- Beat: string (nullable = true)
+ |-- District: string (nullable = true)
+ |-- Ward: string (nullable = true)
+ |-- Community Area: string (nullable = true)
+ |-- FBI Code: string (nullable = true)
+ |-- X Coordinate: string (nullable = true)
+ |-- Y Coordinate: string (nullable = true)
+ |-- Year: integer (nullable = true)
+ |-- Updated On: string (nullable = true)
+ |-- Latitude: double (nullable = true)
+ |-- Longitude: double (nullable = true)
+ |-- Location: string (nullable = true)
+ |-- Historical Wards 2003-2015: string (nullable = true)
+ |-- Zip Codes: string (nullable = true)
+ |-- Community Areas: string (nullable = true)
+ |-- Census Tracts: string (nullable = true)
+ |-- Wards: string (nullable = true)
+ |-- Boundaries - ZIP Codes: string (nullable = true)
+ |-- Police Districts: string (nullable = true)
+ |-- Police Beats: string (nullable = true)
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="c1"># This comes as null which means the datatypes we gave were wrong.</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>+----+-----------+----+-----+----+------------+-----------+--------------------+------+--------+----+--------+----+--------------+--------+------------+------------+----+----------+--------+---------+--------+--------------------------+---------+---------------+-------------+-----+----------------------+----------------+------------+
+|  ID|Case Number|Date|Block|IUCR|Primary Type|Description|Location Description|Arrest|Domestic|Beat|District|Ward|Community Area|FBI Code|X Coordinate|Y Coordinate|Year|Updated On|Latitude|Longitude|Location|Historical Wards 2003-2015|Zip Codes|Community Areas|Census Tracts|Wards|Boundaries - ZIP Codes|Police Districts|Police Beats|
++----+-----------+----+-----+----+------------+-----------+--------------------+------+--------+----+--------+----+--------------+--------+------------+------------+----+----------+--------+---------+--------+--------------------------+---------+---------------+-------------+-----+----------------------+----------------+------------+
+|null|       null|null| null|null|        null|       null|                null|  null|    null|null|    null|null|          null|    null|        null|        null|null|      null|    null|     null|    null|                      null|     null|           null|         null| null|                  null|            null|        null|
+|null|       null|null| null|null|        null|       null|                null|  null|    null|null|    null|null|          null|    null|        null|        null|null|      null|    null|     null|    null|                      null|     null|           null|         null| null|                  null|            null|        null|
+|null|       null|null| null|null|        null|       null|                null|  null|    null|null|    null|null|          null|    null|        null|        null|null|      null|    null|     null|    null|                      null|     null|           null|         null| null|                  null|            null|        null|
+|null|       null|null| null|null|        null|       null|                null|  null|    null|null|    null|null|          null|    null|        null|        null|null|      null|    null|     null|    null|                      null|     null|           null|         null| null|                  null|            null|        null|
+|null|       null|null| null|null|        null|       null|                null|  null|    null|null|    null|null|          null|    null|        null|        null|null|      null|    null|     null|    null|                      null|     null|           null|         null| null|                  null|            null|        null|
+|null|       null|null| null|null|        null|       null|                null|  null|    null|null|    null|null|          null|    null|        null|        null|null|      null|    null|     null|    null|                      null|     null|           null|         null| null|                  null|            null|        null|
+|null|       null|null| null|null|        null|       null|                null|  null|    null|null|    null|null|          null|    null|        null|        null|null|      null|    null|     null|    null|                      null|     null|           null|         null| null|                  null|            null|        null|
+|null|       null|null| null|null|        null|       null|                null|  null|    null|null|    null|null|          null|    null|        null|        null|null|      null|    null|     null|    null|                      null|     null|           null|         null| null|                  null|            null|        null|
+|null|       null|null| null|null|        null|       null|                null|  null|    null|null|    null|null|          null|    null|        null|        null|null|      null|    null|     null|    null|                      null|     null|           null|         null| null|                  null|            null|        null|
+|null|       null|null| null|null|        null|       null|                null|  null|    null|null|    null|null|          null|    null|        null|        null|null|      null|    null|     null|    null|                      null|     null|           null|         null| null|                  null|            null|        null|
+|null|       null|null| null|null|        null|       null|                null|  null|    null|null|    null|null|          null|    null|        null|        null|null|      null|    null|     null|    null|                      null|     null|           null|         null| null|                  null|            null|        null|
+|null|       null|null| null|null|        null|       null|                null|  null|    null|null|    null|null|          null|    null|        null|        null|null|      null|    null|     null|    null|                      null|     null|           null|         null| null|                  null|            null|        null|
+|null|       null|null| null|null|        null|       null|                null|  null|    null|null|    null|null|          null|    null|        null|        null|null|      null|    null|     null|    null|                      null|     null|           null|         null| null|                  null|            null|        null|
+|null|       null|null| null|null|        null|       null|                null|  null|    null|null|    null|null|          null|    null|        null|        null|null|      null|    null|     null|    null|                      null|     null|           null|         null| null|                  null|            null|        null|
+|null|       null|null| null|null|        null|       null|                null|  null|    null|null|    null|null|          null|    null|        null|        null|null|      null|    null|     null|    null|                      null|     null|           null|         null| null|                  null|            null|        null|
+|null|       null|null| null|null|        null|       null|                null|  null|    null|null|    null|null|          null|    null|        null|        null|null|      null|    null|     null|    null|                      null|     null|           null|         null| null|                  null|            null|        null|
+|null|       null|null| null|null|        null|       null|                null|  null|    null|null|    null|null|          null|    null|        null|        null|null|      null|    null|     null|    null|                      null|     null|           null|         null| null|                  null|            null|        null|
+|null|       null|null| null|null|        null|       null|                null|  null|    null|null|    null|null|          null|    null|        null|        null|null|      null|    null|     null|    null|                      null|     null|           null|         null| null|                  null|            null|        null|
+|null|       null|null| null|null|        null|       null|                null|  null|    null|null|    null|null|          null|    null|        null|        null|null|      null|    null|     null|    null|                      null|     null|           null|         null| null|                  null|            null|        null|
+|null|       null|null| null|null|        null|       null|                null|  null|    null|null|    null|null|          null|    null|        null|        null|null|      null|    null|     null|    null|                      null|     null|           null|         null| null|                  null|            null|        null|
++----+-----------+----+-----+----+------------+-----------+--------------------+------+--------+----+--------+----+--------------+--------+------------+------------+----+----------+--------+---------+--------+--------------------------+---------+---------------+-------------+-----+----------------------+----------------+------------+
+only showing top 20 rows
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># So let&#39;s just stick with infered schema for now, casting date to date type on the way</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">col</span><span class="p">,</span> <span class="n">to_timestamp</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s1">&#39;reported-crimes.csv&#39;</span><span class="p">,</span><span class="n">header</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span><span class="n">to_timestamp</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">),</span><span class="s1">&#39;MM/dd/yyyy hh:mm:ss a&#39;</span><span class="p">))</span>
+<span class="n">df</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>+--------+-----------+-------------------+--------------------+----+--------------------+--------------------+--------------------+------+--------+----+--------+----+--------------+--------+------------+------------+----+--------------------+--------+---------+--------+
+|      ID|Case Number|               Date|               Block|IUCR|        Primary Type|         Description|Location Description|Arrest|Domestic|Beat|District|Ward|Community Area|FBI Code|X Coordinate|Y Coordinate|Year|          Updated On|Latitude|Longitude|Location|
++--------+-----------+-------------------+--------------------+----+--------------------+--------------------+--------------------+------+--------+----+--------+----+--------------+--------+------------+------------+----+--------------------+--------+---------+--------+
+|11955940|   JD121140|2019-07-31 09:00:00|  026XX S HALSTED ST|1154|  DECEPTIVE PRACTICE|FINANCIAL IDENTIT...|  SMALL RETAIL STORE| false|   false|0913|     009|  11|            60|      11|        null|        null|2019|01/20/2020 03:52:...|    null|     null|    null|
+|11956035|   JD121288|2019-09-10 00:01:00|070XX S STONY ISL...|1582|OFFENSE INVOLVING...|   CHILD PORNOGRAPHY|           RESIDENCE| false|   false|0332|     003|   5|            43|      17|        null|        null|2019|01/20/2020 03:52:...|    null|     null|    null|
+|11956045|   JD121237|2019-12-15 12:00:00|      069XX S ADA ST|0610|            BURGLARY|      FORCIBLE ENTRY|           RESIDENCE| false|   false|0734|     007|   6|            67|      05|        null|        null|2019|01/20/2020 03:52:...|    null|     null|    null|
+|11956146|   JD121344|2019-12-31 00:00:00|   016XX S THROOP ST|0610|            BURGLARY|      FORCIBLE ENTRY|           RESIDENCE| false|   false|1233|     012|  25|            31|      05|        null|        null|2019|01/20/2020 03:52:...|    null|     null|    null|
+|11956304|   JD121233|2019-11-27 10:35:00|   002XX W GOETHE ST|0810|               THEFT|           OVER $500|           RESIDENCE| false|   false|1821|     018|   2|             8|      06|        null|        null|2019|01/20/2020 03:52:...|    null|     null|    null|
++--------+-----------+-------------------+--------------------+----+--------------------+--------------------+--------------------+------+--------+----+--------+----+--------------+--------+------------+------------+----+--------------------+--------+---------+--------+
+only showing top 5 rows
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='working-with-columns'></a></p>
+<h1 id="Working-with-columns">Working with columns<a class="anchor-link" href="#Working-with-columns">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">Block</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[0]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Column&lt;b&#39;Block&#39;&gt;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Block&#39;</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[0]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Column&lt;b&#39;Block&#39;&gt;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>NOTE:</strong></p>
+<blockquote><p><strong>We can't always use the dot notation because this will break when the column names have reserved names or attributes to the data frame class.</strong></p>
+</blockquote>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;Block&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>+--------------------+
+|               Block|
++--------------------+
+|  026XX S HALSTED ST|
+|070XX S STONY ISL...|
+|      069XX S ADA ST|
+|   016XX S THROOP ST|
+|   002XX W GOETHE ST|
+|083XX S MUSKEGON AVE|
+|   050XX W NELSON ST|
+|     011XX W 83RD ST|
+|  081XX W ADDISON ST|
+| 031XX S PRAIRIE AVE|
+|023XX N MILWAUKEE...|
+| 0000X E CHESTNUT ST|
+| 0000X N LATROBE AVE|
+|    104XX S AVENUE J|
+|025XX S CALIFORNI...|
+|     021XX E 70TH ST|
+|082XX S JEFFERY BLVD|
+|  076XX S CICERO AVE|
+|     016XX W LAKE ST|
+| 018XX W DIVISION ST|
++--------------------+
+only showing top 20 rows
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Block</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>+--------------------+
+|               Block|
++--------------------+
+|  026XX S HALSTED ST|
+|070XX S STONY ISL...|
+|      069XX S ADA ST|
+|   016XX S THROOP ST|
+|   002XX W GOETHE ST|
+|083XX S MUSKEGON AVE|
+|   050XX W NELSON ST|
+|     011XX W 83RD ST|
+|  081XX W ADDISON ST|
+| 031XX S PRAIRIE AVE|
+|023XX N MILWAUKEE...|
+| 0000X E CHESTNUT ST|
+| 0000X N LATROBE AVE|
+|    104XX S AVENUE J|
+|025XX S CALIFORNI...|
+|     021XX E 70TH ST|
+|082XX S JEFFERY BLVD|
+|  076XX S CICERO AVE|
+|     016XX W LAKE ST|
+| 018XX W DIVISION ST|
++--------------------+
+only showing top 20 rows
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">&#39;Block&#39;</span><span class="p">,</span><span class="s1">&#39;Description&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>+--------------------+--------------------+
+|               Block|         Description|
++--------------------+--------------------+
+|  026XX S HALSTED ST|FINANCIAL IDENTIT...|
+|070XX S STONY ISL...|   CHILD PORNOGRAPHY|
+|      069XX S ADA ST|      FORCIBLE ENTRY|
+|   016XX S THROOP ST|      FORCIBLE ENTRY|
+|   002XX W GOETHE ST|           OVER $500|
+|083XX S MUSKEGON AVE|      $500 AND UNDER|
+|   050XX W NELSON ST|HARASSMENT BY TEL...|
+|     011XX W 83RD ST|SEXUAL EXPLOITATI...|
+|  081XX W ADDISON ST|FINANCIAL IDENTIT...|
+| 031XX S PRAIRIE AVE|ILLEGAL USE CASH ...|
+|023XX N MILWAUKEE...|           OVER $500|
+| 0000X E CHESTNUT ST|       FROM BUILDING|
+| 0000X N LATROBE AVE|         TO PROPERTY|
+|    104XX S AVENUE J|HARASSMENT BY TEL...|
+|025XX S CALIFORNI...|AGG CRIM SEX ABUS...|
+|     021XX E 70TH ST|UNLAWFUL POSS OF ...|
+|082XX S JEFFERY BLVD|PRO EMP HANDS NO/...|
+|  076XX S CICERO AVE|      $500 AND UNDER|
+|     016XX W LAKE ST|DOMESTIC BATTERY ...|
+| 018XX W DIVISION ST|      UNLAWFUL ENTRY|
++--------------------+--------------------+
+only showing top 20 rows
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#Adding a column in PySpark</span>
+<span class="c1"># We are adding a column called &#39;One&#39; at the end</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">lit</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s1">&#39;One&#39;</span><span class="p">,</span><span class="n">lit</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">df</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>+--------+-----------+-------------------+--------------------+----+--------------------+--------------------+--------------------+------+--------+----+--------+----+--------------+--------+------------+------------+----+--------------------+--------+---------+--------+---+
+|      ID|Case Number|               Date|               Block|IUCR|        Primary Type|         Description|Location Description|Arrest|Domestic|Beat|District|Ward|Community Area|FBI Code|X Coordinate|Y Coordinate|Year|          Updated On|Latitude|Longitude|Location|One|
++--------+-----------+-------------------+--------------------+----+--------------------+--------------------+--------------------+------+--------+----+--------+----+--------------+--------+------------+------------+----+--------------------+--------+---------+--------+---+
+|11955940|   JD121140|2019-07-31 09:00:00|  026XX S HALSTED ST|1154|  DECEPTIVE PRACTICE|FINANCIAL IDENTIT...|  SMALL RETAIL STORE| false|   false|0913|     009|  11|            60|      11|        null|        null|2019|01/20/2020 03:52:...|    null|     null|    null|  1|
+|11956035|   JD121288|2019-09-10 00:01:00|070XX S STONY ISL...|1582|OFFENSE INVOLVING...|   CHILD PORNOGRAPHY|           RESIDENCE| false|   false|0332|     003|   5|            43|      17|        null|        null|2019|01/20/2020 03:52:...|    null|     null|    null|  1|
+|11956045|   JD121237|2019-12-15 12:00:00|      069XX S ADA ST|0610|            BURGLARY|      FORCIBLE ENTRY|           RESIDENCE| false|   false|0734|     007|   6|            67|      05|        null|        null|2019|01/20/2020 03:52:...|    null|     null|    null|  1|
+|11956146|   JD121344|2019-12-31 00:00:00|   016XX S THROOP ST|0610|            BURGLARY|      FORCIBLE ENTRY|           RESIDENCE| false|   false|1233|     012|  25|            31|      05|        null|        null|2019|01/20/2020 03:52:...|    null|     null|    null|  1|
+|11956304|   JD121233|2019-11-27 10:35:00|   002XX W GOETHE ST|0810|               THEFT|           OVER $500|           RESIDENCE| false|   false|1821|     018|   2|             8|      06|        null|        null|2019|01/20/2020 03:52:...|    null|     null|    null|  1|
++--------+-----------+-------------------+--------------------+----+--------------------+--------------------+--------------------+------+--------+----+--------+----+--------------+--------+------------+------------+----+--------------------+--------+---------+--------+---+
+only showing top 5 rows
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#Renaming a column in PySpark</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">withColumnRenamed</span><span class="p">(</span><span class="s1">&#39;One&#39;</span><span class="p">,</span> <span class="s1">&#39;Test&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>+--------+-----------+-------------------+--------------------+----+--------------------+--------------------+--------------------+------+--------+----+--------+----+--------------+--------+------------+------------+----+--------------------+------------+-------------+--------------------+----+
+|      ID|Case Number|               Date|               Block|IUCR|        Primary Type|         Description|Location Description|Arrest|Domestic|Beat|District|Ward|Community Area|FBI Code|X Coordinate|Y Coordinate|Year|          Updated On|    Latitude|    Longitude|            Location|Test|
++--------+-----------+-------------------+--------------------+----+--------------------+--------------------+--------------------+------+--------+----+--------+----+--------------+--------+------------+------------+----+--------------------+------------+-------------+--------------------+----+
+|11955940|   JD121140|2019-07-31 09:00:00|  026XX S HALSTED ST|1154|  DECEPTIVE PRACTICE|FINANCIAL IDENTIT...|  SMALL RETAIL STORE| false|   false|0913|     009|  11|            60|      11|        null|        null|2019|01/20/2020 03:52:...|        null|         null|                null|   1|
+|11956035|   JD121288|2019-09-10 00:01:00|070XX S STONY ISL...|1582|OFFENSE INVOLVING...|   CHILD PORNOGRAPHY|           RESIDENCE| false|   false|0332|     003|   5|            43|      17|        null|        null|2019|01/20/2020 03:52:...|        null|         null|                null|   1|
+|11956045|   JD121237|2019-12-15 12:00:00|      069XX S ADA ST|0610|            BURGLARY|      FORCIBLE ENTRY|           RESIDENCE| false|   false|0734|     007|   6|            67|      05|        null|        null|2019|01/20/2020 03:52:...|        null|         null|                null|   1|
+|11956146|   JD121344|2019-12-31 00:00:00|   016XX S THROOP ST|0610|            BURGLARY|      FORCIBLE ENTRY|           RESIDENCE| false|   false|1233|     012|  25|            31|      05|        null|        null|2019|01/20/2020 03:52:...|        null|         null|                null|   1|
+|11956304|   JD121233|2019-11-27 10:35:00|   002XX W GOETHE ST|0810|               THEFT|           OVER $500|           RESIDENCE| false|   false|1821|     018|   2|             8|      06|        null|        null|2019|01/20/2020 03:52:...|        null|         null|                null|   1|
+|11956126|   JD121418|2019-12-23 06:00:00|083XX S MUSKEGON AVE|0820|               THEFT|      $500 AND UNDER|              STREET| false|   false|0423|     004|   7|            46|      06|        null|        null|2019|01/20/2020 03:52:...|        null|         null|                null|   1|
+|11956221|   JD121487|2019-09-13 17:00:00|   050XX W NELSON ST|2825|       OTHER OFFENSE|HARASSMENT BY TEL...|           RESIDENCE| false|   false|2521|     025|  31|            19|      26|        null|        null|2019|01/20/2020 03:52:...|        null|         null|                null|   1|
+|11956049|   JD121196|2019-12-19 19:07:00|     011XX W 83RD ST|1544|         SEX OFFENSE|SEXUAL EXPLOITATI...|           RESIDENCE| false|   false|0613|     006|  21|            71|      17|        null|        null|2019|01/20/2020 03:52:...|        null|         null|                null|   1|
+|11956468|   JD121650|2019-06-01 08:00:00|  081XX W ADDISON ST|1153|  DECEPTIVE PRACTICE|FINANCIAL IDENTIT...|           APARTMENT| false|   false|1631|     016|  38|            17|      11|        null|        null|2019|01/20/2020 03:52:...|        null|         null|                null|   1|
+|11955888|   JD121051|2019-12-01 00:01:00| 031XX S PRAIRIE AVE|1152|  DECEPTIVE PRACTICE|ILLEGAL USE CASH ...|           RESIDENCE| false|   false|0211|     002|   4|            35|      11|        null|        null|2019|01/20/2020 03:52:...|        null|         null|                null|   1|
+|11956127|   JD121334|2019-12-14 22:00:00|023XX N MILWAUKEE...|0810|               THEFT|           OVER $500|               OTHER| false|   false|1414|     014|   1|            22|      06|        null|        null|2019|01/20/2020 03:52:...|        null|         null|                null|   1|
+|11956215|   JD121376|2019-12-12 19:00:00| 0000X E CHESTNUT ST|0890|               THEFT|       FROM BUILDING|          RESTAURANT| false|   false|1833|     018|  42|             8|      06|        null|        null|2019|01/20/2020 03:52:...|        null|         null|                null|   1|
+|11956004|   JD121156|2019-11-15 12:00:00| 0000X N LATROBE AVE|1310|     CRIMINAL DAMAGE|         TO PROPERTY|           RESIDENCE| false|   false|1522|     015|  28|            25|      14|        null|        null|2019|01/20/2020 03:52:...|        null|         null|                null|   1|
+|11956129|   JD121379|2019-11-03 15:00:00|    104XX S AVENUE J|2825|       OTHER OFFENSE|HARASSMENT BY TEL...|               OTHER| false|   false|0432|     004|  10|            52|      26|        null|        null|2019|01/20/2020 03:52:...|        null|         null|                null|   1|
+|11956041|   JD121266|2019-12-21 14:18:00|025XX S CALIFORNI...|1752|OFFENSE INVOLVING...|AGG CRIM SEX ABUS...|           APARTMENT| false|   false|1033|     010|  12|            30|      17|        null|        null|2019|01/20/2020 03:52:...|        null|         null|                null|   1|
+|11935337|   JC563784|2019-12-29 02:25:00|     021XX E 70TH ST|143A|   WEAPONS VIOLATION|UNLAWFUL POSS OF ...|               ALLEY|  true|   false|0331|     003|   5|            43|      15|     1191863|     1858976|2019|01/20/2020 03:49:...|41.768020578|-87.572284866|(41.768020578, -8...|   1|
+|11927831|   JC553936|2019-12-20 13:15:00|082XX S JEFFERY BLVD|0545|             ASSAULT|PRO EMP HANDS NO/...|              STREET|  true|   false|0414|     004|   8|            46|     08A|     1190954|     1850799|2019|01/20/2020 03:49:...|41.745604221|-87.575880606|(41.745604221, -8...|   1|
+|11927034|   JC549451|2019-12-16 19:15:00|  076XX S CICERO AVE|0820|               THEFT|      $500 AND UNDER|  SMALL RETAIL STORE| false|   false|0833|     008|  18|            65|      06|     1145727|     1853720|2019|01/20/2020 03:49:...|41.754592961|-87.741528537|(41.754592961, -8...|   1|
+|11926969|   JC553305|2019-12-19 21:30:00|     016XX W LAKE ST|0486|             BATTERY|DOMESTIC BATTERY ...|           RESIDENCE|  true|   false|1224|     012|  27|            28|     08B|     1165379|     1901492|2019|01/20/2020 03:49:...|41.885291047| -87.66815409|(41.885291047, -8...|   1|
+|11926797|   JC553193|2019-12-19 19:04:00| 018XX W DIVISION ST|0620|            BURGLARY|      UNLAWFUL ENTRY|           RESIDENCE|  true|   false|1212|     012|   1|            24|      05|     1164005|     1908028|2019|01/20/2020 03:49:...|41.903255445|-87.673014935|(41.903255445, -8...|   1|
++--------+-----------+-------------------+--------------------+----+--------------------+--------------------+--------------------+------+--------+----+--------+----+--------------+--------+------------+------------+----+--------------------+------------+-------------+--------------------+----+
+only showing top 20 rows
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#Group By a column in PySpark</span>
+<span class="n">df</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s1">&#39;Year&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>+----+------+
+|Year| count|
++----+------+
+|2019|257625|
++----+------+
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#Remove columns in PySpark</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>+--------+-----------+-------------------+--------------------+----+--------------------+--------------------+--------------------+------+--------+----+--------+----+--------------+--------+------------+------------+----+--------------------+--------+---------+--------+
+|      ID|Case Number|               Date|               Block|IUCR|        Primary Type|         Description|Location Description|Arrest|Domestic|Beat|District|Ward|Community Area|FBI Code|X Coordinate|Y Coordinate|Year|          Updated On|Latitude|Longitude|Location|
++--------+-----------+-------------------+--------------------+----+--------------------+--------------------+--------------------+------+--------+----+--------+----+--------------+--------+------------+------------+----+--------------------+--------+---------+--------+
+|11955940|   JD121140|2019-07-31 09:00:00|  026XX S HALSTED ST|1154|  DECEPTIVE PRACTICE|FINANCIAL IDENTIT...|  SMALL RETAIL STORE| false|   false|0913|     009|  11|            60|      11|        null|        null|2019|01/20/2020 03:52:...|    null|     null|    null|
+|11956035|   JD121288|2019-09-10 00:01:00|070XX S STONY ISL...|1582|OFFENSE INVOLVING...|   CHILD PORNOGRAPHY|           RESIDENCE| false|   false|0332|     003|   5|            43|      17|        null|        null|2019|01/20/2020 03:52:...|    null|     null|    null|
+|11956045|   JD121237|2019-12-15 12:00:00|      069XX S ADA ST|0610|            BURGLARY|      FORCIBLE ENTRY|           RESIDENCE| false|   false|0734|     007|   6|            67|      05|        null|        null|2019|01/20/2020 03:52:...|    null|     null|    null|
+|11956146|   JD121344|2019-12-31 00:00:00|   016XX S THROOP ST|0610|            BURGLARY|      FORCIBLE ENTRY|           RESIDENCE| false|   false|1233|     012|  25|            31|      05|        null|        null|2019|01/20/2020 03:52:...|    null|     null|    null|
+|11956304|   JD121233|2019-11-27 10:35:00|   002XX W GOETHE ST|0810|               THEFT|           OVER $500|           RESIDENCE| false|   false|1821|     018|   2|             8|      06|        null|        null|2019|01/20/2020 03:52:...|    null|     null|    null|
++--------+-----------+-------------------+--------------------+----+--------------------+--------------------+--------------------+------+--------+----+--------+----+--------------+--------+------------+------------+----+--------------------+--------+---------+--------+
+only showing top 5 rows
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='working-with-rows'></a></p>
+<h2 id="Working-with-Rows">Working with Rows<a class="anchor-link" href="#Working-with-Rows">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Filtering rows in PySpark</span>
+<span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">)</span><span class="o">&lt;</span><span class="s1">&#39;2019-06-01&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>+--------+-----------+-------------------+--------------------+----+-------------------+--------------------+--------------------+------+--------+----+--------+----+--------------+--------+------------+------------+----+--------------------+------------+-------------+--------------------+
+|      ID|Case Number|               Date|               Block|IUCR|       Primary Type|         Description|Location Description|Arrest|Domestic|Beat|District|Ward|Community Area|FBI Code|X Coordinate|Y Coordinate|Year|          Updated On|    Latitude|    Longitude|            Location|
++--------+-----------+-------------------+--------------------+----+-------------------+--------------------+--------------------+------+--------+----+--------+----+--------------+--------+------------+------------+----+--------------------+------------+-------------+--------------------+
+|11652463|   JC221068|2019-04-11 22:30:00| 012XX W GUNNISON ST|0325|            ROBBERY| VEHICULAR HIJACKING|              STREET|  true|   false|2033|     020|  46|             3|      03|     1167294|     1932462|2019|01/20/2020 03:49:...|41.970233435|-87.660229117|(41.970233435, -8...|
+|11580399|   JC126732|2019-01-23 13:05:00| 033XX W FILLMORE ST|2093|          NARCOTICS|FOUND SUSPECT NAR...|POLICE FACILITY/V...|  true|   false|1134|     011|  24|            29|      18|     1154228|     1895173|2019|01/19/2020 03:47:...|41.868180939|-87.709271389|(41.868180939, -8...|
+|11953660|   JD118414|2019-03-01 14:10:00|     013XX E 62ND ST|1153| DECEPTIVE PRACTICE|FINANCIAL IDENTIT...|                null| false|   false|0314|     003|  20|            42|      11|     1185906|     1864152|2019|01/19/2020 03:47:...|41.782366539| -87.59395659|(41.782366539, -8...|
+|11955048|   JD120087|2019-01-29 12:00:00|  046XX N PAULINA ST|0890|              THEFT|       FROM BUILDING|               OTHER| false|   false|1912|     019|  47|             3|      06|        null|        null|2019|01/19/2020 03:49:...|        null|         null|                null|
+|11953654|   JD118405|2019-03-01 12:50:00|     008XX E 38TH PL|1153| DECEPTIVE PRACTICE|FINANCIAL IDENTIT...|                null| false|   false|0212|     002|   4|            36|      11|     1182247|     1879773|2019|01/19/2020 03:47:...| 41.82531739|-87.606887309|(41.82531739, -87...|
+|11955104|   JD120139|2019-05-15 16:00:00|     035XX W 71ST PL|1563|        SEX OFFENSE|CRIMINAL SEXUAL A...|           RESIDENCE| false|    true|0831|     008|  17|            66|      17|        null|        null|2019|01/19/2020 03:49:...|        null|         null|                null|
+|11581568|   JC126573|2019-01-23 11:00:00| 033XX W FILLMORE ST|2093|          NARCOTICS|FOUND SUSPECT NAR...|POLICE FACILITY/V...|  true|   false|1134|     011|  24|            29|      18|     1154228|     1895173|2019|01/19/2020 03:47:...|41.868180939|-87.709271389|(41.868180939, -8...|
+|11953335|   JD117914|2019-01-10 21:30:00| 004XX N MC CLURG CT|1330|  CRIMINAL TRESPASS|             TO LAND|    RESIDENCE-GARAGE| false|   false|1834|     018|  42|             8|      26|     1179120|     1903342|2019|01/19/2020 03:47:...|41.890064174|-87.617638563|(41.890064174, -8...|
+|11946410|   JC151544|2019-02-13 20:49:00|     043XX S TROY ST|2024|          NARCOTICS| POSS: HEROIN(WHITE)|           RESIDENCE|  true|   false|0922|     009|  15|            58|      18|     1156071|     1875567|2019|01/18/2020 03:44:...|41.814342797|-87.703033557|(41.814342797, -8...|
+|11677953|   JC235447|2019-04-23 14:46:00|040XX W VAN BUREN ST|2014|          NARCOTICS|MANU/DELIVER: HER...|     VACANT LOT/LAND|  true|   false|1132|     011|  28|            26|      18|     1149531|     1897718|2019|01/18/2020 03:44:...|41.875257119| -87.72644908|(41.875257119, -8...|
+|11672673|   JC231408|2019-04-20 09:42:00| 085XX S ABERDEEN ST|1812|          NARCOTICS|POSS: CANNABIS MO...|           RESIDENCE|  true|   false|0613|     006|  21|            71|      18|     1170476|     1848176|2019|01/18/2020 03:44:...| 41.73887651|-87.650991641|(41.73887651, -87...|
+|11672370|   JC232204|2019-04-20 22:45:00|     011XX W 90TH ST|1812|          NARCOTICS|POSS: CANNABIS MO...|           APARTMENT|  true|   false|2222|     022|  21|            73|      18|     1170443|     1845120|2019|01/18/2020 03:44:...|41.730491134|-87.651201287|(41.730491134, -8...|
+|11671344|   JC235165|2019-04-23 13:17:00| 053XX W CHICAGO AVE|2017|          NARCOTICS|  MANU/DELIVER:CRACK|               ALLEY|  true|   false|1524|     015|  37|            25|      18|     1140417|     1904813|2019|01/18/2020 03:44:...|41.894898651| -87.75973838|(41.894898651, -8...|
+|11666457|   JC228439|2019-04-17 18:34:14|054XX S CHRISTIAN...|1811|          NARCOTICS|POSS: CANNABIS 30...|           RESIDENCE|  true|   false|0822|     008|  14|            63|      18|     1154972|     1868333|2019|01/18/2020 03:44:...|41.794513753| -87.70725813|(41.794513753, -8...|
+|11951328|   JD115421|2019-05-01 09:00:00|  001XX E ONTARIO ST|1153| DECEPTIVE PRACTICE|FINANCIAL IDENTIT...|COMMERCIAL / BUSI...| false|   false|1834|     018|  42|             8|      11|     1177462|     1904523|2019|01/17/2020 03:45:...|41.893342683| -87.62369154|(41.893342683, -8...|
+|11953844|   JD118256|2019-02-16 12:00:00|   062XX S KOLIN AVE|0281|CRIM SEXUAL ASSAULT|      NON-AGGRAVATED|           APARTMENT| false|    true|0813|     008|  23|            65|      02|        null|        null|2019|01/17/2020 03:48:...|        null|         null|                null|
+|11950821|   JC550653|2019-04-04 08:00:00|  079XX S KARLOV AVE|1154| DECEPTIVE PRACTICE|FINANCIAL IDENTIT...|           RESIDENCE| false|   false|0834|     008|  18|            70|      11|     1150460|     1851422|2019|01/17/2020 03:45:...|41.748196202|-87.724242888|(41.748196202, -8...|
+|11951415|   JD115614|2019-01-13 11:00:00|115XX S WENTWORTH...|1153| DECEPTIVE PRACTICE|FINANCIAL IDENTIT...|           APARTMENT| false|   false|0522|     005|  34|            53|      11|     1177005|     1828396|2019|01/17/2020 03:45:...|41.684452919|-87.627664687|(41.684452919, -8...|
+|11951493|   JD115459|2019-05-14 22:00:00|033XX W ARTHINGTO...|1563|        SEX OFFENSE|CRIMINAL SEXUAL A...|           RESIDENCE| false|    true|1134|     011|  24|            29|      17|     1154345|     1895847|2019|01/17/2020 03:45:...|41.870028132|-87.708823855|(41.870028132, -8...|
+|11951147|   JD115168|2019-04-16 00:01:00|   005XX W MONROE ST|1120| DECEPTIVE PRACTICE|             FORGERY|                BANK| false|   false|0121|     001|  42|            28|      10|     1172908|     1899834|2019|01/17/2020 03:45:...|41.880577917|-87.640555606|(41.880577917, -8...|
++--------+-----------+-------------------+--------------------+----+-------------------+--------------------+--------------------+------+--------+----+--------+----+--------------+--------+------------+------------+----+--------------------+------------+-------------+--------------------+
+only showing top 20 rows
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#Get Unique Rows in PySpark</span>
+<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">&#39;Year&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>+----+
+|Year|
++----+
+|2019|
++----+
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Sort Rows in PySpark</span>
+<span class="n">df</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>+--------+-----------+-------------------+--------------------+----+--------------------+--------------------+--------------------+------+--------+----+--------+----+--------------+--------+------------+------------+----+--------------------+------------+-------------+--------------------+
+|      ID|Case Number|               Date|               Block|IUCR|        Primary Type|         Description|Location Description|Arrest|Domestic|Beat|District|Ward|Community Area|FBI Code|X Coordinate|Y Coordinate|Year|          Updated On|    Latitude|    Longitude|            Location|
++--------+-----------+-------------------+--------------------+----+--------------------+--------------------+--------------------+------+--------+----+--------+----+--------------+--------+------------+------------+----+--------------------+------------+-------------+--------------------+
+|11895528|   JC515003|2019-01-01 00:00:00|  059XX W LELAND AVE|1153|  DECEPTIVE PRACTICE|FINANCIAL IDENTIT...|                null| false|   false|1622|     016|  45|            15|      11|        null|        null|2019|11/19/2019 03:57:...|        null|         null|                null|
+|11940493|   JD102895|2019-01-01 00:00:00|012XX S KOMENSKY AVE|141A|   WEAPONS VIOLATION|UNLAWFUL USE HANDGUN|RESIDENCE PORCH/H...| false|   false|1011|     010|  24|            29|      15|     1149582|     1893991|2019|01/08/2020 03:47:...|41.865028808|-87.726358587|(41.865028808, -8...|
+|11937662|   JC566620|2019-01-01 00:00:00|  019XX N HAMLIN AVE|1582|OFFENSE INVOLVING...|   CHILD PORNOGRAPHY|SCHOOL, PRIVATE, ...| false|   false|2535|     025|  26|            22|      17|     1150737|     1912590|2019|01/03/2020 03:56:...|41.916043916|-87.721631784|(41.916043916, -8...|
+|11739188|   JC326320|2019-01-01 00:00:00|010XX N RIDGEWAY AVE|1752|OFFENSE INVOLVING...|AGG CRIM SEX ABUS...|           APARTMENT| false|    true|1112|     011|  27|            23|      17|     1151192|     1906670|2019|12/18/2019 03:47:...|41.899789956|-87.720115618|(41.899789956, -8...|
+|11911175|   JC534087|2019-01-01 00:00:00|    002XX E 121ST ST|1153|  DECEPTIVE PRACTICE|FINANCIAL IDENTIT...|           RESIDENCE| false|   false|0532|     005|   9|            53|      11|     1180018|     1824734|2019|12/07/2019 03:47:...|41.674335599|-87.616746527|(41.674335599, -8...|
+|11906205|   JC528532|2019-01-01 00:00:00|069XX S WOODLAWN AVE|1754|OFFENSE INVOLVING...|AGG SEX ASSLT OF ...|           RESIDENCE| false|    true|0321|     003|   5|            69|      02|     1185599|     1859302|2019|12/04/2019 03:49:...|41.769064952|-87.595234737|(41.769064952, -8...|
+|11954981|   JD119994|2019-01-01 00:00:00| 073XX W FARWELL AVE|1750|OFFENSE INVOLVING...|         CHILD ABUSE|           RESIDENCE| false|    true|1611|     016|  41|             9|     08B|        null|        null|2019|01/19/2020 03:49:...|        null|         null|                null|
+|11889579|   JC507635|2019-01-01 00:00:00|082XX S WENTWORTH...|1562|         SEX OFFENSE|AGG CRIMINAL SEXU...|           RESIDENCE| false|   false|0622|     006|  21|            44|      17|     1176419|     1850436|2019|11/15/2019 03:57:...|41.744946864|-87.629149986|(41.744946864, -8...|
+|11878985|   JC494834|2019-01-01 00:00:00|   067XX W GRAND AVE|0810|               THEFT|           OVER $500|               OTHER| false|   false|2512|     025|  36|            18|      06|     1131156|     1915217|2019|11/06/2019 03:54:...|41.923613437|-87.793511665|(41.923613437, -8...|
+|11560259|   JC109129|2019-01-01 00:00:00|  049XX N ALBANY AVE|1750|OFFENSE INVOLVING...|         CHILD ABUSE|           APARTMENT| false|   false|1713|     017|  33|            14|     08B|     1154815|     1932723|2019|10/30/2019 03:53:...|  41.9712095|-87.706108126|(41.9712095, -87....|
+|11861735|   JC473834|2019-01-01 00:00:00| 108XX S SANGAMON ST|1752|OFFENSE INVOLVING...|AGG CRIM SEX ABUS...|           RESIDENCE| false|    true|2234|     022|  34|            75|      17|     1171912|     1832941|2019|10/18/2019 04:02:...|41.697038087|-87.646175932|(41.697038087, -8...|
+|11752917|   JC342582|2019-01-01 00:00:00|     028XX E 76TH ST|1752|OFFENSE INVOLVING...|AGG CRIM SEX ABUS...|           APARTMENT| false|    true|0421|     004|   7|            43|      17|     1196262|     1855497|2019|10/15/2019 04:01:...| 41.75836602|-87.556276032|(41.75836602, -87...|
+|11838300|   JC441914|2019-01-01 00:00:00|031XX W ARTHINGTO...|1752|OFFENSE INVOLVING...|AGG CRIM SEX ABUS...|           RESIDENCE| false|    true|1134|     011|  24|            27|      17|     1155548|     1895868|2019|09/26/2019 04:16:...|41.870061657|-87.704406691|(41.870061657, -8...|
+|11752915|   JC342546|2019-01-01 00:00:00|063XX S STONY ISL...|1752|OFFENSE INVOLVING...|AGG CRIM SEX ABUS...|           APARTMENT| false|    true|0314|     003|  20|            42|      17|     1187962|     1863227|2019|09/25/2019 03:50:...|41.779779505|-87.586448286|(41.779779505, -8...|
+|11739161|   JC326172|2019-01-01 00:00:00| 131XX S LANGLEY AVE|1752|OFFENSE INVOLVING...|AGG CRIM SEX ABUS...|           APARTMENT| false|    true|0533|     005|   9|            54|      17|     1183247|     1818205|2019|09/20/2019 03:53:...| 41.65634477|-87.605129962|(41.65634477, -87...|
+|11739167|   JC326145|2019-01-01 00:00:00|  024XX W CARMEN AVE|1752|OFFENSE INVOLVING...|AGG CRIM SEX ABUS...|           APARTMENT| false|    true|2031|     020|  40|             4|      17|     1159097|     1933800|2019|09/13/2019 04:06:...|41.974077735|-87.690332986|(41.974077735, -8...|
+|11808448|   JC409430|2019-01-01 00:00:00|016XX E HYDE PARK...|1153|  DECEPTIVE PRACTICE|FINANCIAL IDENTIT...|               OTHER| false|   false|0222|     002|   5|            39|      11|     1188001|     1871507|2019|08/30/2019 03:57:...|41.802499513|-87.586041451|(41.802499513, -8...|
+|11803895|   JC404008|2019-01-01 00:00:00| 070XX S CALUMET AVE|1153|  DECEPTIVE PRACTICE|FINANCIAL IDENTIT...|           RESIDENCE| false|   false|0322|     003|   6|            69|      11|     1179694|     1858501|2019|08/28/2019 04:08:...|41.767003943|-87.616903894|(41.767003943, -8...|
+|11785377|   JC381800|2019-01-01 00:00:00| 011XX N KOSTNER AVE|1310|     CRIMINAL DAMAGE|         TO PROPERTY|           APARTMENT| false|   false|1111|     011|  37|            23|      14|     1146837|     1907072|2019|08/09/2019 04:09:...|41.900977393|-87.736101441|(41.900977393, -8...|
+|11777719|   JC372752|2019-01-01 00:00:00|  036XX S HALSTED ST|1120|  DECEPTIVE PRACTICE|             FORGERY|           RESIDENCE| false|   false|0915|     009|  11|            60|      10|     1171564|     1880789|2019|08/03/2019 04:02:...|41.828346576|-87.646050351|(41.828346576, -8...|
++--------+-----------+-------------------+--------------------+----+--------------------+--------------------+--------------------+------+--------+----+--------+----+--------------+--------+------------+------------+----+--------------------+------------+-------------+--------------------+
+only showing top 20 rows
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Append rows in PySpark.</span>
+<span class="n">one_day</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s1">&#39;reported-crimes.csv&#39;</span><span class="p">,</span><span class="n">header</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span><span class="n">to_timestamp</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">),</span><span class="s1">&#39;MM/dd/yyyy hh:mm:ss a&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">)</span><span class="o">==</span><span class="n">lit</span><span class="p">(</span><span class="s1">&#39;2019-07-30&#39;</span><span class="p">))</span>
+<span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">)</span><span class="o">==</span><span class="n">lit</span><span class="p">(</span><span class="s1">&#39;2019-07-30&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[0]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>10</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">one_day</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">)</span><span class="o">==</span><span class="n">lit</span><span class="p">(</span><span class="s1">&#39;2019-07-30&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[0]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>20</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Result:</strong></p>
+<blockquote><p>As you can see here, there were 6 crimes commited on 2019-07-30, and after union, there's 12 records.</p>
+</blockquote>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Top 10 number of reported crimes by Primary Type, in descending order of Occurence</span>
+<span class="n">df</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s2">&quot;Primary Type&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s1">&#39;count&#39;</span><span class="p">,</span><span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>+-------------------+-----+
+|       Primary Type|count|
++-------------------+-----+
+|              THEFT|62137|
+|            BATTERY|49425|
+|    CRIMINAL DAMAGE|26638|
+|            ASSAULT|20584|
+| DECEPTIVE PRACTICE|17674|
+|      OTHER OFFENSE|16543|
+|          NARCOTICS|13946|
+|           BURGLARY| 9590|
+|MOTOR VEHICLE THEFT| 8968|
+|            ROBBERY| 7985|
++-------------------+-----+
+only showing top 10 rows
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='hands-on-questions'></a></p>
+<h1 id="Hands-on-Questions-&#129306;-!">Hands-on Questions &#129306; !<a class="anchor-link" href="#Hands-on-Questions-&#129306;-!">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>What percentage of reported crimes resulted in an arrest?</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Answer</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>What are the top 3 locations for reported crimes?</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Answer</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='functions'></a></p>
+<h1 id="Functions">Functions<a class="anchor-link" href="#Functions">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Functions available in PySpark</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">functions</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">dir</span><span class="p">(</span><span class="n">functions</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[&#39;Column&#39;, &#39;DataFrame&#39;, &#39;DataType&#39;, &#39;PandasUDFType&#39;, &#39;PythonEvalType&#39;, &#39;SparkContext&#39;, &#39;StringType&#39;, &#39;UserDefinedFunction&#39;, &#39;__all__&#39;, &#39;__builtins__&#39;, &#39;__cached__&#39;, &#39;__doc__&#39;, &#39;__file__&#39;, &#39;__loader__&#39;, &#39;__name__&#39;, &#39;__package__&#39;, &#39;__spec__&#39;, &#39;_binary_mathfunctions&#39;, &#39;_collect_list_doc&#39;, &#39;_collect_set_doc&#39;, &#39;_create_binary_mathfunction&#39;, &#39;_create_column_from_literal&#39;, &#39;_create_function&#39;, &#39;_create_udf&#39;, &#39;_create_window_function&#39;, &#39;_functions&#39;, &#39;_functions_1_4&#39;, &#39;_functions_1_6&#39;, &#39;_functions_2_1&#39;, &#39;_functions_2_4&#39;, &#39;_functions_deprecated&#39;, &#39;_lit_doc&#39;, &#39;_message&#39;, &#39;_string_functions&#39;, &#39;_test&#39;, &#39;_to_java_column&#39;, &#39;_to_seq&#39;, &#39;_window_functions&#39;, &#39;_wrap_deprecated_function&#39;, &#39;abs&#39;, &#39;acos&#39;, &#39;add_months&#39;, &#39;approxCountDistinct&#39;, &#39;approx_count_distinct&#39;, &#39;array&#39;, &#39;array_contains&#39;, &#39;array_distinct&#39;, &#39;array_except&#39;, &#39;array_intersect&#39;, &#39;array_join&#39;, &#39;array_max&#39;, &#39;array_min&#39;, &#39;array_position&#39;, &#39;array_remove&#39;, &#39;array_repeat&#39;, &#39;array_sort&#39;, &#39;array_union&#39;, &#39;arrays_overlap&#39;, &#39;arrays_zip&#39;, &#39;asc&#39;, &#39;asc_nulls_first&#39;, &#39;asc_nulls_last&#39;, &#39;ascii&#39;, &#39;asin&#39;, &#39;atan&#39;, &#39;atan2&#39;, &#39;avg&#39;, &#39;base64&#39;, &#39;basestring&#39;, &#39;bin&#39;, &#39;bitwiseNOT&#39;, &#39;blacklist&#39;, &#39;broadcast&#39;, &#39;bround&#39;, &#39;cbrt&#39;, &#39;ceil&#39;, &#39;coalesce&#39;, &#39;col&#39;, &#39;collect_list&#39;, &#39;collect_set&#39;, &#39;column&#39;, &#39;concat&#39;, &#39;concat_ws&#39;, &#39;conv&#39;, &#39;corr&#39;, &#39;cos&#39;, &#39;cosh&#39;, &#39;count&#39;, &#39;countDistinct&#39;, &#39;covar_pop&#39;, &#39;covar_samp&#39;, &#39;crc32&#39;, &#39;create_map&#39;, &#39;cume_dist&#39;, &#39;current_date&#39;, &#39;current_timestamp&#39;, &#39;date_add&#39;, &#39;date_format&#39;, &#39;date_sub&#39;, &#39;date_trunc&#39;, &#39;datediff&#39;, &#39;dayofmonth&#39;, &#39;dayofweek&#39;, &#39;dayofyear&#39;, &#39;decode&#39;, &#39;degrees&#39;, &#39;dense_rank&#39;, &#39;desc&#39;, &#39;desc_nulls_first&#39;, &#39;desc_nulls_last&#39;, &#39;element_at&#39;, &#39;encode&#39;, &#39;exp&#39;, &#39;explode&#39;, &#39;explode_outer&#39;, &#39;expm1&#39;, &#39;expr&#39;, &#39;factorial&#39;, &#39;first&#39;, &#39;flatten&#39;, &#39;floor&#39;, &#39;format_number&#39;, &#39;format_string&#39;, &#39;from_json&#39;, &#39;from_unixtime&#39;, &#39;from_utc_timestamp&#39;, &#39;functools&#39;, &#39;get_json_object&#39;, &#39;greatest&#39;, &#39;grouping&#39;, &#39;grouping_id&#39;, &#39;hash&#39;, &#39;hex&#39;, &#39;hour&#39;, &#39;hypot&#39;, &#39;ignore_unicode_prefix&#39;, &#39;initcap&#39;, &#39;input_file_name&#39;, &#39;instr&#39;, &#39;isnan&#39;, &#39;isnull&#39;, &#39;json_tuple&#39;, &#39;kurtosis&#39;, &#39;lag&#39;, &#39;last&#39;, &#39;last_day&#39;, &#39;lead&#39;, &#39;least&#39;, &#39;length&#39;, &#39;levenshtein&#39;, &#39;lit&#39;, &#39;locate&#39;, &#39;log&#39;, &#39;log10&#39;, &#39;log1p&#39;, &#39;log2&#39;, &#39;lower&#39;, &#39;lpad&#39;, &#39;ltrim&#39;, &#39;map_concat&#39;, &#39;map_from_arrays&#39;, &#39;map_from_entries&#39;, &#39;map_keys&#39;, &#39;map_values&#39;, &#39;max&#39;, &#39;md5&#39;, &#39;mean&#39;, &#39;min&#39;, &#39;minute&#39;, &#39;monotonically_increasing_id&#39;, &#39;month&#39;, &#39;months_between&#39;, &#39;nanvl&#39;, &#39;next_day&#39;, &#39;ntile&#39;, &#39;pandas_udf&#39;, &#39;percent_rank&#39;, &#39;posexplode&#39;, &#39;posexplode_outer&#39;, &#39;pow&#39;, &#39;quarter&#39;, &#39;radians&#39;, &#39;rand&#39;, &#39;randn&#39;, &#39;rank&#39;, &#39;regexp_extract&#39;, &#39;regexp_replace&#39;, &#39;repeat&#39;, &#39;reverse&#39;, &#39;rint&#39;, &#39;round&#39;, &#39;row_number&#39;, &#39;rpad&#39;, &#39;rtrim&#39;, &#39;schema_of_json&#39;, &#39;second&#39;, &#39;sequence&#39;, &#39;sha1&#39;, &#39;sha2&#39;, &#39;shiftLeft&#39;, &#39;shiftRight&#39;, &#39;shiftRightUnsigned&#39;, &#39;shuffle&#39;, &#39;signum&#39;, &#39;sin&#39;, &#39;since&#39;, &#39;sinh&#39;, &#39;size&#39;, &#39;skewness&#39;, &#39;slice&#39;, &#39;sort_array&#39;, &#39;soundex&#39;, &#39;spark_partition_id&#39;, &#39;split&#39;, &#39;sqrt&#39;, &#39;stddev&#39;, &#39;stddev_pop&#39;, &#39;stddev_samp&#39;, &#39;struct&#39;, &#39;substring&#39;, &#39;substring_index&#39;, &#39;sum&#39;, &#39;sumDistinct&#39;, &#39;sys&#39;, &#39;tan&#39;, &#39;tanh&#39;, &#39;toDegrees&#39;, &#39;toRadians&#39;, &#39;to_date&#39;, &#39;to_json&#39;, &#39;to_timestamp&#39;, &#39;to_utc_timestamp&#39;, &#39;translate&#39;, &#39;trim&#39;, &#39;trunc&#39;, &#39;udf&#39;, &#39;unbase64&#39;, &#39;unhex&#39;, &#39;unix_timestamp&#39;, &#39;upper&#39;, &#39;var_pop&#39;, &#39;var_samp&#39;, &#39;variance&#39;, &#39;warnings&#39;, &#39;weekofyear&#39;, &#39;when&#39;, &#39;window&#39;, &#39;year&#39;]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='string-functions'></a></p>
+<h2 id="String-Functions">String Functions<a class="anchor-link" href="#String-Functions">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Loading the data</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">col</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s1">&#39;reported-crimes.csv&#39;</span><span class="p">,</span><span class="n">header</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span><span class="n">to_timestamp</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">),</span><span class="s1">&#39;MM/dd/yyyy hh:mm:ss a&#39;</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Display the Primary Type column in lower and upper characters, and the first 4 characters of the column</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">col</span><span class="p">,</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">,</span> <span class="n">substring</span>
+<span class="n">help</span><span class="p">(</span><span class="n">substring</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">lower</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;Primary Type&#39;</span><span class="p">)),</span><span class="n">upper</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;Primary Type&#39;</span><span class="p">)),</span><span class="n">substring</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;Primary Type&#39;</span><span class="p">),</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Help on function substring in module pyspark.sql.functions:
+
+substring(str, pos, len)
+    Substring starts at `pos` and is of length `len` when str is String type or
+    returns the slice of byte array that starts at `pos` in byte and is of length `len`
+    when str is Binary type.
+    
+    .. note:: The position is not zero based, but 1 based index.
+    
+    &gt;&gt;&gt; df = spark.createDataFrame([(&#39;abcd&#39;,)], [&#39;s&#39;,])
+    &gt;&gt;&gt; df.select(substring(df.s, 1, 2).alias(&#39;s&#39;)).collect()
+    [Row(s=&#39;ab&#39;)]
+    
+    .. versionadded:: 1.5
+
++--------------------+--------------------+-----------------------------+
+| lower(Primary Type)| upper(Primary Type)|substring(Primary Type, 1, 4)|
++--------------------+--------------------+-----------------------------+
+|  deceptive practice|  DECEPTIVE PRACTICE|                         DECE|
+|offense involving...|OFFENSE INVOLVING...|                         OFFE|
+|            burglary|            BURGLARY|                         BURG|
+|            burglary|            BURGLARY|                         BURG|
+|               theft|               THEFT|                         THEF|
++--------------------+--------------------+-----------------------------+
+only showing top 5 rows
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='numeric-functions'></a></p>
+<h2 id="Numeric-functions">Numeric functions<a class="anchor-link" href="#Numeric-functions">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Show the oldest date and the most recent date</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span>
+<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">)),</span> <span class="nb">max</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">)))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>+-------------------+-------------------+
+|          min(Date)|          max(Date)|
++-------------------+-------------------+
+|2019-01-01 00:00:00|2019-12-31 23:55:00|
++-------------------+-------------------+
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='date'></a></p>
+<h2 id="Date">Date<a class="anchor-link" href="#Date">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>What is 3 days earlier that the oldest date and 3 days later than the most recent date?</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">date_add</span><span class="p">,</span> <span class="n">date_sub</span>
+<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">date_add</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">)),</span><span class="mi">3</span><span class="p">),</span> <span class="n">date_sub</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">)),</span><span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>+----------------------+----------------------+
+|date_add(max(Date), 3)|date_sub(min(Date), 3)|
++----------------------+----------------------+
+|            2020-01-03|            2018-12-29|
++----------------------+----------------------+
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='working-with-dates'></a></p>
+<h1 id="Working-with-Dates">Working with Dates<a class="anchor-link" href="#Working-with-Dates">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<blockquote><p><a href="https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html">PySpark follows SimpleDateFormat table of Java. Click here to view the docs.</a></p>
+</blockquote>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">to_date</span><span class="p">,</span> <span class="n">to_timestamp</span><span class="p">,</span> <span class="n">lit</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">([(</span><span class="s1">&#39;2019-12-25 13:30:00&#39;</span><span class="p">,)],</span> <span class="p">[</span><span class="s1">&#39;Christmas&#39;</span><span class="p">])</span>
+<span class="n">df</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>+-------------------+
+|          Christmas|
++-------------------+
+|2019-12-25 13:30:00|
++-------------------+
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">to_date</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;Christmas&#39;</span><span class="p">),</span><span class="s1">&#39;yyyy-MM-dd HH:mm:ss&#39;</span><span class="p">),</span> <span class="n">to_timestamp</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;Christmas&#39;</span><span class="p">),</span><span class="s1">&#39;yyyy-MM-dd HH:mm:ss&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>+-------------------------------------------+------------------------------------------------+
+|to_date(`Christmas`, &#39;yyyy-MM-dd HH:mm:ss&#39;)|to_timestamp(`Christmas`, &#39;yyyy-MM-dd HH:mm:ss&#39;)|
++-------------------------------------------+------------------------------------------------+
+|                                 2019-12-25|                             2019-12-25 13:30:00|
++-------------------------------------------+------------------------------------------------+
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">([(</span><span class="s1">&#39;25/Dec/2019 13:30:00&#39;</span><span class="p">,)],</span> <span class="p">[</span><span class="s1">&#39;Christmas&#39;</span><span class="p">])</span>
+<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">to_date</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;Christmas&#39;</span><span class="p">),</span><span class="s1">&#39;dd/MMM/yyyy HH:mm:ss&#39;</span><span class="p">),</span> <span class="n">to_timestamp</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;Christmas&#39;</span><span class="p">),</span><span class="s1">&#39;dd/MMM/yyyy HH:mm:ss&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>+--------------------------------------------+-------------------------------------------------+
+|to_date(`Christmas`, &#39;dd/MMM/yyyy HH:mm:ss&#39;)|to_timestamp(`Christmas`, &#39;dd/MMM/yyyy HH:mm:ss&#39;)|
++--------------------------------------------+-------------------------------------------------+
+|                                  2019-12-25|                              2019-12-25 13:30:00|
++--------------------------------------------+-------------------------------------------------+
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">([(</span><span class="s1">&#39;12/25/2019 01:30:00 PM&#39;</span><span class="p">,)],</span> <span class="p">[</span><span class="s1">&#39;Christmas&#39;</span><span class="p">])</span>
+<span class="n">df</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">truncate</span> <span class="o">=</span> <span class="bp">False</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">to_date</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;Christmas&#39;</span><span class="p">),</span><span class="s1">&#39;MM/dd/yyyy hh:mm:ss aa&#39;</span><span class="p">),</span> <span class="n">to_timestamp</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;Christmas&#39;</span><span class="p">),</span><span class="s1">&#39;MM/dd/yyyy hh:mm:ss aa&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>+--------------------+
+|           Christmas|
++--------------------+
+|12/25/2019 01:30:...|
++--------------------+
+
++----------------------+
+|Christmas             |
++----------------------+
+|12/25/2019 01:30:00 PM|
++----------------------+
+
++----------------------------------------------+---------------------------------------------------+
+|to_date(`Christmas`, &#39;MM/dd/yyyy hh:mm:ss aa&#39;)|to_timestamp(`Christmas`, &#39;MM/dd/yyyy hh:mm:ss aa&#39;)|
++----------------------------------------------+---------------------------------------------------+
+|                                    2019-12-25|                                2019-12-25 13:30:00|
++----------------------------------------------+---------------------------------------------------+
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='working-with-joins'></a></p>
+<h1 id="Working-with-joins">Working with joins<a class="anchor-link" href="#Working-with-joins">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Loading the data</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">col</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s1">&#39;reported-crimes.csv&#39;</span><span class="p">,</span><span class="n">header</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span><span class="n">to_timestamp</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">),</span><span class="s1">&#39;MM/dd/yyyy hh:mm:ss a&#39;</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Dowloading police station data</span>
+<span class="o">!</span>wget -O police-station.csv https://data.cityofchicago.org/api/views/z8bn-74gv/rows.csv?accessType<span class="o">=</span>DOWNLOAD
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>--2020-01-22 04:30:02--  https://data.cityofchicago.org/api/views/z8bn-74gv/rows.csv?accessType=DOWNLOAD
+Resolving data.cityofchicago.org (data.cityofchicago.org)... 52.206.140.205, 52.206.68.26, 52.206.140.199
+Connecting to data.cityofchicago.org (data.cityofchicago.org)|52.206.140.205|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [text/csv]
+Saving to: ‘police-station.csv’
+
+police-station.csv      [ &lt;=&gt;                ]   5.57K  --.-KB/s    in 0s      
+
+2020-01-22 04:30:03 (562 MB/s) - ‘police-station.csv’ saved [5699]
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">ps</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;police-station.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">ps</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>+--------------------+-----------------+--------------------+-------+-----+-----+--------------------+------------+------------+------------+------------+------------+-----------+------------+--------------------+
+|            DISTRICT|    DISTRICT NAME|             ADDRESS|   CITY|STATE|  ZIP|             WEBSITE|       PHONE|         FAX|         TTY|X COORDINATE|Y COORDINATE|   LATITUDE|   LONGITUDE|            LOCATION|
++--------------------+-----------------+--------------------+-------+-----+-----+--------------------+------------+------------+------------+------------+------------+-----------+------------+--------------------+
+|                   1|          Central|     1718 S State St|Chicago|   IL|60616|http://home.chica...|312-745-4290|312-745-3694|312-745-3693| 1176569.052| 1891771.704|41.85837259|-87.62735617|(41.8583725929, -...|
+|                   6|          Gresham|   7808 S Halsted St|Chicago|   IL|60620|http://home.chica...|312-745-3617|312-745-3649|312-745-3639| 1172283.013| 1853022.646|41.75213684|-87.64422891|(41.7521368378, -...|
+|                  11|         Harrison|  3151 W Harrison St|Chicago|   IL|60612|http://home.chica...|312-746-8386|312-746-4281|312-746-5151| 1155244.069| 1897148.755|41.87358229|-87.70548813|(41.8735822883, -...|
+|                  16|   Jefferson Park|5151 N Milwaukee Ave|Chicago|   IL|60630|http://home.chica...|312-742-4480|312-742-4421|312-742-4423| 1138480.758| 1933660.473|41.97409445|-87.76614884|(41.9740944511, -...|
+|        Headquarters|     Headquarters| 3510 S Michigan Ave|Chicago|   IL|60653|http://home.chica...|        null|        null|        null| 1177731.401| 1881697.404|41.83070169|-87.62339535|(41.8307016873, -...|
+|                  24|      Rogers Park|     6464 N Clark St|Chicago|   IL|60626|http://home.chica...|312-744-5907|312-744-6928|312-744-7603| 1164193.588| 1943199.401|41.99976348|-87.67132429|(41.9997634842, -...|
+|                   2|        Wentworth|5101 S Wentworth Ave|Chicago|   IL|60609|http://home.chica...|312-747-8366|312-747-5396|312-747-6656| 1175864.837| 1871153.753|41.80181109|-87.63056018|(41.8018110912, -...|
+|                   7|        Englewood|      1438 W 63rd St|Chicago|   IL|60636|http://home.chica...|312-747-8223|312-747-6558|312-747-6652| 1167659.235| 1863005.522|41.77963154|-87.66088702|(41.7796315359, -...|
+|                  25|    Grand Central|    5555 W Grand Ave|Chicago|   IL|60639|http://home.chica...|312-746-8605|312-746-4353|312-746-8383| 1138770.871| 1913442.439|41.91860889|-87.76557448|(41.9186088912, -...|
+|                  10|            Ogden|    3315 W Ogden Ave|Chicago|   IL|60623|http://home.chica...|312-747-7511|312-747-7429|312-747-7471| 1154500.753| 1890985.501|41.85668453|-87.70838196|(41.8566845327, -...|
+|                  15|           Austin|   5701 W Madison St|Chicago|   IL|60644|http://home.chica...|312-743-1440|312-743-1366|312-743-1485| 1138148.815| 1899399.078|41.88008346|-87.76819989|(41.8800834614, -...|
+|                   3|   Grand Crossing|7040 S Cottage Gr...|Chicago|   IL|60637|http://home.chica...|312-747-8201|312-747-5479|312-747-9168| 1182739.183| 1858317.732|41.76643089|-87.60574786|(41.7664308925, -...|
+|                  14|      Shakespeare|2150 N California...|Chicago|   IL|60647|http://home.chica...|312-744-8250|312-744-2422|312-744-8260| 1157304.426| 1914481.521|41.92110332|-87.69745182|(41.9211033246, -...|
+|                   8|     Chicago Lawn|      3420 W 63rd St|Chicago|   IL|60629|http://home.chica...|312-747-8730|312-747-8545|312-747-8116| 1154575.242| 1862672.049|41.77898719|-87.70886382|(41.778987189, -8...|
+|                   4|    South Chicago|     2255 E 103rd St|Chicago|   IL|60617|http://home.chica...|312-747-7581|312-747-5276|312-747-9169| 1193131.299| 1837090.265|41.70793329|-87.56834912|(41.7079332906, -...|
+|                  20|          Lincoln|  5400 N Lincoln Ave|Chicago|   IL|60625|http://home.chica...|312-742-8714|312-742-8803|312-742-8841| 1158399.146| 1935788.826|41.97954951|-87.69284451|(41.9795495131, -...|
+|                  18|       Near North|  1160 N Larrabee St|Chicago|   IL|60610|http://home.chica...|312-742-5870|312-742-5771|312-742-5773| 1172080.029| 1908086.527|41.90324165|-87.64335214|(41.9032416531, -...|
+|                  12|        Near West|1412 S Blue Islan...|   null| null| null|                null|        null|        null|        null|        null|        null|       null|        null|                null|
+|&#34;,Chicago,IL,6060...| -87.6569725149)&#34;|                null|   null| null| null|                null|        null|        null|        null|        null|        null|       null|        null|                null|
+|                   9|          Deering|   3120 S Halsted St|Chicago|   IL|60608|http://home.chica...|312-747-8227|312-747-5329|312-747-9172|  1171440.24| 1884085.224|41.83739443|-87.64640771|(41.8373944311, -...|
++--------------------+-----------------+--------------------+-------+-----+-----+--------------------+------------+------------+------------+------------+------------+-----------+------------+--------------------+
+only showing top 20 rows
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>The reported crimes dataset has only the district number. Add the district name by joining with the police station dataset.</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Caching the crimes dataset to speed things up, and then, since spark does lazy evaluation, gonna run an action to make it evaluated.</span>
+<span class="n">df</span><span class="o">.</span><span class="n">cache</span><span class="p">()</span>
+<span class="n">df</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[0]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>257625</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">ps</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;DISTRICT&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;District&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>+------------+
+|    DISTRICT|
++------------+
+|           7|
+|          15|
+|          11|
+|           3|
+|           8|
+|          22|
+|          16|
+|           5|
+|          18|
+|          17|
+|           6|
+|          19|
+|          25|
+|Headquarters|
+|          24|
+|           9|
+|           1|
+|          20|
+|          10|
+|           4|
++------------+
+only showing top 20 rows
+
++--------+
+|District|
++--------+
+|     009|
+|     012|
+|     024|
+|     031|
+|     015|
+|     006|
+|     019|
+|     020|
+|     011|
+|     025|
+|     003|
+|     005|
+|     016|
+|     018|
+|     008|
+|     022|
+|     001|
+|     014|
+|     010|
+|     004|
++--------+
+only showing top 20 rows
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Transfomring crime data to remove 0 from beginning, inroder to match the data</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">lpad</span>
+<span class="n">ps</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s1">&#39;Format_district&#39;</span><span class="p">,</span><span class="n">lpad</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;DISTRICT&#39;</span><span class="p">),</span><span class="mi">3</span><span class="p">,</span><span class="s1">&#39;0&#39;</span><span class="p">))</span>
+<span class="n">ps</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;Format_district&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>+---------------+
+|Format_district|
++---------------+
+|            001|
+|            006|
+|            011|
+|            016|
+|            Hea|
+|            024|
+|            002|
+|            007|
+|            025|
+|            010|
+|            015|
+|            003|
+|            014|
+|            008|
+|            004|
+|            020|
+|            018|
+|            012|
+|            &#34;,C|
+|            009|
++---------------+
+only showing top 20 rows
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Executing the join and deleting some column so that we don&#39;t get too much data</span>
+<span class="n">df</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ps</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">District</span> <span class="o">==</span> <span class="n">ps</span><span class="o">.</span><span class="n">Format_district</span><span class="p">,</span> <span class="s1">&#39;left_outer&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span>
+ <span class="s1">&#39;ADDRESS&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;CITY&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;STATE&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;ZIP&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;WEBSITE&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;PHONE&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;FAX&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;TTY&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;X COORDINATE&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Y COORDINATE&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;LATITUDE&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;LONGITUDE&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;LOCATION&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>+--------+-----------+-------------------+--------------------+----+--------------------+--------------------+--------------------+------+--------+----+--------+----+--------------+--------+----+--------------------+--------+--------------+---------------+
+|      ID|Case Number|               Date|               Block|IUCR|        Primary Type|         Description|Location Description|Arrest|Domestic|Beat|District|Ward|Community Area|FBI Code|Year|          Updated On|DISTRICT| DISTRICT NAME|Format_district|
++--------+-----------+-------------------+--------------------+----+--------------------+--------------------+--------------------+------+--------+----+--------+----+--------------+--------+----+--------------------+--------+--------------+---------------+
+|11955940|   JD121140|2019-07-31 09:00:00|  026XX S HALSTED ST|1154|  DECEPTIVE PRACTICE|FINANCIAL IDENTIT...|  SMALL RETAIL STORE| false|   false|0913|     009|  11|            60|      11|2019|01/20/2020 03:52:...|       9|       Deering|            009|
+|11956035|   JD121288|2019-09-10 00:01:00|070XX S STONY ISL...|1582|OFFENSE INVOLVING...|   CHILD PORNOGRAPHY|           RESIDENCE| false|   false|0332|     003|   5|            43|      17|2019|01/20/2020 03:52:...|       3|Grand Crossing|            003|
+|11956045|   JD121237|2019-12-15 12:00:00|      069XX S ADA ST|0610|            BURGLARY|      FORCIBLE ENTRY|           RESIDENCE| false|   false|0734|     007|   6|            67|      05|2019|01/20/2020 03:52:...|       7|     Englewood|            007|
+|11956146|   JD121344|2019-12-31 00:00:00|   016XX S THROOP ST|0610|            BURGLARY|      FORCIBLE ENTRY|           RESIDENCE| false|   false|1233|     012|  25|            31|      05|2019|01/20/2020 03:52:...|      12|     Near West|            012|
+|11956304|   JD121233|2019-11-27 10:35:00|   002XX W GOETHE ST|0810|               THEFT|           OVER $500|           RESIDENCE| false|   false|1821|     018|   2|             8|      06|2019|01/20/2020 03:52:...|      18|    Near North|            018|
+|11956126|   JD121418|2019-12-23 06:00:00|083XX S MUSKEGON AVE|0820|               THEFT|      $500 AND UNDER|              STREET| false|   false|0423|     004|   7|            46|      06|2019|01/20/2020 03:52:...|       4| South Chicago|            004|
+|11956221|   JD121487|2019-09-13 17:00:00|   050XX W NELSON ST|2825|       OTHER OFFENSE|HARASSMENT BY TEL...|           RESIDENCE| false|   false|2521|     025|  31|            19|      26|2019|01/20/2020 03:52:...|      25| Grand Central|            025|
+|11956049|   JD121196|2019-12-19 19:07:00|     011XX W 83RD ST|1544|         SEX OFFENSE|SEXUAL EXPLOITATI...|           RESIDENCE| false|   false|0613|     006|  21|            71|      17|2019|01/20/2020 03:52:...|       6|       Gresham|            006|
+|11956468|   JD121650|2019-06-01 08:00:00|  081XX W ADDISON ST|1153|  DECEPTIVE PRACTICE|FINANCIAL IDENTIT...|           APARTMENT| false|   false|1631|     016|  38|            17|      11|2019|01/20/2020 03:52:...|      16|Jefferson Park|            016|
+|11955888|   JD121051|2019-12-01 00:01:00| 031XX S PRAIRIE AVE|1152|  DECEPTIVE PRACTICE|ILLEGAL USE CASH ...|           RESIDENCE| false|   false|0211|     002|   4|            35|      11|2019|01/20/2020 03:52:...|       2|     Wentworth|            002|
+|11956127|   JD121334|2019-12-14 22:00:00|023XX N MILWAUKEE...|0810|               THEFT|           OVER $500|               OTHER| false|   false|1414|     014|   1|            22|      06|2019|01/20/2020 03:52:...|      14|   Shakespeare|            014|
+|11956215|   JD121376|2019-12-12 19:00:00| 0000X E CHESTNUT ST|0890|               THEFT|       FROM BUILDING|          RESTAURANT| false|   false|1833|     018|  42|             8|      06|2019|01/20/2020 03:52:...|      18|    Near North|            018|
+|11956004|   JD121156|2019-11-15 12:00:00| 0000X N LATROBE AVE|1310|     CRIMINAL DAMAGE|         TO PROPERTY|           RESIDENCE| false|   false|1522|     015|  28|            25|      14|2019|01/20/2020 03:52:...|      15|        Austin|            015|
+|11956129|   JD121379|2019-11-03 15:00:00|    104XX S AVENUE J|2825|       OTHER OFFENSE|HARASSMENT BY TEL...|               OTHER| false|   false|0432|     004|  10|            52|      26|2019|01/20/2020 03:52:...|       4| South Chicago|            004|
+|11956041|   JD121266|2019-12-21 14:18:00|025XX S CALIFORNI...|1752|OFFENSE INVOLVING...|AGG CRIM SEX ABUS...|           APARTMENT| false|   false|1033|     010|  12|            30|      17|2019|01/20/2020 03:52:...|      10|         Ogden|            010|
+|11935337|   JC563784|2019-12-29 02:25:00|     021XX E 70TH ST|143A|   WEAPONS VIOLATION|UNLAWFUL POSS OF ...|               ALLEY|  true|   false|0331|     003|   5|            43|      15|2019|01/20/2020 03:49:...|       3|Grand Crossing|            003|
+|11927831|   JC553936|2019-12-20 13:15:00|082XX S JEFFERY BLVD|0545|             ASSAULT|PRO EMP HANDS NO/...|              STREET|  true|   false|0414|     004|   8|            46|     08A|2019|01/20/2020 03:49:...|       4| South Chicago|            004|
+|11927034|   JC549451|2019-12-16 19:15:00|  076XX S CICERO AVE|0820|               THEFT|      $500 AND UNDER|  SMALL RETAIL STORE| false|   false|0833|     008|  18|            65|      06|2019|01/20/2020 03:49:...|       8|  Chicago Lawn|            008|
+|11926969|   JC553305|2019-12-19 21:30:00|     016XX W LAKE ST|0486|             BATTERY|DOMESTIC BATTERY ...|           RESIDENCE|  true|   false|1224|     012|  27|            28|     08B|2019|01/20/2020 03:49:...|      12|     Near West|            012|
+|11926797|   JC553193|2019-12-19 19:04:00| 018XX W DIVISION ST|0620|            BURGLARY|      UNLAWFUL ENTRY|           RESIDENCE|  true|   false|1212|     012|   1|            24|      05|2019|01/20/2020 03:49:...|      12|     Near West|            012|
++--------+-----------+-------------------+--------------------+----+--------------------+--------------------+--------------------+------+--------+----+--------+----+--------------+--------+----+--------------------+--------+--------------+---------------+
+only showing top 20 rows
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='hands-on-again'></a></p>
+<h1 id="Hands-on-again!">Hands-on again!<a class="anchor-link" href="#Hands-on-again!">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>What is the most frequently reported non-criminal activity?</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Find the day of the week with the most reported crime?</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Using a bar chart, plot which day of the week has the most number of reported crime.</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">date_format</span><span class="p">,</span> <span class="n">col</span>
+<span class="n">dow</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="n">date_format</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">),</span><span class="s1">&#39;E&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">collect</span><span class="p">()]</span>
+<span class="k">print</span><span class="p">(</span><span class="n">dow</span><span class="p">)</span>
+<span class="n">cnt</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="n">date_format</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">),</span><span class="s1">&#39;E&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">collect</span><span class="p">()]</span>
+<span class="k">print</span><span class="p">(</span><span class="n">cnt</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[&#39;Sun&#39;, &#39;Mon&#39;, &#39;Thu&#39;, &#39;Sat&#39;, &#39;Wed&#39;, &#39;Tue&#39;, &#39;Fri&#39;]
+[20036, 21041, 20701, 21786, 20652, 21331, 22147]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="n">cp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Day_of_week&#39;</span><span class="p">:</span><span class="n">dow</span><span class="p">,</span> <span class="s1">&#39;Count&#39;</span><span class="p">:</span><span class="n">cnt</span><span class="p">})</span>
+<span class="n">cp</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[0]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Day_of_week</th>
+      <th>Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Sun</td>
+      <td>20036</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Mon</td>
+      <td>21041</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Thu</td>
+      <td>20701</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Sat</td>
+      <td>21786</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Wed</td>
+      <td>20652</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">cp</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;Count&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;Day_of_week&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Count&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Day of week&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Number of reported crimes&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;No.of reported crimes per day&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[0]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Text(0.5, 1.0, &#39;No.of reported crimes per day&#39;)</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+xdzh9SPiOuCn6bhp6WcznyO7e3qErKH9mE7275aImAHsC3yT7Et5BnA82XfCMmTJ9WngebLODV9s
+crpryNov2jpg7B8Rb6SksBewFVnj/XPAecDKXQj1aLIqu1lk7WkX5rZdD/yFrHPFE8BrNFSnRcRt
+ZAlxakQ0q3q0kijCk3TZ0it1k/1NRIysOpalkaSTyTodfLbqWDoi6X+B30XEeVXH0h+4od7Mllqp
+qm002V2Z9QJXf5nZUknSxWRVkcdExLyq4+kvXP1lZmal8Z2KmZmVxknFzMxK0+8a6ldbbbUYNWpU
+1WGYmdXKlClTnouIEZ3t1++SyqhRo5g8eXLVYZiZ1YqkQs/5uPrLzMxK46RiZmalcVIxM7PS9Ls2
+FTOzjrzxxhvMnDmT117rbIaBpdegQYMYOXIkAwd2b4JMJxUzs2TmzJkMHTqUUaNGkZsfp9+ICObO
+ncvMmTNZf/31u3UOV3+ZmSWvvfYaw4cP75cJBUASw4cP79GdmpOKmVlOf00obXr6/p1UzMz6kFmz
+ZnHQQQexwQYbsM0227Dnnnvyr3/9q7TzT5o0idtvv7208zVym0pnWv1Xiwf0NOu7yv7/38n/94jg
+4x//OGPHjuXSSy8F4N5772X27NlstNFGpYQwadIkhgwZwo477ljK+Rr5TsXMrI+46aabGDhwIEcd
+ddRbZVtuuSXvf//7Of7449lss83YfPPNueyyy4AsQey1115v7Xv00Udz0UUXAdnoIePGjWP06NFs
+vvnmPPLII0yfPp1zzz2XM888k6222opbbrml9PfgOxUzsz7igQceYJtttnlb+ZVXXsk999zDvffe
+y3PPPce2227Lzjvv3On5VlttNaZOncrZZ5/Nj3/8Y8477zyOOuoohgwZwnHHHdeKt+A7FTOzvu7W
+W2/l4IMPZsCAAayxxhp84AMf4K677ur0uP333x+AbbbZhunTp7c4yoyTytJMau1iZqXadNNNmTJl
+SuH9l112WRYtWvTWemNX4OWXXx6AAQMG8Oabb5YTZCecVMzM+ohdd92VBQsWMH78+LfK7rvvPoYN
+G8Zll13GwoULmTNnDjfffDPbbbcd6623Hg899BALFizgxRdf5MYbb+z0GkOHDmXevNbNruw2FTOz
+PkISV111FccccwynnXYagwYNYtSoUfz0pz/llVdeYcstt0QSp59+Ou94xzsAOPDAA9lss81Yf/31
+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
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='rdd'></a></p>
+<h1 id="RDD">RDD<a class="anchor-link" href="#RDD">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<blockquote><p>With map, you define a function and then apply it record by record. Flatmap returns a new RDD by first applying a function to all of the elements in RDDs and then flattening the result. Filter, returns a new RDD. Meaning only the elements that satisfy a condition. With reduce, we are taking neighboring elements and producing a single combined result.
+For example, let's say you have a set of numbers. You can reduce this to its sum by providing a function that takes as input two values and reduces them to one.</p>
+</blockquote>
+<p>Some of the reasons you would use a dataframe over RDD are:</p>
+<p><ol>
+    <li>It's ability to represnt data as rows and columns. But this also means it can only hold structred and semi-structured data.</li>
+    <li>It allows processing data in different formats (AVRO, CSV, JSON, and storage system HDFS, HIVE tables, MySQL).</li>
+    <li>It's superior job Optimization capability.</li>
+    <li>DataFrame API is very easy to use.</li></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">psrdd</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="p">(</span><span class="s1">&#39;police-station.csv&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">psrdd</span><span class="o">.</span><span class="n">first</span><span class="p">())</span>
+<span class="n">ps_header</span> <span class="o">=</span> <span class="n">psrdd</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+<span class="n">ps_rest</span> <span class="o">=</span> <span class="n">psrdd</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">line</span><span class="p">:</span> <span class="n">line</span><span class="o">!=</span><span class="n">ps_header</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">ps_rest</span><span class="o">.</span><span class="n">first</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>DISTRICT,DISTRICT NAME,ADDRESS,CITY,STATE,ZIP,WEBSITE,PHONE,FAX,TTY,X COORDINATE,Y COORDINATE,LATITUDE,LONGITUDE,LOCATION
+1,Central,1718 S State St,Chicago,IL,60616,http://home.chicagopolice.org/community/districts/1st-district-central/,312-745-4290,312-745-3694,312-745-3693,1176569.052,1891771.704,41.85837259,-87.62735617,&#34;(41.8583725929, -87.627356171)&#34;
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>How many police stations are there?</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">ps_rest</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">line</span><span class="p">:</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[0]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>24</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Display the District ID, District name, Address and Zip for the police station with District ID 7</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># District is column  0</span>
+<span class="p">(</span><span class="n">ps_rest</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">line</span><span class="p">:</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;7&#39;</span><span class="p">)</span><span class="o">.</span>
+ <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">line</span><span class="p">:</span> <span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">],</span>
+    <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)[</span><span class="mi">5</span><span class="p">]))</span><span class="o">.</span><span class="n">collect</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[0]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[(&#39;7&#39;, &#39;Englewood&#39;, &#39;1438 W 63rd St&#39;, &#39;60636&#39;)]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Police stations 10 and 11 are geographically close to each other. Display the District ID, District name, address and zip code</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># District is column  0</span>
+<span class="p">(</span><span class="n">ps_rest</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">line</span><span class="p">:</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;10&#39;</span><span class="p">,</span> <span class="s1">&#39;11&#39;</span><span class="p">])</span><span class="o">.</span>
+ <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">line</span><span class="p">:</span> <span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">],</span>
+    <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)[</span><span class="mi">5</span><span class="p">]))</span><span class="o">.</span><span class="n">collect</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[0]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[(&#39;11&#39;, &#39;Harrison&#39;, &#39;3151 W Harrison St&#39;, &#39;60612&#39;),
+ (&#39;10&#39;, &#39;Ogden&#39;, &#39;3315 W Ogden Ave&#39;, &#39;60623&#39;)]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='user-defined-functions-udf'></a></p>
+<h1 id="User-Defined-Functions-(UDF)">User-Defined Functions (UDF)<a class="anchor-link" href="#User-Defined-Functions-(UDF)">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>PySpark User-Defined Functions (UDFs) help you convert your python code into a scalable version of itself. It comes in handy more than you can imagine, but beware, as the performance is less when you compare it with pyspark functions. You can view examples of how UDF works <a href="https://docs.databricks.com/spark/latest/spark-sql/udf-python.html">here</a>. What I will give in this section is some theory on how it works, and why it is slower.</p>
+<p>When you try to run a UDF in PySpark, each executor creates a python process. Data will be serialised and deserialised between each executor and python. This leads to lots of performance impact and overhead on spark jobs, making it less efficent than using spark dataframes. Apart from this, sometimes you might have memory issues while using UDFs. The Python worker consumes huge off-heap memory and so it often leads to memoryOverhead, thereby failing your job. Keeping these in mind, I wouldn't recommend using them, but at the end of the day, your choice.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='common-questions'></a></p>
+<h1 id="Common-Questions">Common Questions<a class="anchor-link" href="#Common-Questions">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Recommeded-IDE">Recommeded IDE<a class="anchor-link" href="#Recommeded-IDE">&#182;</a></h3><p>I personally prefer <a href="https://www.jetbrains.com/pycharm/">PyCharm</a> while coding in Python/PySpark. It's based on IntelliJ IDEA so it has a lot of features! And the main advantage I have felt is the ease of installing pyspark and other packages. You can customize it with themes and plugins, and it lets you enhance productivity while coding by providing some features like suggestions, Local VCS etc.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Submitting-a-spark-job">Submitting a spark job<a class="anchor-link" href="#Submitting-a-spark-job">&#182;</a></h3><p>The python syntax for running jobs is: <code>python &lt;file_name&gt;.py &lt;arg1&gt; &lt;arg2&gt; ...</code><br>
+But when you submit a spark job you have to use <code>spark-submit</code> to run the application.</p>
+<p>Here is a simple example of a spark-submit command:<br>
+<code>spark-submit filename.py --named_argument 'arguemnt value'</code><br>
+Here, named_argument is an arguemnt that you are reading from inside your script.</p>
+<p>There are other options you can pass in the command, like:<br>
+<code>--py-files</code> which helps you pass a python file to read in your file,<br>
+<code>--files</code> which helps pass other files like txt or config,<br>
+<code>--deploy-mode</code> which tells wether to deploy your worker node on cluster or locally
+<code>--conf</code> which helps pass different configurations, like memoryOverhead, dynamicAllocation etc.</p>
+<p>There is an <a href="https://spark.apache.org/docs/latest/submitting-applications.html">entire page</a> in spark documentation dedicated to this. I highly recommend you go through it once.</p>
+
+</div>
+</div>
+</div>
+    </div>
+  </div>
+</body>
+
+
+<br><br>
+   <p style="font-size:8pt; line-height:10pt; font-family: 'Cambria','times roman',serif;">This site provides applications using data that has been modified for use from its original source, www.cityofchicago.org, the official website of the City of Chicago. The City of Chicago makes no claims as to the content, accuracy, timeliness, or completeness of any of the data provided at this site. The data provided at this site is subject to change at any time. It is understood that the data provided at this site is being used at one’s own risk.</p>
+ 
+
+
+</html>
