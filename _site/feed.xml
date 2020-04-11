@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2020-04-11T22:12:29+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">Jacob Celestine</title><subtitle>Jacob Celestine's presence on the web.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2020-04-11T23:31:16+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">Jacob Celestine</title><subtitle>Jacob Celestine's presence on the web.
 </subtitle><author><name>Jacob Celestine</name><email>jacobceles@gmail.com</email></author><entry><title type="html">Example Content III</title><link href="http://localhost:4000/blog/2018-06-01-example-content-iii/" rel="alternate" type="text/html" title="Example Content III" /><published>2018-06-01T00:00:00+05:30</published><updated>2018-06-01T00:00:00+05:30</updated><id>http://localhost:4000/blog/example-content-iii</id><content type="html" xml:base="http://localhost:4000/blog/2018-06-01-example-content-iii/">&lt;p&gt;Hydejack offers a few additional features to markup your markdown.
 Don’t worry, these are merely CSS classes added with kramdown’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;{:...}&lt;/code&gt; syntax,
 so that your content remains compatible with other Jekyll themes.&lt;/p&gt;
@@ -342,7 +342,7 @@ A caption to an image.&lt;/p&gt;
 
 &lt;h3 id=&quot;small-image&quot;&gt;Small image&lt;/h3&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://assets-cdn.github.com/images/icons/emoji/octocat.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://assets-cdn.github.com/assets/icons/icons/emoji/octocat.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;large-image&quot;&gt;Large image&lt;/h3&gt;
 
