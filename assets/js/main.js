@@ -1,5 +1,8 @@
 // Skills Bars
-$('.skill-percent').each(function(){
-  $(this).animate({
-    width:$(this).attr('data-percent')},"fast");
-  });
+jQuery(document).ready(function(){
+	jQuery('.skillbar').each(function(){
+		jQuery(this).find('.skillbar-bar').animate({
+			width:jQuery(this).attr('data-percent')
+		},6000);
+	});
+});
