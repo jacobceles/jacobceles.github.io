@@ -1,0 +1,35 @@
+- name: Python
+  level: 95%
+
+- name: PySpark
+  level: 90%
+
+- name: Java (Android)
+  level: 95%
+
+- name: Airflow
+  level: 85%
+
+- name: MySQL
+  level: 85%
+
+- name: Hive
+  level: 75%
+
+- name: Firebase
+  level: 75%
+
+- name: Hadoop
+  level: 70%
+
+- name: HTML
+  level: 70%
+
+- name: PHP
+  level: 70%
+
+- name: R Studio
+  level: 70%
+
+- name: Machine Learning
+  level: 70%

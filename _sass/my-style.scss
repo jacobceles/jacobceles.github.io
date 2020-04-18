@@ -1661,27 +1661,87 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .heading {
 }
 
 // Skills
-#skills {
-    padding: 1px 15px;
-    text-align: center;
+.row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px
+}
 
-    ul {
-        display: block;
-        margin: 0 auto;
-        padding: 0;
-        max-width: 800px;
-    }
+.col-md-6 {
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px
+}
 
-    li {
-        display: inline-block;
-        margin: 7px;
-        padding: 5px 10px;
-        color: #374054;
-        background: darken(#e5e5e6, 5%);
-        list-style: none;
-        cursor: default;
-        font-size: 1.2em;
+@media (min-width:768px) {
+    .col-md-6 {
+        -ms-flex: 0 0 50%;
+        flex: 0 0 50%;
+        max-width: 50%
     }
+}
+
+.skill-body {
+	-ms-flex: 1 1 auto;
+	flex: 1 1 auto;
+	min-height: 1px;
+	padding: 0rem 1.25rem 0rem 1.25rem;
+}
+
+.progress-container {
+  position: relative;
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.progress-container + .progress-container,
+.progress-container ~ .progress-container {
+  margin-top: 15px;
+}
+
+.progress-bar {
+    height: 5px;
+    line-height: 1rem;
+    color: #fff;
+    background-color: #007bff;
+    transition: width .6s ease
+}
+
+.progress-container.progress-primary .progress {
+  background: #3a4149;
+}
+
+.progress-container.progress-primary .progress-bar {
+  background: #68c3a3;
+}
+
+.progress-container.progress-primary .progress-value,
+.progress-container.progress-primary .progress-badge {
+  color: rgb(204, 204, 204);
+}
+
+.progress-container .progress {
+  height: 1px;
+  border-radius: 0;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  background: rgba(222, 222, 222, 0.8);
+  margin-top: 14px;
+  height: 5px;
+  font-size: 18px;
+}
+
+.progress-container .progress .progress-value {
+  position: absolute;
+  top: 2px;
+  right: 0;
+  color: #888;
+  font-size: 0.8571em;
 }
 
 // Experience
