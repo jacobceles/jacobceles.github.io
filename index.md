@@ -20,7 +20,7 @@ hide_description: true
 cover: true
 
 # TODO
-image: /assets/icons/icon.png
+image: /assets/icons/icon_preview.jpg
 ---
 
 Hi! I'm Jacob. Welcome to my website!
