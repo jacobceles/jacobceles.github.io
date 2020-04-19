@@ -19,8 +19,8 @@ hide_description: true
 # You can show the conver pic as the home page by setting this as true
 cover: true
 
-# TODO
-image: /assets/icons/icon.png
+# Icon
+image: /assets/icons/profile_icon.png
 ---
 
 Hi! I'm Jacob. Welcome to my website!

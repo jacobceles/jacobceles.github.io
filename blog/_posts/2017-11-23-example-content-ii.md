@@ -97,7 +97,7 @@ end
 
 ### Small image
 
-![](https://assets-cdn.github.com/assets/icons/icons/emoji/octocat.png)
+![](https://assets-cdn.github.com/assets/icons/profile_icons/emoji/octocat.png)
 
 ### Large image
 
