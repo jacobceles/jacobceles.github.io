@@ -11182,9 +11182,6 @@ div.output_unrecognized a:hover {
 .rendered_html ol ol ol ol ol {
   list-style: decimal;
 }
-.rendered_html * + ul {
-  margin-top: 1em;
-}
 .rendered_html * + ol {
   margin-top: 1em;
 }
