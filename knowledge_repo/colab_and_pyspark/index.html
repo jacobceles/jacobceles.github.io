@@ -112,6 +112,8 @@
           <ul>
             <li><a href="#emr-sizing">EMR Sizing</a></li>
             <li><a href="#spark-configurations">Spark Configurations</a></li>
+            <li><a href="#job-tuning">Job Tuning</a>
+            <li><a href="#best-practices">Best Practices</a>
           </ul>
         </li>
     </ol>
@@ -236,7 +238,7 @@ If you want to try out things with this notebook as a base, feel free to downloa
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In the words of Google: <br>
 <code>Colaboratory, or “Colab” for short, is a product from Google Research. Colab allows anybody to write and execute arbitrary python code through the browser, and is especially well suited to machine learning, data analysis and education. More technically, Colab is a hosted Jupyter notebook service that requires no setup to use, while providing free access to computing resources including GPUs.</code></p>
-<p>The reason why I used colab is because of its shareability and free GPU. Yeah you read that right. A FREE GPU! Additionally, it helps use different Google services conveniently. It saves to Google Drive and all the services are very closely related. I recommend you go through the offical <a href="https://colab.research.google.com/notebooks/basic_features_overview.ipynb">overview documentation</a> if you want to know more about it.
+<p>The reason why I used colab is because of its shareability and free GPU and TPU. Yeah you read that right, FREE GPU AND TPU! For using TPU, your program needs to be optimized for the same. Additionally, it helps use different Google services conveniently. It saves to Google Drive and all the services are very closely related. I recommend you go through the offical <a href="https://colab.research.google.com/notebooks/basic_features_overview.ipynb">overview documentation</a> if you want to know more about it.
 If you have more questions about colab, please <a href="https://research.google.com/colaboratory/faq.html">refer this link</a>.</p>
 <blockquote><p>While using a colab notebook, you will need an active internet connection to keep a session alive. If you lose the connection you will have to download the datasets again.</p>
 </blockquote>
@@ -531,7 +533,7 @@ Reading package lists... Done
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>sample_data  spark-2.4.5-bin-hadoop2.7	spark-2.4.5-bin-hadoop2.7.tgz
+<pre>sample_data  spark-2.4.5-bin-hadoop2.7 spark-2.4.5-bin-hadoop2.7.tgz
 </pre>
 </div>
 </div>
@@ -720,8 +722,8 @@ rows.csv?accessType     [                &lt;=&gt; ]  58.90M  3.21MB/s    in 19s
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>&#39;rows.csv?accessType=DOWNLOAD&#39;	 spark-2.4.5-bin-hadoop2.7
- sample_data			 spark-2.4.5-bin-hadoop2.7.tgz
+<pre>&#39;rows.csv?accessType=DOWNLOAD&#39;  spark-2.4.5-bin-hadoop2.7
+ sample_data             spark-2.4.5-bin-hadoop2.7.tgz
 </pre>
 </div>
 </div>
@@ -3922,10 +3924,11 @@ I will expalin how to use the <code>dropDuplicates()</code> function to achieve 
 <p>Before we begin, please note that this entire section is written purely based on experience. It might differ with use cases, but it will help you get a better understanding of what you should be looking for, or act as a guidance to achieve your aim.</p>
 <blockquote><p>Spark Performance Tuning refers to the process of adjusting settings to record for memory, cores, and instances used by the system. This process guarantees that the Spark has a flawless performance and also prevents bottlenecking of resources in Spark.</p>
 </blockquote>
-<p>Considering you are using Amazon EMR to execute your spark jobs, there are two aspects you need to take care of:</p>
+<p>Considering you are using Amazon EMR to execute your spark jobs, there are three aspects you need to take care of:</p>
 <ol>
 <li>EMR Sizing</li>
 <li>Spark Configurations</li>
+<li>Job Tuning</li>
 </ol>
 
 </div>
@@ -4161,6 +4164,171 @@ The fair scheduler supports grouping jobs into pools and setting different sched
 --conf spark.dynamicAllocation.maxExecutors</code></pre>
 </blockquote>
 <p>You can read more about this feature <a href="https://https://spark.apache.org/docs/latest/configuration.html#dynamic-allocation">here</a> and <a href="https://stackoverflow.com/questions/40200389/how-to-execute-spark-programs-with-dynamic-resource-allocation">here</a>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='job-tuning'></a></p>
+<h3 id="Job-Tuning">Job Tuning<a class="anchor-link" href="#Job-Tuning">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Apart from EMR and Spark tuning, there is another way to approach opttimizations, and that is by tuning your job itself to produce results efficently. I will be going over some such techniques which will help you achieve this. The <a href="https://spark.apache.org/docs/2.1.1/programming-guide.html">Spark Programming Guide</a> talks more about these concepts in detail. If you guys prefer watching a video over reading, I highly recommend <a href="https://youtu.be/daXEp4HmS-E">A Deep Dive into Proper Optimization for Spark Jobs</a> by Daniel Tomes from Databricks, which I found really useful and informative!</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Broadcast-Joins-(Broadcast-Hash-Join)">Broadcast Joins (Broadcast Hash Join)<a class="anchor-link" href="#Broadcast-Joins-(Broadcast-Hash-Join)">&#182;</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>For some jobs, the efficenecy can be increased by caching them in memory. Broadcast Hash Join(BHJ) is such a technique which will help you optimize join queries when the size of one side of the data is low.</p>
+<blockquote><p>BroadCast joins are the fastest but the drawaback is that it will consume more memory on both the executor and driver.</p>
+</blockquote>
+<p>This following steps give a sneak peek into how it works, which will help you understand the use cases where it can be used:<br></p>
+<ol>
+<li>Input file(smaller of the two tables) to be broadcasted is read by the executors in parallel into its working memory.</li>
+<li>All the data from the executors is collected into driver (Hence, the need for higher memory at driver).</li>
+<li>The driver then broadcasts the combined dataset (full copy) into each executor.</li>
+<li>The size of the broadcasted dataset could be several (10-20+) times bigger the input in memory due to factors like deserialization.</li>
+<li>Executors will end up storing the parts it read first, and also the full copy, thereby leading to a high memory requirement.</li>
+</ol>
+<p>Some things to keep in mind about BHJ:</p>
+<ol>
+<li>It is advisable to use broadcast joins on small datasets only (dimesnion table, for example).</li>
+<li>Spark does not guarantee BHJ is always chosen, since not all cases (e.g. full outer join) support BHJ.</li>
+<li>You could notice skews in tasks due to uneven partition sizes; especially during aggregations, joins etc. This can be evened out by introducing Salt value (random value).<br><em>Suggested formula for salt value:</em> random(0 – (shuffle partition count – 1))</li>
+</ol>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Spark-Partitions">Spark Partitions<a class="anchor-link" href="#Spark-Partitions">&#182;</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>A partition in spark is an atomic chunk of data (logical division of data) stored on a node in the cluster. Partitions are the basic units of parallelism in Spark. Having too large a number of partitions or too few is not an ideal solution. The number of partitions in spark should be decided based on the cluster configuration and requirements of the application. Increasing the number of partitions will make each partition have less data or no data at all. Generally, spark partitioning can be broken down in three ways:</p>
+<ol>
+<li>Input</li>
+<li>Shuffle</li>
+<li>Output</li>
+</ol>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Input">Input<a class="anchor-link" href="#Input">&#182;</a></h5>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Spark usually does a good job of figuring the ideal configuration for this one, except in very particular cases. It is advisable to use the spark default unless:</p>
+<ol>
+<li>Increase parallelism</li>
+<li>Heavily nested data</li>
+<li>Generating data (explode)</li>
+<li>Source is not optimal</li>
+<li>You are using UDFs</li>
+</ol>
+<p><code>spark.sql.files.maxpartitionBytes</code>: This property indicates the maximum number of bytes to pack into a single partition when reading files (Default 128 MB) . Use this to increase the parallelism in reading input data. For example, if you have more cores, then you can increase the number of parallel tasks which will ensure usage of the all the cores of the cluster, and increase the speed of the task.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Shuffle">Shuffle<a class="anchor-link" href="#Shuffle">&#182;</a></h5>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>One of the major reason why most jobs lags in performance is, for the majority of the time, because they get the shuffle partitions count wrong. By default, the value is set to 200. In almost all situations, this is not ideal. If you are dealing with shuffle satge of less than 20 GB, 200 is fine, but otherwise this needs to be changed. For most cases, you can use the following equation to find the right value:</p>
+<blockquote><p><code>Partition Count = Stage Input Data / Target Size</code> where <br>
+<code>Largest Shuffle Stage (Target Size) &lt; 200MB/partition</code> in most cases.<br>
+<code>spark.sql.shuffle.partitions</code> property is used to set the ideal partition count value.</p>
+</blockquote>
+<p>If you ever notice that target size at the range of TBs, there is something terribly wrong, and you might want to change it back to 200, or recalculate it. Shuffle partitions can be configured for every action (not transformation) in the spark script.</p>
+<p>Let us use an example to explain this scenario: <br>
+Assume shuffle stage input = 210 GB. <br>
+Partition Count = Stage Input Data / Target Size = 210000 MB/200 MB = 1050. <br>
+As you can see, my shuffle partitions should be 1050, not 200.</p>
+<p>But, if your cluster has 2000 cores, then set your shuffle partitions to 2000.</p>
+<blockquote><p>In a large cluster dealing with a large data job, never set your shuffle partitions less than your total core count.</p>
+</blockquote>
+<p>Shuffle stages almost always precede the write stages and having high shuffle partition count creates small files in the output. To address this, use localCheckPoint just before write &amp; do a coalesce call. This localCheckPoint writes the Shuffle Partition to executor local disk and then coalesces into lower partition count and hence improves the overall performance of both shuffle stage and write stage.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Output">Output<a class="anchor-link" href="#Output">&#182;</a></h5>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>There are different methods to write the data. You can control the size, composition, number of files in the output and even the number of records in each file while writing the data. While writing the data, you can increase the parallelism, thereby ensuring you use all the resources that you have. But this approach would lead to a larger number of smaller files. Usually, this isn't a problem, but if you want bigger files, you will have to use one of the compaction techniques, preferably in a cluster with lesser configuration. There are multiple ways to change the composition of the output. Keep these two in mind about composition:</p>
+<ol>
+<li>Coalesce: Use this to reduce the number of partitions.</li>
+<li>Repartition: Use this very rarely, and never to reduce the number of partitions<br>
+ a. Range Paritioner - It partitions the data either based on some sorted order OR set of sorted ranges of keys. <br>
+ b. Hash Partioner - It spreads around the data in the partitioning based upon the key value. Hash partitioning can make distributed data skewed.</li>
+</ol>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id='best-practices'></a></p>
+<h3 id="Best-Practices">Best Practices<a class="anchor-link" href="#Best-Practices">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Try to incorporate these to your coding habits for better performance:</p>
+<ol>
+<li>Do not use NOT IN use NOT EXISTS.</li>
+<li>Remove Counts, Distinct Counts (use approxCountDIstinct).</li>
+<li>Drop Duplicates early.</li>
+<li>Always prefer SQL functions over PandasUDF.</li>
+<li>Use Hive partitions effectively.</li>
+<li>Leverage Spark UI effectively. Avoid Shuffle Spills.</li>
+<li>Drop Duplicates early</li>
+<li>Aim for target cluster utilization of atleast 70%</li>
+</ol>
 
 </div>
 </div>
