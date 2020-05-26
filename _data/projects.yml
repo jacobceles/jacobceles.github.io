@@ -1,7 +1,7 @@
 - project :
     name: Introduction to Google Colab and PySpark
     tools: [pyspark, colaboratory, colab-notebook, dataframe]
-    image: https://spark.apache.org/docs/latest/api/python/_static/spark-logo-hd.png
+    image: /assets/img/pyspark_colab_emr.jpg
     description: A tutorial written by me to help big data engineers ramp up faster and get them familiar with PySpark dataframes and functions.
     external_url: https://jacobcelestine.com/knowledge_repo/colab_and_pyspark/
 
