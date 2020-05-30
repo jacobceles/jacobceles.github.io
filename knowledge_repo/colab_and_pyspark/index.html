@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html>
-<head><meta charset="utf-8" />
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'" />
+<meta property="og:url" content="https://jacobcelestine.com/knowledge_repo/colab_and_pyspark/"/>
+<meta property="og:type" content="article"/>
+<meta property="og:title" content="Introduction to Google Colab PySpark, EC2 Instances"/>
+<meta property="og:description" content="Once you complete this notebook, you should be able to write pyspark programs in an efficent way. The ideal way to use this is by going through the examples given and then trying them on Colab. At the end there are a few hands on questions which you can use to evaluate yourself.">
+<meta property="og:image" content="https://jacobcelestine.com/assets/img/pyspark_colab_emr.jpg"/>
 
 <title>Colab and PySpark</title>
 
@@ -3994,7 +4002,7 @@ I will expalin how to use the <code>dropDuplicates()</code> function to achieve 
 <p>The configuration (memory, storage, cpu, network performance) will differ based on the instance class you choose.<br>
 To help make life easier, here is what I do when I get into a predicament about which one to go with: <br></p>
 <ol>
-<li>Visit <a href="www.https://www.ec2instances.info/">ec2instances</a></li>
+<li>Visit <a href="https://www.ec2instances.info/">ec2instances</a></li>
 <li>Choose the EC2 instances in question </li>
 <li>Click on compare selected</li>
 </ol>
@@ -4164,7 +4172,7 @@ The fair scheduler supports grouping jobs into pools and setting different sched
 --conf spark.dynamicAllocation.minExecutors
 --conf spark.dynamicAllocation.maxExecutors</code></pre>
 </blockquote>
-<p>You can read more about this feature <a href="https://https://spark.apache.org/docs/latest/configuration.html#dynamic-allocation">here</a> and <a href="https://stackoverflow.com/questions/40200389/how-to-execute-spark-programs-with-dynamic-resource-allocation">here</a>.</p>
+<p>You can read more about this feature <a href="https://spark.apache.org/docs/latest/configuration.html#dynamic-allocation">here</a> and <a href="https://stackoverflow.com/questions/40200389/how-to-execute-spark-programs-with-dynamic-resource-allocation">here</a>.</p>
 
 </div>
 </div>
