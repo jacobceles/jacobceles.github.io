@@ -9,13 +9,13 @@
     name: Hipster Wallpaper
     tools: [android, java, php]
     description: A simple wallpaper app with hipster wallpapers!
-
+    
 - project :
-    name: Ultimate Quiz App
-    tools: [android, kotlin, html]
-    image: /assets/img/ultimate_quiz_app.png
-    description: Challenge yourself to the limits with this fun & addictive quiz app!
-    external_url: https://play.google.com/store/apps/details?id=com.quizgamesapps.ultimatequizapp
+    name: Hero Academia Quiz
+    tools: [android, java, kotlin]
+    image: /assets/img/my_hero_academia_quiz.png
+    description: An MHA Quiz App, for the fans, by the fans.
+    external_url: https://play.google.com/store/apps/details?id=com.quizgamesapps.heroacademiaquiz
 
 - project :
     name: Autovia
@@ -30,11 +30,11 @@
     description: An application which acts as a fitness assistant, by monitoring parameters of the user and his diet. Features include medicine reminder, calorie calculator, real time diet menu generator, analysis and much more.
 
 - project :
-    name: Hero Academia Quiz
-    tools: [android, java, kotlin]
-    image: /assets/img/my_hero_academia_quiz.png
-    description: An MHA Quiz App, for the fans, by the fans.
-    external_url: https://play.google.com/store/apps/details?id=com.quizgamesapps.heroacademiaquiz
+    name: Ultimate Quiz App
+    tools: [android, kotlin, html]
+    image: /assets/img/ultimate_quiz_app.png
+    description: Challenge yourself to the limits with this fun & addictive quiz app!
+    external_url: https://play.google.com/store/apps/details?id=com.quizgamesapps.ultimatequizapp
 
 - project :
     name: MyBooksDB
