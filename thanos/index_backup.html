@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Thanos JSON Generator</title>
+    <link rel="stylesheet" style="text/css" href="deps/opt/bootstrap.css" />
+  </head>
+  <body>
+    <h1 style="text-align:center">Thanos JSON Generator</h1>
+
+    <div style="float:left; width:50%; margin-left:10px;">
+      <form></form>
+    </div>
+
+    <div style="float:right; width:40%; margin-right:10px; margin-top:40px;">
+      <pre id="res"></pre>
+    </div>
+    
+    <script type="text/javascript" src="deps/jquery.min.js"></script>
+    <script type="text/javascript" src="deps/underscore.js"></script>
+    <script type="text/javascript" src="deps/opt/jsv.js"></script>
+    <script type="text/javascript" src="lib/jsonform.js"></script>
+    <script type="text/javascript">
+      $('form').jsonForm(
+      {
+        "schema": {
+          "source": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "title":"Source type:",
+                  "required":true,
+                  "type": "string",
+                  "enum": [ "jdbc"]
+                },
+                "name": {
+                  "title":"Name of the result data frame:",
+                  "required":true,
+                  "type": "string"
+                },
+                "credentials": {
+                  "type": "object",
+                  "properties": {
+                    "env": {
+                      "title":"Environment:",
+                      "required":true,
+                      "type": "string"
+                    },
+                    "cerberus_path": {
+                      "title":"Cerberus path for key/password:",
+                      "required":true,
+                      "type": "string"
+                    },
+                    "cerberus_username": {
+                      "title":"Cerberus key for username:",
+                      "required":true,
+                      "type": "string"
+                    },
+                    "cerberus_password": {
+                      "title":"Cerberus key for password:",
+                      "required":true,
+                      "type": "string"
+                    }
+                  }
+                },
+                "jdbc_options": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "title":"Provide complete JDBC URL:",
+                      "description":"e.g.: jdbc:teradata://146.197.64.89/LOGMECH=LDAP,CHARSET=UTF8,MAYBENULL=ON",
+                      "required":true,
+                      "type": "string"
+                    },
+                    "driver": {
+                      "title":"Driver for JDBC connection:",
+                      "description":"e.g.: com.teradata.jdbc.TeraDriver",
+                      "required":true,
+                      "type": "string"
+                    },
+                    "dbtable": {
+                      "title":"Table name or SQL query:",
+                      "description":"e.g.: EIS.SO_Itm for table, or select * from where dept = 10 for query option.",
+                      "required":true,
+                      "type": "textarea"
+                    },
+                    "partition_column": {
+                      "title":"Partition column(s) [Do not provide if row_num_column is given]:",
+                      "description":"Either partition_column or row_num_column must be given.",
+                      "type": "array",
+                      "items": {
+                        "title": "Column name:",
+                        "description": "Must be numeric, date, or timestamp data type.<br/>If more than one column is given, it should be valid composite key.",
+                        "type": "string"
+                      }
+                    },
+                    "row_num_column": {
+                      "title":"Row number column(s) [Do not provide if partition_column is given]:",
+                      "description":"Either partition_column or row_num_column must be given.",
+                      "type": "array",
+                      "items": {
+                        "title": "Column name:",
+                        "description": "When no PK or CPK is available, provide column(s) close to PK or CPK.",
+                        "type": "string"
+                      }
+                    },
+                    "num_partitions": {
+                      "title" : "Number of Partitions:",
+                      "description" : "Default value will be derived as MIN of (count of rows / 50000) and 50.",
+                      "type": "integer"
+                    },
+                    "query_timeout": {
+                      "title": "Query timeout [in seconds]:",
+                      "description": "Default is zero, which means no limit.",
+                      "type": "string"
+                    },
+                    "fetch_size": {
+                      "title": "Fetch Size:",
+                      "default": "1000",
+                      "description": "Default is 1000.",
+                      "type": "string"
+                    },
+                    "custom_schema": {
+                      "title": "Custom schema to use for reading data from JDBC connectors:",
+                      "description": "e.g.: id DECIMAL(38, 0), name STRING",
+                      "type": "textarea"
+                    },
+                    "push_down_Predicate": {
+                      "title": "Pushdown predicate :",
+                      "description": "Default is true.",
+                      "type": "string"
+                    }
+                  }
+                },
+                "inc_options": {
+                  "title": "Incremental Options:",
+                  "description": "Required only for incremental use case.",
+                  "type": "object",
+                  "properties": {
+                    "source": {
+                      "title": "Incremental Options:",
+                      "description": "If given, all the next 3 fields are mandatory.",
+                      "type": "string",
+                      "enum": [ "hive", "data",""]
+                    },
+                    "operator": {
+                      "title": "Comparison Operator:",
+                      "description": "Default is '>'.<br/>Can be >=, =, < etc to be used in where clause of JDBC query.",
+                      "type": "string"
+                    },
+                    "check_column": {
+                      "title": "Column name:",
+                      "description": "Column on which filter will be applied on.",
+                      "type": "string"
+                    },
+                    "last_value": {
+                      "title": "Incremental Options:",
+                      "description": "Last value extracted in previous run.<br/>Used in filter condition as 'where checkColumn > lastValue'.",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "form": [
+          {
+            "type": "array",
+            "items": {
+              "type": "section",
+              "items": [
+                "source[].type",
+                "source[].name",
+                {
+                  "type": "fieldset",
+                  "title": "Credentials",
+                  "key": "source[].credentials",
+                  "expandable": true
+                },
+                {
+                  "type": "fieldset",
+                  "title": "JDBC Options",
+                  "expandable": true,
+                  "items": [
+                    "source[].jdbc_options.url",
+                    "source[].jdbc_options.driver",
+                    "source[].jdbc_options.dbtable",
+                    "source[].jdbc_options.partition_column",
+                    "source[].jdbc_options.row_num_column",
+                    "source[].jdbc_options.num_partitions",
+                    "source[].jdbc_options.query_timeout",
+                    "source[].jdbc_options.fetch_size",
+                    "source[].jdbc_options.custom_schema",
+                    "source[].jdbc_options.push_down_Predicate",
+                  ]
+                },
+                {
+                  "type": "fieldset",
+                  "title": "Incremental Options",
+                  "key": "source[].inc_options",
+                  "expandable": true
+                }
+              ]
+            }
+          },
+          {
+            "type": "submit",
+            "title": "Generate JSON!"
+          }
+        ],
+        onSubmit: function (errors, values) {
+        $('#res').html('Result:<br/><br/>' +
+            JSON.stringify(values, null, 1));
+        $('html, body').animate({ scrollTop: 0 }, 'fast');
+        }
+      }
+      );
+    </script>
+
+  </body>
+</html>
