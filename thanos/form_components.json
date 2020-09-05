@@ -1,0 +1,81 @@
+{
+  "form": [
+    {
+      "type": "selectfieldset",
+      "key": "type",
+      "items": [
+        {
+          "type": "section",
+          "items": [
+            "name",
+            {
+              "type": "fieldset",
+              "title": "Credentials",
+              "key": "credentials",
+              "expandable": true
+            },
+            {
+              "type": "fieldset",
+              "title": "JDBC Options",
+              "key": "jdbc_options",
+              "expandable": true
+            },
+            {
+              "type": "fieldset",
+              "title": "Incremental Options",
+              "key": "inc_options",
+              "expandable": true
+            }
+          ]
+        },
+        {
+          "type": "section",
+          "items": [
+            "name",
+            "options.format",
+            "options.path",
+            {
+              "key": "options.header",
+              "type": "radiobuttons",
+              "activeClass": "btn-success"
+            },
+            {
+              "key": "options.inferschema",
+              "type": "radiobuttons",
+              "activeClass": "btn-success"
+            },
+            "options.sep"
+          ]
+        },
+        {
+          "type": "section",
+          "items": [
+            "name",
+            "database",
+            "table",
+            "columns",
+            "query"
+          ]
+        },
+        {
+          "type": "section",
+          "items": [
+            "name",
+            "handle_special_chars",
+            "sharepoint_api",
+            {
+              "type": "fieldset",
+              "title": "Credentials",
+              "key": "credentials",
+              "expandable": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "submit",
+      "title": "Generate JSON!"
+    }
+  ]
+}
