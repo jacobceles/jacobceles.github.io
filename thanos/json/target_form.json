@@ -1,0 +1,46 @@
+{
+  "form": [
+    {
+      "type": "selectfieldset",
+      "key": "type",
+      "items": [
+        {
+          "type": "section",
+          "items": [
+            "name",
+            "format",
+            "repartition_num",
+            "repartition_cols",
+            "coalesce_num",
+            {
+              "type": "fieldset",
+              "title": "DataFrameWriter Options",
+              "key": "options",
+              "expandable": true
+            }
+          ]
+        },
+        {
+          "type": "section",
+          "items": [
+            "name",
+            "format",
+            "repartition_num",
+            "repartition_cols",
+            "coalesce_num",
+            {
+              "type": "fieldset",
+              "title": "DataFrameWriter Options",
+              "key": "options",
+              "expandable": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "submit",
+      "title": "Generate JSON!"
+    }
+  ]
+}

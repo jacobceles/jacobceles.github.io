@@ -839,7 +839,8 @@
 
 /* Form */
 #cover {
-    background: #222 url('https://unsplash.it/1920/1080/?random') center center no-repeat;
+    background: url('https://unsplash.it/1920/1080.webp/?random&blur=2') center center no-repeat, 
+                linear-gradient(to top, #A788A8, #306493, #1B2B42);
     background-size: cover;
     height: 100%;
     text-align: center;

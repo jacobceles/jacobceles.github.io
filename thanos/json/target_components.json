@@ -1,0 +1,68 @@
+{
+  "schema": {
+    "type": {
+      "title": "Which type of write?",
+      "type": "string",
+      "enum": [
+        "file",
+        "hive"
+      ]
+    },
+    "name": {
+      "title": "Name of the dataframe to be written:",
+      "required": true,
+      "type": "string"
+    },
+    "format": {
+      "title": "Output file format:",
+      "required": true,
+      "type": "string",
+      "default": "parquet",
+      "description": "Accepts all spark supported file formats"
+    },
+    "repartition_num": {
+      "title": "Number of output files in directory:",
+      "type": "integer",
+      "description": "If given do not give coalesce_num"
+    },
+    "repartition_cols": {
+      "title": "Columns on which repartition can be applied.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "title": "Column Name:"
+      }
+    },
+    "coalesce_num": {
+      "title": "Number of output files in directory:",
+      "type": "integer",
+      "description": "If given do not give repartition_num."
+    },
+    "options": {
+      "type": "object",
+      "properties": {
+        "partitionBy": {
+          "title": "Column to partition by:",
+          "required": true,
+          "type": "string"
+        },
+        "mode": {
+          "title": "Mode of write:",
+          "required": true,
+          "type": "string",
+          "default": "overwrite",
+          "enum": [
+            "overwrite",
+            "append",
+            ""
+          ]
+        },
+        "location": {
+          "title": "S3/HDFS path where data should be stored to:",
+          "required": true,
+          "type": "string"
+        }
+      }
+    }
+  }
+}
