@@ -238,9 +238,9 @@ jsonform.fieldTemplate = function(inner) {
         '</div>' +
       '<% } %>' +
       '<% if (node.description) { %>' +
-        '<span class="help-block"><%= node.description %></span>' +
+        '<span class="form-text text-muted"><%= node.description %></span>' +
       '<% } %>' +
-      '<span class="help-block jsonform-errortext" style="display:none;"></span>' +
+      '<span class="form-text text-muted jsonform-errortext" style="display:none;"></span>' +
     '</div></div>';
 };
 
@@ -1161,7 +1161,7 @@ jsonform.elementTypes = {
     }
   },
   'help': {
-    'template':'<span class="help-block" style="padding-top:5px"><%= elt.helpvalue %></span>',
+    'template':'<span class="form-text text-muted" style="padding-top:5px"><%= elt.helpvalue %></span>',
     'fieldtemplate': true
   },
   'msg': {
