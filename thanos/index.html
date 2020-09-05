@@ -4,7 +4,9 @@
    <head>
       <meta charset="utf-8" />
       <title>Thanos JSON Generator</title>
-      <link rel="stylesheet" style="text/css" href="css/bootstrap.css" />
+      <link rel="stylesheet" style="text/css" href="css/bootstrap.min.css" />
+      <link rel="stylesheet" style="text/css" href="css/bootstrap.min.css.map" />
+      <link rel="stylesheet" style="text/css" href="css/custom.css" />
    </head>
 
    <body>
@@ -15,7 +17,7 @@
       </div>
       
       <div style="float:right; width:40%; margin-right:10px; margin-top:40px;">
-         <pre id="res"></pre>
+         <h6 id="res"></h6>
       </div>
       
       <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -36,8 +38,8 @@
         function generateForm(sourceJson, formJson){
           var onSubmit = {
             onSubmit: function (errors, values) {
-              $('#res').html('Result:<br/><br/>' +
-                JSON.stringify(values, null, 1));
+              $('#res').html('Result:<pre>' +
+                JSON.stringify(values, null, 1) + '</pre>');
               $('html, body').animate({
                 scrollTop: 0
               }, 'fast');
