@@ -37,12 +37,12 @@
             {
               "key": "options.header",
               "type": "radiobuttons",
-              "activeClass": "btn-success"
+              "activeClass": "btn-outline-success"
             },
             {
               "key": "options.inferschema",
               "type": "radiobuttons",
-              "activeClass": "btn-success"
+              "activeClass": "btn-outline-success"
             },
             "options.sep"
           ]
