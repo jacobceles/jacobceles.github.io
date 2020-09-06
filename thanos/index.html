@@ -35,12 +35,12 @@
       <script type="text/javascript" src="js/jsonform.js"></script>
       <script type="text/javascript">
 
-        $.getJSON('/json/source_components.json', function(sourceJson) {
+        $.getJSON('https://jacobcelestine.com/thanos/json/source_components.json', function(sourceJson) {
           getForm(sourceJson)
         });
 
         function getForm(sourceJson){
-           $.getJSON('/json/source_form.json', function(formJson) {
+           $.getJSON('https://jacobcelestine.com/thanos/json/source_form.json', function(formJson) {
              generateForm(sourceJson, formJson)
            });
         }
