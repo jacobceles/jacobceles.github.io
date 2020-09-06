@@ -21,9 +21,9 @@
       "description": "Accepts all spark supported file formats"
     },
     "repartition_num": {
-      "title": "Number of output files in directory:",
+      "title": "Number of partitons (repartition):",
       "type": "integer",
-      "description": "If given do not give coalesce_num"
+      "description": "If given do not give coalesce."
     },
     "repartition_cols": {
       "title": "Columns on which repartition can be applied.",
@@ -34,9 +34,9 @@
       }
     },
     "coalesce_num": {
-      "title": "Number of output files in directory:",
+      "title": "Number of files (coalesce):",
       "type": "integer",
-      "description": "If given do not give repartition_num."
+      "description": "If given do not give repartition."
     },
     "options": {
       "type": "object",
@@ -45,6 +45,12 @@
           "title": "Column to partition by:",
           "required": true,
           "type": "string"
+        },
+        "name": {
+          "title": "Name of dataframe to be registered:",
+          "required": true,
+          "type": "string",
+          "default": "target_df"
         },
         "mode": {
           "title": "Mode of write:",

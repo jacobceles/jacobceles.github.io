@@ -28,7 +28,7 @@
     "columns": {
       "title": "List of columns to be fetched.",
       "type": "array",
-      "description": "Optional. Leave blank for everything.",
+      "description": "Leave blank to fetch everything.",
       "items": {
         "type": "string",
         "title": "Column Name:"
@@ -37,7 +37,6 @@
     "handle_special_chars": {
       "title": "Should Thanos handle special characters?",
       "type": "string",
-      "default": "false",
       "enum": [
         "true",
         "false"
@@ -48,18 +47,19 @@
       "title": "Query:",
       "type": "textarea",
       "required": true,
-      "description": "The value for 'sharepoint_api' should be an API which returns results, not the site URL.<br/>e.g.: https://nike.sharepoint.com/teams/na6/aepi/_api/web/lists/getbytitle('Issue Management')/Items?$select=*"
+      "description": "The value for 'sharepoint_api' should be an API which returns results, not the site URL."
     },
     "query": {
       "title": "Query:",
       "type": "textarea",
-      "description": "Optional. Can be used to read data using complex SQLs."
+      "description": "Can be used to read data using complex SQLs."
     },
     "credentials": {
       "type": "object",
       "properties": {
         "env": {
           "title": "Environment:",
+          "default": "prod",
           "required": true,
           "type": "string"
         },
@@ -85,19 +85,16 @@
       "properties": {
         "url": {
           "title": "Provide complete JDBC URL:",
-          "description": "e.g.: jdbc:teradata://146.197.64.89/LOGMECH=LDAP,CHARSET=UTF8,MAYBENULL=ON",
           "required": true,
           "type": "string"
         },
         "driver": {
           "title": "Driver for JDBC connection:",
-          "description": "e.g.: com.teradata.jdbc.TeraDriver",
           "required": true,
           "type": "string"
         },
         "dbtable": {
           "title": "Table name or SQL query:",
-          "description": "e.g.: EIS.SO_Itm for table, or select * from where dept = 10 for query option.",
           "required": true,
           "type": "textarea"
         },
@@ -140,7 +137,6 @@
         },
         "custom_schema": {
           "title": "Custom schema to use for reading data from JDBC connectors:",
-          "description": "e.g.: id DECIMAL(38, 0), name STRING",
           "type": "textarea"
         },
         "push_down_Predicate": {
@@ -177,26 +173,24 @@
         },
         "last_value": {
           "title": "Incremental Options:",
-          "description": "Last value extracted in previous run.<br/>Used in filter condition as 'where checkColumn > lastValue'.",
+          "description": "Last value extracted in previous run.",
           "type": "string"
         }
       }
     },
     "options": {
       "type": "object",
-      "description": "Some of the options are Mandatory and some are optional.<br/>Optional value default as per PySpark doc.",
+      "description": "Some of the options are Mandatory and some are Optional.<br/>Optional value default as per PySpark doc.",
       "properties": {
         "format": {
           "title": "File format:",
           "required": true,
-          "type": "string",
-          "description": "e.g.: csv"
+          "type": "string"
         },
         "path": {
           "title": "Path to source:",
           "required": true,
-          "type": "string",
-          "description": "e.g.: s3://ngap--eda-common--prod--us-east-1/dev/thanos-framework/rchal4/tests/data/emp.csv"
+          "type": "string"
         },
         "header": {
           "title": "Should the first row be read as header?",
@@ -217,8 +211,7 @@
         "sep": {
           "title": "Which character is used as seperator for the data?",
           "type": "string",
-          "default": ",",
-          "description": "Default value is comma(,)."
+          "default": ","
         }
       }
     }
