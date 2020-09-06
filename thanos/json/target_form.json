@@ -86,7 +86,7 @@
     },
     {
       "type": "submit",
-      "title": "Generate JSON!"
+      "title": "Download JSON!"
     }
   ]
 }

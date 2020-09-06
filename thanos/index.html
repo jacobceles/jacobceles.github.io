@@ -18,7 +18,6 @@
                       <h1 class="display-4 py-2 text-truncate text-center">THANOS</h1>
                       <div class="px-2">
                           <form>
-                            <h6 id="res"></h6>
                           </form>
                       </div>
                   </div>
@@ -48,11 +47,15 @@
         function generateForm(sourceJson, formJson){
           var onSubmit = {
             onSubmit: function (errors, values) {
-              $('#res').html('Result:<pre>' +
-                JSON.stringify(values, null, 1) + '</pre>');
-              $('html, body').animate({
-                scrollTop: 0
-              }, 'fast');
+              var dataStr = "data:text/json;charset=utf-8," + 
+                            encodeURIComponent(JSON.stringify(values, null, 1));
+              var downloadAnchorNode = document.createElement('a');
+              
+              downloadAnchorNode.setAttribute("href",     dataStr);
+              downloadAnchorNode.setAttribute("download", "thanos_source.json");
+              document.body.appendChild(downloadAnchorNode); // required for firefox
+              downloadAnchorNode.click();
+              downloadAnchorNode.remove();
             }
           }
           
