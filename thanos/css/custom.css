@@ -807,6 +807,10 @@
 
 
 /* Buttons */
+.btn-primary {
+  margin:auto;
+  display:block;
+}
 .btn-default {
     color: #333;
     background-color: #fff;
@@ -829,6 +833,9 @@
 }
 
 /* Drop down */
+.expandable > legend {
+  text-align: center;
+}
 .expandable > legend:before {
   content: '\25B8';
   padding-right: 5px;
@@ -843,7 +850,6 @@
                 linear-gradient(to top, #A788A8, #306493, #1B2B42);
     background-size: cover;
     height: 100%;
-    text-align: center;
     display: flex;
     align-items: center;
     position: relative;
@@ -876,6 +882,7 @@ form:before {
 
 .jsonform-hasrequired:after {
   content: '* Required field';
+  text-align: center;
   display: block;
   color: red;
   padding-top: 1em;

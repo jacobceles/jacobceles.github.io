@@ -1,217 +1,226 @@
 {
   "schema": {
-    "type": {
-      "title": "Which source would you like to ingest?",
-      "type": "string",
-      "enum": [
-        "jdbc",
-        "file",
-        "hive",
-        "sharepoint"
-      ]
-    },
-    "name": {
-      "title": "Name of the result data frame:",
-      "required": true,
-      "type": "string"
-    },
-    "database": {
-      "title": "Database name:",
-      "required": true,
-      "type": "string"
-    },
-    "table": {
-      "title": "Table name:",
-      "required": true,
-      "type": "string"
-    },
-    "columns": {
-      "title": "List of columns to be fetched.",
+    "source": {
       "type": "array",
-      "description": "Leave blank to fetch everything.",
       "items": {
-        "type": "string",
-        "title": "Column Name:"
-      }
-    },
-    "handle_special_chars": {
-      "title": "Should Thanos handle special characters?",
-      "type": "string",
-      "enum": [
-        "true",
-        "false"
-      ],
-      "description": "Special characters means non-ascii characters."
-    },
-    "sharepoint_api": {
-      "title": "Query:",
-      "type": "textarea",
-      "required": true,
-      "description": "The value for 'sharepoint_api' should be an API which returns results, not the site URL."
-    },
-    "query": {
-      "title": "Query:",
-      "type": "textarea",
-      "description": "Can be used to read data using complex SQLs."
-    },
-    "credentials": {
-      "type": "object",
-      "properties": {
-        "env": {
-          "title": "Environment:",
-          "default": "prod",
-          "required": true,
-          "type": "string"
-        },
-        "cerberus_path": {
-          "title": "Cerberus path for key/password:",
-          "required": true,
-          "type": "string"
-        },
-        "cerberus_username": {
-          "title": "Cerberus key for username:",
-          "required": true,
-          "type": "string"
-        },
-        "cerberus_password": {
-          "title": "Cerberus key for password:",
-          "required": true,
-          "type": "string"
-        }
-      }
-    },
-    "jdbc_options": {
-      "type": "object",
-      "properties": {
-        "url": {
-          "title": "Provide complete JDBC URL:",
-          "required": true,
-          "type": "string"
-        },
-        "driver": {
-          "title": "Driver for JDBC connection:",
-          "required": true,
-          "type": "string"
-        },
-        "dbtable": {
-          "title": "Table name or SQL query:",
-          "required": true,
-          "type": "textarea"
-        },
-        "partition_column": {
-          "title": "Partition column(s) [Do not provide if row_num_column is given]:",
-          "description": "Either partition_column or row_num_column must be given.",
-          "type": "array",
-          "items": {
-            "title": "Column name:",
-            "description": "Must be numeric, date, or timestamp data type.<br/>If more than one column is given, it should be valid composite key.",
+        "type": "object",
+        "title": "Sources",
+        "properties": {
+          "type": {
+            "title": "Which source would you like to ingest?",
+            "type": "string",
+            "enum": [
+              "jdbc",
+              "file",
+              "hive",
+              "sharepoint"
+            ]
+          },
+          "name": {
+            "title": "Name of the result data frame:",
+            "required": true,
             "type": "string"
-          }
-        },
-        "row_num_column": {
-          "title": "Row number column(s) [Do not provide if partition_column is given]:",
-          "description": "Either partition_column or row_num_column must be given.",
-          "type": "array",
-          "items": {
-            "title": "Column name:",
-            "description": "When no PK or CPK is available, provide column(s) close to PK or CPK.",
+          },
+          "database": {
+            "title": "Database name:",
+            "required": true,
             "type": "string"
+          },
+          "table": {
+            "title": "Table name:",
+            "required": true,
+            "type": "string"
+          },
+          "columns": {
+            "title": "List of columns to be fetched.",
+            "type": "array",
+            "description": "Leave blank to fetch everything.",
+            "items": {
+              "type": "string",
+              "title": "Column Name:"
+            }
+          },
+          "handle_special_chars": {
+            "title": "Should Thanos handle special characters?",
+            "type": "string",
+            "enum": [
+              "true",
+              "false"
+            ],
+            "description": "Special characters means non-ascii characters."
+          },
+          "sharepoint_api": {
+            "title": "Query:",
+            "type": "textarea",
+            "required": true,
+            "description": "The value for 'sharepoint_api' should be an API which returns results, not the site URL."
+          },
+          "query": {
+            "title": "Query:",
+            "type": "textarea",
+            "description": "Can be used to read data using complex SQLs."
+          },
+          "credentials": {
+            "type": "object",
+            "properties": {
+              "env": {
+                "title": "Environment:",
+                "default": "prod",
+                "required": true,
+                "type": "string"
+              },
+              "cerberus_path": {
+                "title": "Cerberus path for key/password:",
+                "required": true,
+                "type": "string"
+              },
+              "cerberus_username": {
+                "title": "Cerberus key for username:",
+                "required": true,
+                "type": "string"
+              },
+              "cerberus_password": {
+                "title": "Cerberus key for password:",
+                "required": true,
+                "type": "string"
+              }
+            }
+          },
+          "jdbc_options": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "title": "Provide complete JDBC URL:",
+                "required": true,
+                "type": "string"
+              },
+              "driver": {
+                "title": "Driver for JDBC connection:",
+                "required": true,
+                "type": "string"
+              },
+              "dbtable": {
+                "title": "Table name or SQL query:",
+                "required": true,
+                "type": "textarea"
+              },
+              "partition_column": {
+                "title": "Partition column(s) [Do not provide if row_num_column is given]:",
+                "description": "Either partition_column or row_num_column must be given.",
+                "type": "array",
+                "items": {
+                  "title": "Column name:",
+                  "description": "Must be numeric, date, or timestamp data type.<br/>If more than one column is given, it should be valid composite key.",
+                  "type": "string"
+                }
+              },
+              "row_num_column": {
+                "title": "Row number column(s) [Do not provide if partition_column is given]:",
+                "description": "Either partition_column or row_num_column must be given.",
+                "type": "array",
+                "items": {
+                  "title": "Column name:",
+                  "description": "When no PK or CPK is available, provide column(s) close to PK or CPK.",
+                  "type": "string"
+                }
+              },
+              "num_partitions": {
+                "title": "Number of Partitions:",
+                "default": 5,
+                "description": "Default value will be derived as MIN of (count of rows / 50000) and 50.",
+                "type": "integer"
+              },
+              "query_timeout": {
+                "title": "Query timeout [in seconds]:",
+                "description": "Default is zero, which means no limit.",
+                "type": "string"
+              },
+              "fetch_size": {
+                "title": "Fetch Size:",
+                "default": "1000",
+                "description": "Default is 1000.",
+                "type": "string"
+              },
+              "custom_schema": {
+                "title": "Custom schema to use for reading data from JDBC connectors:",
+                "type": "textarea"
+              },
+              "push_down_Predicate": {
+                "title": "Pushdown predicate :",
+                "description": "Default is true.",
+                "type": "string"
+              }
+            }
+          },
+          "inc_options": {
+            "title": "Incremental Options:",
+            "description": "Required only for incremental use case.",
+            "type": "object",
+            "properties": {
+              "source": {
+                "title": "Incremental Options:",
+                "description": "If given, all the next 3 fields are mandatory.",
+                "type": "string",
+                "enum": [
+                  "hive",
+                  "data",
+                  ""
+                ]
+              },
+              "operator": {
+                "title": "Comparison Operator:",
+                "description": "Default is '>'.<br/>Can be >=, =, < etc to be used in where clause of JDBC query.",
+                "type": "string"
+              },
+              "check_column": {
+                "title": "Column name:",
+                "description": "Column on which filter will be applied on.",
+                "type": "string"
+              },
+              "last_value": {
+                "title": "Incremental Options:",
+                "description": "Last value extracted in previous run.",
+                "type": "string"
+              }
+            }
+          },
+          "options": {
+            "type": "object",
+            "description": "Some of the options are Mandatory and some are Optional.<br/>Optional value default as per PySpark doc.",
+            "properties": {
+              "format": {
+                "title": "File format:",
+                "required": true,
+                "type": "string"
+              },
+              "path": {
+                "title": "Path to source:",
+                "required": true,
+                "type": "string"
+              },
+              "header": {
+                "title": "Should the first row be read as header?",
+                "type": "string",
+                "enum": [
+                  "true",
+                  "false"
+                ]
+              },
+              "inferschema": {
+                "title": "Should Thanos try to infer the schema?",
+                "type": "string",
+                "enum": [
+                  "true",
+                  "false"
+                ]
+              },
+              "sep": {
+                "title": "Which character is used as seperator for the data?",
+                "type": "string",
+                "default": ","
+              }
+            }
           }
-        },
-        "num_partitions": {
-          "title": "Number of Partitions:",
-          "default": 5,
-          "description": "Default value will be derived as MIN of (count of rows / 50000) and 50.",
-          "type": "integer"
-        },
-        "query_timeout": {
-          "title": "Query timeout [in seconds]:",
-          "description": "Default is zero, which means no limit.",
-          "type": "string"
-        },
-        "fetch_size": {
-          "title": "Fetch Size:",
-          "default": "1000",
-          "description": "Default is 1000.",
-          "type": "string"
-        },
-        "custom_schema": {
-          "title": "Custom schema to use for reading data from JDBC connectors:",
-          "type": "textarea"
-        },
-        "push_down_Predicate": {
-          "title": "Pushdown predicate :",
-          "description": "Default is true.",
-          "type": "string"
-        }
-      }
-    },
-    "inc_options": {
-      "title": "Incremental Options:",
-      "description": "Required only for incremental use case.",
-      "type": "object",
-      "properties": {
-        "source": {
-          "title": "Incremental Options:",
-          "description": "If given, all the next 3 fields are mandatory.",
-          "type": "string",
-          "enum": [
-            "hive",
-            "data",
-            ""
-          ]
-        },
-        "operator": {
-          "title": "Comparison Operator:",
-          "description": "Default is '>'.<br/>Can be >=, =, < etc to be used in where clause of JDBC query.",
-          "type": "string"
-        },
-        "check_column": {
-          "title": "Column name:",
-          "description": "Column on which filter will be applied on.",
-          "type": "string"
-        },
-        "last_value": {
-          "title": "Incremental Options:",
-          "description": "Last value extracted in previous run.",
-          "type": "string"
-        }
-      }
-    },
-    "options": {
-      "type": "object",
-      "description": "Some of the options are Mandatory and some are Optional.<br/>Optional value default as per PySpark doc.",
-      "properties": {
-        "format": {
-          "title": "File format:",
-          "required": true,
-          "type": "string"
-        },
-        "path": {
-          "title": "Path to source:",
-          "required": true,
-          "type": "string"
-        },
-        "header": {
-          "title": "Should the first row be read as header?",
-          "type": "string",
-          "enum": [
-            "true",
-            "false"
-          ]
-        },
-        "inferschema": {
-          "title": "Should Thanos try to infer the schema?",
-          "type": "string",
-          "enum": [
-            "true",
-            "false"
-          ]
-        },
-        "sep": {
-          "title": "Which character is used as seperator for the data?",
-          "type": "string",
-          "default": ","
         }
       }
     }

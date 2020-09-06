@@ -1,84 +1,88 @@
 {
   "form": [
     {
-      "type": "selectfieldset",
-      "key": "type",
-      "items": [
-        {
-          "type": "section",
-          "items": [
-            {
-              "key": "name",
-              "placeholder": "snp_rawmatfctysuplypln_v"
-            },
-            "format",
-            "repartition_num",
-            {
-              "title": "Columns on which repartition can be applied.",
-              "type": "array",
-              "items": [
-                "repartition_cols[]"
-              ]
-            },
-            "coalesce_num",
-            {
-              "type": "fieldset",
-              "title": "DataFrameWriter Options",
-              "expandable": true,
-              "items": [
-                {
-                  "key": "options.partitionBy",
-                  "placeholder": "RefSNP_EngnRunDt"
-                },
-                "options.mode",
-                {
-                  "key": "options.location",
-                  "placeholder": "s3://ndf-gsm-dev/dev/thanos/snp_rawmatfctysuplypln_v/"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "section",
-          "items": [
-            {
-              "key": "name",
-              "placeholder": "snp_rawmatfctysuplypln_v"
-            },
-            "format",
-            "repartition_num",
-            {
-              "title": "Columns on which repartition can be applied.",
-              "type": "array",
-              "items": [
-                "repartition_cols[]"
-              ]
-            },
-            "coalesce_num",
-            {
-              "type": "fieldset",
-              "title": "DataFrameWriter Options",
-              "expandable": true,
-              "items": [
-                {
-                  "key": "options.partitionBy",
-                  "placeholder": "RefSNP_EngnRunDt"
-                },
-                {
-                  "key": "options.name",
-                  "placeholder": "thanos.snp_rawmatfctysuplypln_v_filtered"
-                },
-                "options.mode",
-                {
-                  "key": "options.location",
-                  "placeholder": "s3://ndf-gsm-dev/dev/thanos/snp_rawmatfctysuplypln_v/"
-                }
-              ]
-            }
-          ]
-        }
-      ]
+      "title": "Target",
+      "type": "array",
+      "items": {
+        "type": "selectfieldset",
+        "key": "target[].type",
+        "items": [
+          {
+            "type": "section",
+            "items": [
+              {
+                "key": "target[].name",
+                "placeholder": "snp_rawmatfctysuplypln_v"
+              },
+              "target[].format",
+              "target[].repartition_num",
+              {
+                "title": "Columns on which repartition can be applied.",
+                "type": "array",
+                "items": [
+                  "target[].repartition_cols[]"
+                ]
+              },
+              "target[].coalesce_num",
+              {
+                "type": "fieldset",
+                "title": "DataFrameWriter Options",
+                "expandable": true,
+                "items": [
+                  {
+                    "key": "target[].options.partitionBy",
+                    "placeholder": "RefSNP_EngnRunDt"
+                  },
+                  "target[].options.mode",
+                  {
+                    "key": "target[].options.location",
+                    "placeholder": "s3://ndf-gsm-dev/dev/thanos/snp_rawmatfctysuplypln_v/"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "items": [
+              {
+                "key": "target[].name",
+                "placeholder": "snp_rawmatfctysuplypln_v"
+              },
+              "target[].format",
+              "target[].repartition_num",
+              {
+                "title": "Columns on which repartition can be applied.",
+                "type": "array",
+                "items": [
+                  "target[].repartition_cols[]"
+                ]
+              },
+              "target[].coalesce_num",
+              {
+                "type": "fieldset",
+                "title": "DataFrameWriter Options",
+                "expandable": true,
+                "items": [
+                  {
+                    "key": "target[].options.partitionBy",
+                    "placeholder": "RefSNP_EngnRunDt"
+                  },
+                  {
+                    "key": "target[].options.name",
+                    "placeholder": "thanos.snp_rawmatfctysuplypln_v_filtered"
+                  },
+                  "target[].options.mode",
+                  {
+                    "key": "target[].options.location",
+                    "placeholder": "s3://ndf-gsm-dev/dev/thanos/snp_rawmatfctysuplypln_v/"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "type": "submit",

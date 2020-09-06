@@ -1,146 +1,149 @@
 {
   "form": [
     {
-      "type": "selectfieldset",
-      "key": "type",
-      "items": [
-        {
-          "type": "section",
-          "items": [
-            {
-              "key": "name",
-              "placeholder": "thanos_raw"
-            },
-            {
-              "type": "fieldset",
-              "title": "Credentials",
-              "key": "credentials",
-              "expandable": true
-            },
-            {
-              "type": "fieldset",
-              "title": "JDBC Options",
-              "expandable": true,
-              "items": [
-                {
-                  "key": "jdbc_options.url",
-                  "placeholder": "jdbc:teradata://146.197.64.89/LOGMECH=LDAP,CHARSET=UTF8,MAYBENULL=ON"
-                },
-                {
-                  "key": "jdbc_options.driver",
-                  "placeholder": "com.teradata.jdbc.TeraDriver"
-                },
-                
-                {
-                  "key": "jdbc_options.dbtable",
-                  "placeholder": "EIS.SO_Itm \nOR\nSELECT * FROM EIS.SO_Itm WHERE dept = 10"
-                },
-                "jdbc_options.partition_column",
-                "jdbc_options.row_num_column",
-                "jdbc_options.num_partitions",
-                "jdbc_options.query_timeout",
-                "jdbc_options.fetch_size",
-                {
-                  "key": "jdbc_options.custom_schema",
-                  "placeholder": "id DECIMAL(38, 0), name STRING"
-                },
-                "jdbc_options.push_down_Predicate"
-              ]
-            },
-            {
-              "type": "fieldset",
-              "title": "Incremental Options",
-              "expandable": true,
-              "items": [
-                "inc_options.source",
-                {
-                  "key": "inc_options.operator",
-                  "placeholder": ">"
-                },
-                "inc_options.check_column",
-                {
-                  "key": "inc_options.last_value",
-                  "placeholder": "where checkColumn > lastValue"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "section",
-          "items": [
-            {
-              "key": "name",
-              "placeholder": "thanos_raw"
-            },
-            {
-              "key": "options.format",
-              "placeholder": "csv"
-            },
-            {
-              "key": "options.path",
-              "placeholder": "s3://ngap--eda-common--prod--us-east-1/dev/thanos-framework/rchal4/tests/data/emp.csv"
-            },
-            {
-              "key": "options.header",
-              "type": "radiobuttons",
-              "activeClass": "btn-outline-success"
-            },
-            {
-              "key": "options.inferschema",
-              "type": "radiobuttons",
-              "activeClass": "btn-outline-success"
-            },
-            "options.sep"
-          ]
-        },
-        {
-          "type": "section",
-          "items": [
-            {
-              "key": "name",
-              "placeholder": "thanos_raw"
-            },
-            {
-              "key": "database",
-              "placeholder": "dev_gsm_foundation"
-            },
-            {
-              "key": "table",
-              "placeholder": "thanos_raw"
-            },
-            "columns",
-            {
-              "key": "query",
-              "placeholder": "SELECT * FROM EIS.SO_Itm WHERE dept = 10"
-            }
-          ]
-        },
-        {
-          "type": "section",
-          "items": [
-            {
-              "key": "name",
-              "placeholder": "thanos_raw"
-            },
-            {
-              "key": "handle_special_chars",
-              "type": "radiobuttons",
-              "activeClass": "btn-outline-success"
-            },
-            {
-              "key": "sharepoint_api",
-              "placeholder": "https://nike.sharepoint.com/teams/na6/aepi/_api/web/lists/getbytitle('Issue Management')/Items?$select=*"
-            },
-            {
-              "type": "fieldset",
-              "title": "Credentials",
-              "key": "credentials",
-              "expandable": true
-            }
-          ]
-        }
-      ]
+      "title": "Sources",
+      "type": "array",
+      "items": {
+        "type": "selectfieldset",
+        "key": "source[].type",
+        "items": [
+          {
+            "type": "section",
+            "items": [
+              {
+                "key": "source[].name",
+                "placeholder": "thanos_raw"
+              },
+              {
+                "type": "fieldset",
+                "title": "Credentials",
+                "key": "source[].credentials",
+                "expandable": true
+              },
+              {
+                "type": "fieldset",
+                "title": "JDBC Options",
+                "expandable": true,
+                "items": [
+                  {
+                    "key": "source[].jdbc_options.url",
+                    "placeholder": "jdbc:teradata://146.197.64.89/LOGMECH=LDAP,CHARSET=UTF8,MAYBENULL=ON"
+                  },
+                  {
+                    "key": "source[].jdbc_options.driver",
+                    "placeholder": "com.teradata.jdbc.TeraDriver"
+                  },
+                  {
+                    "key": "source[].jdbc_options.dbtable",
+                    "placeholder": "EIS.SO_Itm \nOR\nSELECT * FROM EIS.SO_Itm WHERE dept = 10"
+                  },
+                  "source[].jdbc_options.partition_column",
+                  "source[].jdbc_options.row_num_column",
+                  "source[].jdbc_options.num_partitions",
+                  "source[].jdbc_options.query_timeout",
+                  "source[].jdbc_options.fetch_size",
+                  {
+                    "key": "source[].jdbc_options.custom_schema",
+                    "placeholder": "id DECIMAL(38, 0), name STRING"
+                  },
+                  "source[].jdbc_options.push_down_Predicate"
+                ]
+              },
+              {
+                "type": "fieldset",
+                "title": "Incremental Options",
+                "expandable": true,
+                "items": [
+                  "source[].inc_options.source",
+                  {
+                    "key": "source[].inc_options.operator",
+                    "placeholder": ">"
+                  },
+                  "source[].inc_options.check_column",
+                  {
+                    "key": "source[].inc_options.last_value",
+                    "placeholder": "where checkColumn > lastValue"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "items": [
+              {
+                "key": "source[].name",
+                "placeholder": "thanos_raw"
+              },
+              {
+                "key": "source[].options.format",
+                "placeholder": "csv"
+              },
+              {
+                "key": "source[].options.path",
+                "placeholder": "s3://ngap--eda-common--prod--us-east-1/dev/thanos-framework/rchal4/tests/data/emp.csv"
+              },
+              {
+                "key": "source[].options.header",
+                "type": "radiobuttons",
+                "activeClass": "btn-outline-success"
+              },
+              {
+                "key": "source[].options.inferschema",
+                "type": "radiobuttons",
+                "activeClass": "btn-outline-success"
+              },
+              "source[].options.sep"
+            ]
+          },
+          {
+            "type": "section",
+            "items": [
+              {
+                "key": "source[].name",
+                "placeholder": "thanos_raw"
+              },
+              {
+                "key": "source[].database",
+                "placeholder": "dev_gsm_foundation"
+              },
+              {
+                "key": "source[].table",
+                "placeholder": "thanos_raw"
+              },
+              "source[].columns",
+              {
+                "key": "source[].query",
+                "placeholder": "SELECT * FROM EIS.SO_Itm WHERE dept = 10"
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "items": [
+              {
+                "key": "source[].name",
+                "placeholder": "thanos_raw"
+              },
+              {
+                "key": "source[].handle_special_chars",
+                "type": "radiobuttons",
+                "activeClass": "btn-outline-success"
+              },
+              {
+                "key": "source[].sharepoint_api",
+                "placeholder": "https://nike.sharepoint.com/teams/na6/aepi/_api/web/lists/getbytitle('Issue Management')/Items?$select=*"
+              },
+              {
+                "type": "fieldset",
+                "title": "Credentials",
+                "key": "source[].credentials",
+                "expandable": true
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "type": "submit",
