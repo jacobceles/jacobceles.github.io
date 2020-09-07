@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-   
    <head>
       <title>Thanos JSON Generator</title>
       <meta charset="utf-8" />
@@ -8,24 +7,44 @@
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
       <link rel="stylesheet" style="text/css" href="css/custom.css" />
    </head>
-
    <body>
       <section id="cover" class="min-vh-100">
-        <div id="cover-caption">
-          <div class="container">
-              <div class="row text-white">
+         <div id="cover-caption">
+            <div class="container">
+               <div class="row text-white">
                   <div class="col-xl-12 col-lg-6 col-md-8 col-sm-10 mx-auto form p-4">
-                      <h1 class="display-4 py-2 text-truncate text-center">THANOS</h1>
-                      <div class="px-2">
-                          <form>
-                          </form>
-                      </div>
-                  </div>
-              </div>
-          </div>
-        </div>
-      </section>
+                     <h1 class="display-4 py-2 text-truncate text-center">THANOS</h1>
+                     <div class="px-2">
 
+                      <!-- Nav tabs -->
+                      <ul class="nav nav-tabs nav-justified" role="tablist">
+                        <li class="nav-item">
+                          <a class="nav-link active" data-toggle="tab" href="#sources">Sources</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" data-toggle="tab" href="#transformations">Transformations</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" data-toggle="tab" href="#targets">Targets</a>
+                        </li>
+                      </ul>
+
+                      <!-- Tab panes -->
+                      <div class="tab-content">
+                        <form class="container tab-pane active" id="sources" >
+                        </form>
+                        <form class="container tab-pane fade" id="transformations">
+                        </form>
+                        <form class="container tab-pane fade" id="targets">
+                        </form>
+                      </div>
+
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
       <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
       <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
@@ -34,41 +53,52 @@
       <script type="text/javascript" src="js/jsonform.js"></script>
       <script type="text/javascript">
 
-        $.getJSON('https://jacobcelestine.com/thanos/json/source_components.json', function(sourceJson) {
-          getForm(sourceJson)
-        });
+        $.getJSON('https://jacobcelestine.com/thanos/json/source_components.json', function (sourceComponents) {
+            getSourceForm(sourceComponents)
+          });
 
-        function getForm(sourceJson){
-           $.getJSON('https://jacobcelestine.com/thanos/json/source_form.json', function(formJson) {
-             generateForm(sourceJson, formJson)
-           });
+        function getSourceForm(sourceComponents) {
+          $.getJSON('https://jacobcelestine.com/thanos/json/source_form.json', function (sourceForm) {
+            generateForm(sourceComponents, sourceForm, "sources")
+          });
         }
 
-        function generateForm(sourceJson, formJson){
+        $.getJSON('https://jacobcelestine.com/thanos/json/target_components.json', function (targetComponents) {
+            getTargetForm(targetComponents)
+          });
+
+        function getTargetForm(targetComponents) {
+          $.getJSON('https://jacobcelestine.com/thanos/json/target_form.json', function (targetForm) {
+            generateForm(targetComponents, targetForm, "targets")
+          });
+        }
+
+        function generateForm(components, form, tabId) {
           var onSubmit = {
             onSubmit: function (errors, values) {
-              var dataStr = "data:text/json;charset=utf-8," + 
-                            encodeURIComponent(JSON.stringify(values, null, 1));
+              var dataStr = "data:text/json;charset=utf-8," +
+                encodeURIComponent(JSON.stringify(values, null, 1));
+              console.log(dataStr)
               var downloadAnchorNode = document.createElement('a');
-              
-              downloadAnchorNode.setAttribute("href",     dataStr);
-              downloadAnchorNode.setAttribute("download", "thanos_source.json");
+
+              downloadAnchorNode.setAttribute("href", dataStr);
+              downloadAnchorNode.setAttribute("download", "thanos_" + tabId + ".json");
               document.body.appendChild(downloadAnchorNode); // required for firefox
               downloadAnchorNode.click();
               downloadAnchorNode.remove();
             }
           }
-          
-          var data={
-            ...sourceJson,...formJson,...onSubmit
-          }
 
-          $('form').jsonForm(
+          var data = {
+            ...components,
+            ...form,
+            ...onSubmit
+          }
+          console.log(data)
+          $("#" + tabId).jsonForm(
             data
           );
         }
-         
       </script>
    </body>
-
 </html>
