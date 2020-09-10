@@ -1,7 +1,7 @@
 {
   "form": [
     {
-      "title": "Target",
+      "title": "Targets",
       "type": "array",
       "items": {
         "type": "selectfieldset",

@@ -53,23 +53,33 @@
       <script type="text/javascript" src="js/jsonform.js"></script>
       <script type="text/javascript">
 
-        $.getJSON('https://jacobcelestine.com/thanos/json/source_components.json', function (sourceComponents) {
+        $.getJSON('https://jacobcelestine.com/thanos/json/sources_components.json', function (sourceComponents) {
             getSourceForm(sourceComponents)
           });
 
         function getSourceForm(sourceComponents) {
-          $.getJSON('https://jacobcelestine.com/thanos/json/source_form.json', function (sourceForm) {
+          $.getJSON('https://jacobcelestine.com/thanos/json/sources_form.json', function (sourceForm) {
             generateForm(sourceComponents, sourceForm, "sources")
           });
         }
 
-        $.getJSON('https://jacobcelestine.com/thanos/json/target_components.json', function (targetComponents) {
+        $.getJSON('https://jacobcelestine.com/thanos/json/targets_components.json', function (targetComponents) {
             getTargetForm(targetComponents)
           });
 
         function getTargetForm(targetComponents) {
-          $.getJSON('https://jacobcelestine.com/thanos/json/target_form.json', function (targetForm) {
+          $.getJSON('https://jacobcelestine.com/thanos/json/targets_form.json', function (targetForm) {
             generateForm(targetComponents, targetForm, "targets")
+          });
+        }
+
+        $.getJSON('https://jacobcelestine.com/thanos/json/transformations_components.json', function (transformationComponents) {
+            getTransformationForm(transformationComponents)
+          });
+
+        function getTransformationForm(transformationComponents) {
+          $.getJSON('https://jacobcelestine.com/thanos/json/transformations_form.json', function (targetForm) {
+            generateForm(transformationComponents, transformationForm, "transformations")
           });
         }
 

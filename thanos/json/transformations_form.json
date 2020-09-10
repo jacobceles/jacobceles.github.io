@@ -1,0 +1,38 @@
+{
+  "form": [
+    {
+      "type": "array",
+      "items": {
+        "type": "section",
+        "items": [
+          "transformation[].name",
+          "transformation[].source",
+          {
+            "key": "transformation[].rename_space_cols",
+            "type": "radiobuttons",
+            "activeClass": "btn-outline-success"
+          },
+          {
+            "key": "transformation[].null_string_to_null_type",
+            "type": "radiobuttons",
+            "activeClass": "btn-outline-success"
+          },
+          {
+            "key": "transformation[].trim_string_values",
+            "type": "radiobuttons",
+            "activeClass": "btn-outline-success"
+          },
+          "transformation[].remove_html_tags",
+          {
+            "key": "transformation[].rename_columns",
+            "placeholder": "\"dept_no\": \"department_number\",\n\"job\": \"job_name\""
+          }
+        ]
+      }
+    },
+    {
+      "type": "submit",
+      "value": "Submit"
+    }
+  ]
+}
