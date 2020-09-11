@@ -25,7 +25,15 @@
           "transformation[].remove_html_tags",
           {
             "key": "transformation[].rename_columns",
-            "placeholder": "\"dept_no\": \"department_number\",\n\"job\": \"job_name\""
+            "placeholder": "{\n\"dept_no\": \"department_number\",\n\"job\": \"job_name\"\n}"
+          },
+          {
+            "key": "transformation[].type_cast",
+            "placeholder": "{\n\"empno\": \"int\",\n\"job_id\": \"string\"\n}"
+          },
+          {
+            "key": "transformation[].add_cols",
+            "placeholder": "{\n\"created_timestamp\": \"2020-09-11T11:37:43+00:00\",\n\"job_run_id\": \"1599824263\"\n}"
           }
         ]
       }

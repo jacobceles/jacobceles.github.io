@@ -55,8 +55,18 @@
           },
           "rename_columns": {
             "title": "Columns to be renamed:",
-            "type": "textarea",
-            "description": "Seperated by comma as shown in exampl"
+            "type": "object",
+            "description": "Format should follow as in example.<br/>If duplicate keys or values are found, will take the last one defined."
+          },
+          "type_cast": {
+            "title": "Columns to be casted:",
+            "type": "object",
+            "description": "Format should follow as in example.<br/>If duplicate keys or values are found, will take the last one defined."
+          },
+          "add_cols": {
+            "title": "Columns to be added:",
+            "type": "object",
+            "description": "Format should follow as in example.<br/>If duplicate keys or values are found, will take the last one defined."
           }
         }
       }
