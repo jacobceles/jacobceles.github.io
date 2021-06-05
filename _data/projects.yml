@@ -20,7 +20,7 @@
 - project :
     name: Micro Stories
     tools: [android, kotlin, php]
-    image: /assets/img/micro+_stories.png
+    image: /assets/img/micro_stories.png
     description: A community of like minded story tellers.
     external_url: https://play.google.com/store/apps/details?id=com.appsoflife.mcostories
 
