@@ -13,17 +13,17 @@
     external_url: https://play.google.com/store/apps/details?id=com.quizgamesapps.ultimatequizapp
     
 - project :
-    name: Using SQL to query MongoDB, Redshift and MySQL 
-    tools: [python, flask, html, css]
-    description: A flask based web application which uses python and JDBC to establish connection with and query Redshift, SQL, and MongoDB.
-    external_url: https://github.com/jacobceles/CS527
-    
-- project :
     name: Micro Stories
     tools: [android, kotlin, php]
     image: /assets/img/micro_stories.png
     description: A community of like minded story tellers.
     external_url: https://play.google.com/store/apps/details?id=com.appsoflife.mcostories
+    
+- project :
+    name: Using SQL to query MongoDB, Redshift and MySQL 
+    tools: [python, flask, html, css]
+    description: A flask based web application which uses python and JDBC to establish connection with and query Redshift, SQL, and MongoDB.
+    external_url: https://github.com/jacobceles/CS527
 
 - project :
     name: Implementation of Simplex Algorithm
