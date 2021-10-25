@@ -30,7 +30,7 @@
     name: App De`Vitae
     tools: [android, java]
     image: /assets/img/app_de_vitae.png
-    description: An application which acts as a fitness assistant, by monitoring parameters of the user and his diet. Features include medicine reminder, calorie calculator, real time diet menu generator, analysis and much more.
+    description: Fitness assistant which monitors the health of a user, and creates a diet menu which updates real-time. Other features include medicine reminder, calorie calculator, health reports and much more.
 
 - project :
     name: Autovia
