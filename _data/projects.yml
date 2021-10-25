@@ -18,13 +18,13 @@
     image: /assets/img/micro_stories.png
     description: A community of like minded story tellers.
     external_url: https://play.google.com/store/apps/details?id=com.appsoflife.mcostories
-
+    
 - project :
-    name: Chicago Taxi Trips Streaming Analysis
-    tools: [spark-structured-streaming,pyspark,spark-sql,flask,python,html,css,javascript]
-    image: /assets/img/chicago_taxi_trips_streaming_analysis.jpg
-    description: Analyzing the infamous Chicago City Taxi Trips dataset using Spark Structured Streaming, along with a real time dashboard for reporting the metrics.
-    external_url: https://github.com/jacobceles/ChicagoTaxiTrips-SparkStreaming-RealTimeDashboard
+    name: Multi Database Querier
+    tools: [python, flask, html, css, mysql, redshift, mongodb, javascript]
+    image: /assets/img/multi_db_querier.jpg
+    description: Flask based web app which uses SQL queries to interact with Redshift, MySQL, and MongoDB. Also has an autocomplete feture to help with the queries.
+    external_url: https://github.com/jacobceles/multi-db-querier
 
 - project :
     name: App De`Vitae
@@ -37,13 +37,13 @@
     tools: [html, css, php, javascript]
     description: A website that helps people find the perfect car for them.
     external_url: https://github.com/jacobceles/Autovia
-    
+
 - project :
-    name: Multi Database Querier
-    tools: [python, flask, html, css, mysql, redshift, mongodb, javascript]
-    image: /assets/img/multi_db_querier.jpg
-    description: Flask based web app which uses SQL queries to interact with Redshift, MySQL, and MongoDB. Also has an autocomplete feture to help with the queries.
-    external_url: https://github.com/jacobceles/multi-db-querier
+    name: Chicago Taxi Trips Streaming Analysis
+    tools: [spark-structured-streaming,pyspark,spark-sql,flask,python,html,css,javascript]
+    image: /assets/img/chicago_taxi_trips_streaming_analysis.jpg
+    description: Analyzing the infamous Chicago City Taxi Trips dataset using Spark Structured Streaming, along with a real time dashboard for reporting the metrics.
+    external_url: https://github.com/jacobceles/ChicagoTaxiTrips-SparkStreaming-RealTimeDashboard
 
 - project :
     name: Implementation of Simplex Algorithm
