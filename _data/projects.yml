@@ -1,8 +1,8 @@
 - project :
     name: Introduction to Google Colab and PySpark
-    tools: [pyspark, colaboratory, colab-notebook, dataframe]
+    tools: [pyspark, colaboratory, colab-notebook, dataframe, emr]
     image: /assets/img/pyspark_colab_emr.jpg
-    description: A tutorial written by me to help big data engineers ramp up faster and get them familiar with PySpark dataframes and functions.
+    description: Tutorial on PySpark dataframe functions, EMR sizing, Spark Configurations and Job Tuning.
     external_url: https://jacobcelestine.com/knowledge_repo/colab_and_pyspark/
 
 - project :
@@ -20,10 +20,11 @@
     external_url: https://play.google.com/store/apps/details?id=com.appsoflife.mcostories
     
 - project :
-    name: Using SQL to query MongoDB, Redshift and MySQL 
-    tools: [python, flask, html, css]
-    description: A flask based web application which uses python and JDBC to establish connection with and query Redshift, SQL, and MongoDB.
-    external_url: https://github.com/jacobceles/CS527
+    name: Multi Database Querier
+    tools: [python, flask, html, css, mysql, redshift, mongodb]
+    image: /assets/img/multi_db_querier.jpg
+    description: Flask based web app which uses SQL queries to interact with Redshift, MySQL, and MongoDB.
+    external_url: https://github.com/jacobceles/multi-db-querier
 
 - project :
     name: Implementation of Simplex Algorithm
