@@ -1,6 +1,6 @@
 - project :
     name: Introduction to Google Colab and PySpark
-    tools: [pyspark, colaboratory, colab-notebook, dataframe, emr]
+    tools: [pyspark, colaboratory, spark-job-tuning, dataframe, emr]
     image: /assets/img/pyspark_colab_emr.jpg
     description: Tutorial on PySpark dataframe functions, EMR sizing, Spark Configurations and Job Tuning.
     external_url: https://jacobcelestine.com/knowledge_repo/colab_and_pyspark/
@@ -27,23 +27,30 @@
     external_url: https://github.com/jacobceles/multi-db-querier
 
 - project :
-    name: Implementation of Simplex Algorithm
-    tools: [python, flask, html, css]
-    description: A web App which emulates the Simplex Algorithm.
-    external_url: https://github.com/jacobceles/cs512-proj
-
-- project :
     name: App De`Vitae
     tools: [android, java]
     image: /assets/img/app_de_vitae.png
     description: An application which acts as a fitness assistant, by monitoring parameters of the user and his diet. Features include medicine reminder, calorie calculator, real time diet menu generator, analysis and much more.
-
 
 - project :
     name: Autovia
     tools: [html, css, php, javascript]
     description: A website that helps people find the perfect car for them.
     external_url: https://github.com/jacobceles/Autovia
+
+- project :
+    name: Chicago Taxi Trips Analysis
+    tools: [spark-structured-streaming,pyspark,spark-sql,flask,python,html,css,js]
+    image: /assets/img/simplex_algorithm.jpg
+    description: Analyzing the infamous Chicago City Taxi Trips dataset using Spark Structured Streaming, along with a real time dashboard for reporting the metrics.
+    external_url: https://github.com/jacobceles/ChicagoTaxiTrips-SparkStreaming-RealTimeDashboard
+
+- project :
+    name: Implementation of Simplex Algorithm
+    tools: [python, flask, html, css]
+    image: /assets/img/simplex_algorithm.jpg
+    description: A web App which emulates the Simplex Algorithm.
+    external_url: https://github.com/jacobceles/simplex-algorithm
 
 - project :
     name: MyBooksDB
