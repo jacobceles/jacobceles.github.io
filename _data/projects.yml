@@ -18,19 +18,19 @@
     image: /assets/img/micro_stories.png
     description: A community of like minded story tellers.
     external_url: https://play.google.com/store/apps/details?id=com.appsoflife.mcostories
-    
-- project :
-    name: Multi Database Querier
-    tools: [keras, deep-learning, flask, tensorflow, python]
-    image: /assets/img/taxi_fare_prediction_using_deep_learning.jpeg
-    description: Using Deep Learning with Keras to predict the taxi fare, and build a dashboard for showing the implementation using Flask.
-    external_url: https://github.com/jacobceles/ChicagoTaxiTrips-DeepLearning-Dashboard
 
 - project :
     name: App De`Vitae
     tools: [android, java]
     image: /assets/img/app_de_vitae.png
     description: Fitness assistant which monitors the health of a user, and creates a diet menu which updates real-time. Other features include medicine reminder, calorie calculator, health reports and much more.
+    
+- project :
+    name: Taxi Fare Prediction using Deep Learning
+    tools: [keras, deep-learning, flask, tensorflow, python]
+    image: /assets/img/taxi_fare_prediction_using_deep_learning.jpeg
+    description: Using Deep Learning with Keras to predict the taxi fare, and build a dashboard for showing the implementation using Flask.
+    external_url: https://github.com/jacobceles/ChicagoTaxiTrips-DeepLearning-Dashboard
 
 - project :
     name: Autovia
