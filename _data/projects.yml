@@ -6,11 +6,11 @@
     external_url: https://jacobcelestine.com/knowledge_repo/colab_and_pyspark/
 
 - project :
-    name: Ultimate Quiz App
-    tools: [android, kotlin, html]
-    image: /assets/img/ultimate_quiz_app.png
-    description: Challenge yourself to the limits with this fun & addictive quiz app!
-    external_url: https://play.google.com/store/apps/details?id=com.quizgamesapps.ultimatequizapp
+    name: Multi Database Querier
+    tools: [python, flask, html, css, mysql, redshift, mongodb, javascript]
+    image: /assets/img/multi_db_querier.jpg
+    description: Flask based web app which uses SQL queries to interact with Redshift, MySQL, and MongoDB. Also has an autocomplete feture to help with the queries.
+    external_url: https://github.com/jacobceles/multi-db-querier
     
 - project :
     name: Micro Stories
@@ -21,10 +21,10 @@
     
 - project :
     name: Multi Database Querier
-    tools: [python, flask, html, css, mysql, redshift, mongodb, javascript]
-    image: /assets/img/multi_db_querier.jpg
-    description: Flask based web app which uses SQL queries to interact with Redshift, MySQL, and MongoDB. Also has an autocomplete feture to help with the queries.
-    external_url: https://github.com/jacobceles/multi-db-querier
+    tools: [keras, deep-learning, flask, tensorflow, python]
+    image: /assets/img/taxi_fare_prediction_using_deep_learning.jpeg
+    description: Using Deep Learning with Keras to predict the taxi fare, and build a dashboard for showing the implementation using Flask.
+    external_url: https://github.com/jacobceles/ChicagoTaxiTrips-DeepLearning-Dashboard
 
 - project :
     name: App De`Vitae
@@ -44,6 +44,13 @@
     image: /assets/img/chicago_taxi_trips_streaming_analysis.jpg
     description: Analyzing the infamous Chicago City Taxi Trips dataset using Spark Structured Streaming, along with a real time dashboard for reporting the metrics.
     external_url: https://github.com/jacobceles/ChicagoTaxiTrips-SparkStreaming-RealTimeDashboard
+
+- project :
+    name: Ultimate Quiz App
+    tools: [android, kotlin, html]
+    image: /assets/img/ultimate_quiz_app.png
+    description: Challenge yourself to the limits with this fun & addictive quiz app!
+    external_url: https://play.google.com/store/apps/details?id=com.quizgamesapps.ultimatequizapp
 
 - project :
     name: Implementation of Simplex Algorithm
