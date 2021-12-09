@@ -40,12 +40,6 @@
     description: Fitness assistant which monitors the health of a user, and creates a diet menu which updates real-time. Other features include medicine reminder, calorie calculator, health reports and much more.
 
 - project :
-    name: Autovia
-    tools: [html, css, php, javascript]
-    description: A website that helps people find the perfect car for them.
-    external_url: https://github.com/jacobceles/Autovia
-
-- project :
     name: Chicago Taxi Trips Streaming Analysis
     tools: [spark-structured-streaming,pyspark,spark-sql,flask,python,html,css,javascript]
     image: /assets/img/chicago_taxi_trips_streaming_analysis.jpg
@@ -58,6 +52,12 @@
     image: /assets/img/simplex_algorithm.jpg
     description: A web App which emulates the Simplex Algorithm.
     external_url: https://github.com/jacobceles/simplex-algorithm
+
+- project :
+    name: Autovia
+    tools: [html, css, php, javascript]
+    description: A website that helps people find the perfect car for them.
+    external_url: https://github.com/jacobceles/Autovia
 
 - project :
     name: MyBooksDB
