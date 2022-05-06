@@ -13,18 +13,18 @@
     external_url: https://jacobcelestine.com/knowledge_repo/colab_and_pyspark/
 
 - project :
-    name: Movie Recommendation & Rating Prediction
-    tools: [python, machine-learning, movie-recommendation, rating-prediction, surprise-python, surprise-library, modin]
-    image: /assets/img/movie_rating_recommendation.png
-    description: Comparing different algorithms for rating prediction, and creating a movie recommendation system on top of it.
-    external_url: https://github.com/jacobceles/Movie-Recommendation-Rating-Prediction
-
-- project :
     name: Ultimate Quiz App
     tools: [android, kotlin, html]
     image: /assets/img/ultimate_quiz_app.png
     description: Challenge yourself to the limits with this fun & addictive quiz app!
     external_url: https://play.google.com/store/apps/details?id=com.quizgamesapps.ultimatequizapp
+
+- project :
+    name: Movie Recommendation & Rating Prediction
+    tools: [python, machine-learning, movie-recommendation, rating-prediction, surprise-python, surprise-library, modin]
+    image: /assets/img/movie_rating_recommendation.png
+    description: Comparing different algorithms for rating prediction, and creating a movie recommendation system on top of it.
+    external_url: https://github.com/jacobceles/Movie-Recommendation-Rating-Prediction
     
 - project :
     name: Micro Stories
