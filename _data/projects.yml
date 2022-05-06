@@ -1,16 +1,9 @@
 - project :
     name: Covid Viz-Hub
     tools: [python, dashboard, numpy, plotly, pandas, dash, covid-19]
-    image: /assets/img/covid_viz_hub.jpg
+    image: /assets/img/covid_viz_hub.png
     description: A visual analytics dashboard for Covid built using Dash and Plotly.
     external_url: https://github.com/jacobceles/covid-viz-hub
-
-- project :
-    name: Movie Recommendation & Rating Prediction
-    tools: [python, machine-learning, movie-recommendation, rating-prediction, surprise-python, surprise-library, modin]
-    image: /assets/img/movie_rating_recommendation.jpg
-    description: Comparing different algorithms for rating prediction, and creating a movie recommendation system on top of it.
-    external_url: https://github.com/jacobceles/Movie-Recommendation-Rating-Prediction
 
 - project :
     name: Introduction to Google Colab and PySpark
@@ -18,6 +11,13 @@
     image: /assets/img/pyspark_colab_emr.jpg
     description: Tutorial on PySpark dataframe functions, EMR sizing, Spark Configurations and Job Tuning.
     external_url: https://jacobcelestine.com/knowledge_repo/colab_and_pyspark/
+
+- project :
+    name: Movie Recommendation & Rating Prediction
+    tools: [python, machine-learning, movie-recommendation, rating-prediction, surprise-python, surprise-library, modin]
+    image: /assets/img/movie_rating_recommendation.png
+    description: Comparing different algorithms for rating prediction, and creating a movie recommendation system on top of it.
+    external_url: https://github.com/jacobceles/Movie-Recommendation-Rating-Prediction
 
 - project :
     name: Ultimate Quiz App
