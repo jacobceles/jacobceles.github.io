@@ -459,6 +459,8 @@ If you have more questions about colab, please <a href="https://research.google.
 <li>Apache Spark with hadoop and</li>
 <li>Findspark (used to locate the spark in the system)</li>
 </ol>
+<blockquote><p>If you have issues with spark version, please upgrade to the latest version from <a href="https://archive.apache.org/dist/spark/">here</a>.</p>
+</blockquote>
 
 </div>
 </div>
@@ -469,8 +471,8 @@ If you have more questions about colab, please <a href="https://research.google.
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>apt-get install openjdk-8-jdk-headless -qq &gt; /dev/null
-<span class="o">!</span>wget -q http://archive.apache.org/dist/spark/spark-3.1.1/spark-3.1.1-bin-hadoop3.2.tgz
-<span class="o">!</span>tar xf spark-3.1.1-bin-hadoop3.2.tgz
+<span class="o">!</span>wget -q http://archive.apache.org/dist/spark/spark-3.5.1/spark-3.5.1-bin-hadoop3.tgz
+<span class="o">!</span>tar xf spark-3.5.1-bin-hadoop3.tgz
 <span class="o">!</span>pip install -q findspark
 </pre></div>
 
@@ -494,7 +496,7 @@ If you have more questions about colab, please <a href="https://research.google.
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;JAVA_HOME&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;/usr/lib/jvm/java-8-openjdk-amd64&quot;</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SPARK_HOME&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;/content/spark-3.1.1-bin-hadoop3.2&quot;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SPARK_HOME&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;/content/spark-3.5.1-bin-hadoop3&quot;</span>
 </pre></div>
 
     </div>
@@ -524,7 +526,7 @@ If you have more questions about colab, please <a href="https://research.google.
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>sample_data  spark-3.1.1-bin-hadoop3.2	spark-3.1.1-bin-hadoop3.2.tgz
+<pre>sample_data  spark-3.5.1-bin-hadoop3	spark-3.5.1-bin-hadoop3.tgz
 </pre>
 </div>
 </div>
@@ -675,7 +677,7 @@ cars.csv            100%[===================&gt;]  22.08K  --.-KB/s    in 0.003s
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>cars.csv  sample_data  spark-3.1.1-bin-hadoop3.2  spark-3.1.1-bin-hadoop3.2.tgz
+<pre>cars.csv  sample_data  spark-3.5.1-bin-hadoop3  spark-3.5.1-bin-hadoop3.tgz
 </pre>
 </div>
 </div>
