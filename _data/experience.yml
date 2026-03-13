@@ -1,6 +1,11 @@
 - company: Veeva Systems
-  url: https://www.veeva.com/
-  time: Jan 2023 - Present
+  url: https://www.veeva.com/products/opendata/
+  time: Apr 2025 - Present
+  position: Software Engineer
+  
+- company: Veeva Systems
+  url: https://www.veeva.com/products/opendata/
+  time: Jan 2023 - Apr 2025
   position: Data Engineer
 
 - company: Rutgers University
@@ -19,7 +24,7 @@
   position: Technology Analyst
 
 - company: Agrima Infotech
-  url: http://www.agrimainfotech.com/
+  url: https://www.linkedin.com/company/agrima-infotech-pvt-ltd/
   time: July 2017 - Dec 2017
   position: Machine Learning Engineer
 
@@ -29,6 +34,6 @@
   position: Android Developer
 
 - company: Agrima Infotech
-  url: http://www.agrimainfotech.com/
+  url: https://www.linkedin.com/company/agrima-infotech-pvt-ltd/
   time: June 2016
   position: PHP Developer (Internship)
