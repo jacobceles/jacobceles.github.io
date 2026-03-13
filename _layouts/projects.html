@@ -242,7 +242,8 @@
                <div class="wow animated fadeIn" data-wow-delay=".15s">
                   <div class="project card text-dark">
                      {%- if project_img -%}
-                     <img id="{{ project_name }}-img" class="card-img-top" src="{{ project_img }}" alt="{{ project_name }}" />
+                     <!-- ⚡ Bolt Optimization: Added loading="lazy" to defer offscreen images and reduce initial page load -->
+                     <img id="{{ project_name }}-img" class="card-img-top" src="{{ project_img }}" alt="{{ project_name }}" loading="lazy" />
                      {%- endif -%}
                      <div class="card-body">
                         <h4 id="{{ project_name }}-name" class="card-title">
