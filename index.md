@@ -34,7 +34,7 @@ Back in college I journeyed through most technologies (Web development, Android 
 
 Out of the languages I have learned, my favourite would be Python. Working as a Big Data Engineer at the moment. I do a bit of Android development in my free time, mostly because I like designing UIs. I would say my expertise lies in Enterprise level Data Analytics and Designing and Building of data flow pipelines.
 
-When I'm not doing anything tech, I like to spent my time visiting new Brew Pubs and trying out all kinds of foods. If I'm not doing that I am probably watching a new TV series. Pop and Jazz are my two favourite music genres, and my favourite YouTubers are [MKBHD] and [Mrinal].
+When I'm not doing anything tech, I like to spend my time visiting new Brew Pubs and trying out all kinds of foods. If I'm not doing that I am probably watching a new TV series. Pop and Jazz are my two favourite music genres, and my favourite YouTubers are [MKBHD] and [Mrinal].
 
 Feel free to hit me up!
 
