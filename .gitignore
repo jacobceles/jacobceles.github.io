@@ -1,3 +1,10 @@
 
 assets/.DS_Store
 .DS_Store
+vendor/bundle/
+
+# Bundler directories
+vendor/bundle/
+vendor/cache/
+vendor/ruby/
+vendor/
