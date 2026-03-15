@@ -62,20 +62,27 @@
       <link rel="dns-prefetch" href="/assets/img/swipe.svg" id="_hrefSwipeSVG">
       <!-- GitHub Buttons -->
       <script type="text/javascript" async defer src="https://unpkg.com/github-buttons@2.31.1/dist/buttons.min.js" integrity="sha384-XCI+GuqUCJpce+KtYuH4gdy5Z1+zy/wBXcs9CTuVHNZv3b1Bk8+/3H2r7NhOqVq2" crossorigin="anonymous"></script>
+      <!-- ⚡ Bolt Optimization: Added defer to non-critical scripts to unblock main thread -->
       <!-- jQuery CDN -->
-      <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+      <script defer src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
       <!-- Popper.js CDN -->
-      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+      <script defer src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
       <!-- Bootstrap JS CDN -->
-      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+      <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
       <!-- wow.js CDN & Activation -->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.js" integrity="sha384-0U4AzjZUo6VJb79tvm16vwxZULsWzPJUqwNL8ZF/gonzLtsZen/jGg3CpYd//S2O" crossorigin="anonymous"></script>
-      <script> new WOW().init(); </script>
+      <script defer src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.js" integrity="sha384-0U4AzjZUo6VJb79tvm16vwxZULsWzPJUqwNL8ZF/gonzLtsZen/jGg3CpYd//S2O" crossorigin="anonymous"></script>
+      <script>
+         window.addEventListener('DOMContentLoaded', function() {
+            new WOW().init();
+         });
+      </script>
       <!-- Initialize all tooltips -->
       <script>
-         $(function () {
-             $('[data-toggle="tooltip"]').tooltip()
-         })
+         window.addEventListener('DOMContentLoaded', function() {
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
+         });
       </script>
       <script>
          !function(e,t){"use strict";function n(e,t,n,r){e.addEventListener?e.addEventListener(t,n,r):e.attachEvent?e.attachEvent("on"+t,n):e["on"+t]=n}e.loadJS=function(e,r){var o=t.createElement("script");o.src=e,r&&n(o,"load",r,{once:!0});var a=t.scripts[0];return a.parentNode.insertBefore(o,a),o},e._loaded=!1,e.loadJSDeferred=function(r,o){function a(){e._loaded=!0,o&&n(d,"load",o,{once:!0});var r=t.scripts[0];r.parentNode.insertBefore(d,r)}var d=t.createElement("script");return d.src=r,e._loaded?a():n(e,"load",a,{once:!0}),d},e.setRel=e.setRelStylesheet=function(e){function n(){this.rel="stylesheet"}var r=t.getElementById(e);r.addEventListener?r.addEventListener("load",n,{once:!0}):r.onload=n}}(window,document);
