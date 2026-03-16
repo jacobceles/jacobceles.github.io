@@ -230,7 +230,7 @@
                            <div class="progress-container progress-primary">
                               <span class="progress-badge">{{ skill.name }}</span>
                               <div class="progress">
-                                 <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="{{ skill.level | remove: '%' }}" aria-valuemin="0" aria-valuemax="100" style="width:{{ skill.level }}"></div>
+                                 <div class="progress-bar progress-bar-primary" role="progressbar" aria-label="{{ skill.name }} skill level" aria-valuenow="{{ skill.level | remove: '%' }}" aria-valuemin="0" aria-valuemax="100" style="width:{{ skill.level }}"></div>
                                  <span class="progress-value">{{ skill.level }}</span>
                               </div>
                            </div>
