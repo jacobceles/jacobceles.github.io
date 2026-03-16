@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script defer src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', function() {
+      console.log("jQuery available?", typeof $ !== "undefined");
+      if (typeof document !== "undefined" && document.body) {
+         document.body.innerHTML += "<p>jQuery available: " + (typeof $ !== "undefined") + "</p>";
+      }
+    });
+  </script>
+</head>
+<body>
+  <h1>Test Defer</h1>
+</body>
+</html>
