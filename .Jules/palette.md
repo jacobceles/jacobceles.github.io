@@ -4,3 +4,7 @@
 ## 2024-03-14 - Dynamic ARIA attributes in templates
 **Learning:** Hardcoded ARIA attributes (like `aria-valuenow="60"`) in loop templates override dynamic visual representations, causing screen readers to announce incorrect information for every iterated item (e.g. 60% instead of 95%).
 **Action:** Always ensure ARIA attributes in dynamic components or loops reflect the actual data value using the templating engine syntax (e.g. `aria-valuenow="{{ skill.level | remove: '%' }}"`).
+
+## 2024-03-14 - Missing ARIA labels on progress bars
+**Learning:** Progress bars with `role="progressbar"` need an explicit `aria-label` or `aria-labelledby` to associate the progress with its subject (e.g., the skill name). Without it, screen readers only announce the value, lacking context.
+**Action:** Always add an `aria-label` referencing the relevant context (like `aria-label="{{ skill.name }} skill level"`) to `role="progressbar"` elements to ensure screen readers provide full context.
