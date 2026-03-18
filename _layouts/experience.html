@@ -128,6 +128,7 @@
                               id="_navigation"
                               href="/education_skills/"
                               class="sidebar-nav-item"
+                              {% if page.url == '/education_skills/' %}aria-current="page"{% endif %}
                               >
                            Education & Skills
                            </a>
@@ -137,6 +138,7 @@
                               id="_navigation"
                               href="/experience/"
                               class="sidebar-nav-item"
+                              {% if page.url == '/experience/' %}aria-current="page"{% endif %}
                               >
                            Experience
                            </a>
@@ -146,6 +148,7 @@
                               id="_navigation"
                               href="/projects/"
                               class="sidebar-nav-item"
+                              {% if page.url == '/projects/' %}aria-current="page"{% endif %}
                               >
                            Works
                            </a>
