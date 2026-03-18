@@ -8,3 +8,7 @@
 ## 2024-03-14 - Missing ARIA labels on progress bars
 **Learning:** Progress bars with `role="progressbar"` need an explicit `aria-label` or `aria-labelledby` to associate the progress with its subject (e.g., the skill name). Without it, screen readers only announce the value, lacking context.
 **Action:** Always add an `aria-label` referencing the relevant context (like `aria-label="{{ skill.name }} skill level"`) to `role="progressbar"` elements to ensure screen readers provide full context.
+
+## 2026-03-18 - Add aria-current for active links in custom Jekyll layouts
+**Learning:** Hardcoded sidebar navigation menus in custom standalone Jekyll layouts do not automatically receive `aria-current="page"` attributes to indicate the active state to screen readers.
+**Action:** Always add `{% if page.url == '/your_path/' %}aria-current="page"{% endif %}` to navigation links in custom Jekyll layouts to ensure screen readers can identify the current active page.
