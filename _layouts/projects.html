@@ -64,6 +64,9 @@
       <link rel="dns-prefetch" href="/assets/bower_components/katex/dist/contrib/copy-tex.min.js" id="_hrefKatexCopyJS">
       <link rel="dns-prefetch" href="/assets/bower_components/katex/dist/contrib/copy-tex.min.css" id="_hrefKatexCopyCSS">
       <link rel="dns-prefetch" href="/assets/img/swipe.svg" id="_hrefSwipeSVG">
+      <!-- ⚡ Bolt Optimization: Preload LCP images -->
+      <link rel="preload" as="image" href="/assets/img/sidebar-bg.jpg">
+      <link rel="preload" as="image" href="/assets/icons/profile_icon.png">
       <!-- GitHub Buttons -->
       <script type="text/javascript" async defer src="https://unpkg.com/github-buttons@2.31.1/dist/buttons.min.js" integrity="sha384-XCI+GuqUCJpce+KtYuH4gdy5Z1+zy/wBXcs9CTuVHNZv3b1Bk8+/3H2r7NhOqVq2" crossorigin="anonymous"></script>
       <!-- ⚡ Bolt Optimization: Added defer to non-critical scripts to unblock main thread -->
@@ -138,7 +141,8 @@
                <div class="sidebar-sticky">
                   <div class="sidebar-about">
                      <a class="no-hover" href="/" tabindex="-1">
-                     <img src="/assets/icons/profile_icon.png" class="avatar" alt="Jacob Celestine" loading="lazy" data-ignore />
+                     <!-- ⚡ Bolt Optimization: Removed lazy loading from above-the-fold image -->
+                     <img src="/assets/icons/profile_icon.png" class="avatar" alt="Jacob Celestine" data-ignore />
                      </a>
                      <h2 class="h1"><a href="/">Jacob Celestine</a></h2>
                      <p class="">
