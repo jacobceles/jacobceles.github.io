@@ -1,3 +1,4 @@
 ---
+title: Works
 layout: projects
 ---
