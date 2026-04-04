@@ -18,6 +18,9 @@
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://code.jquery.com https://cdn.jsdelivr.net https://stackpath.bootstrapcdn.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://github.com; connect-src 'self'; object-src 'none'; frame-src 'self';">
+      <!-- ⚡ Bolt Optimization: Preload LCP images with high fetchpriority -->
+      <link rel="preload" as="image" href="{{ site.accent_image }}" fetchpriority="high">
+      <link rel="preload" as="image" href="{{ site.logo }}" fetchpriority="high">
       <!-- Begin Jekyll SEO tag v2.6.1 -->
       <title>{{ page.title }} | Jacob Celestine</title>
       <meta name="generator" content="Jekyll v3.8.6" />
@@ -64,9 +67,6 @@
       <link rel="dns-prefetch" href="/assets/bower_components/katex/dist/contrib/copy-tex.min.js" id="_hrefKatexCopyJS">
       <link rel="dns-prefetch" href="/assets/bower_components/katex/dist/contrib/copy-tex.min.css" id="_hrefKatexCopyCSS">
       <link rel="dns-prefetch" href="/assets/img/swipe.svg" id="_hrefSwipeSVG">
-      <!-- ⚡ Bolt Optimization: Preload LCP images -->
-      <link rel="preload" as="image" href="/assets/img/sidebar-bg.jpg">
-      <link rel="preload" as="image" href="/assets/icons/profile_icon.png">
       <script>
          !function(e,t){"use strict";function n(e,t,n,r){e.addEventListener?e.addEventListener(t,n,r):e.attachEvent?e.attachEvent("on"+t,n):e["on"+t]=n}e.loadJS=function(e,r){var o=t.createElement("script");o.src=e,r&&n(o,"load",r,{once:!0});var a=t.scripts[0];return a.parentNode.insertBefore(o,a),o},e._loaded=!1,e.loadJSDeferred=function(r,o){function a(){e._loaded=!0,o&&n(d,"load",o,{once:!0});var r=t.scripts[0];r.parentNode.insertBefore(d,r)}var d=t.createElement("script");return d.src=r,e._loaded?a():n(e,"load",a,{once:!0}),d},e.setRel=e.setRelStylesheet=function(e){function n(){this.rel="stylesheet"}var r=t.getElementById(e);r.addEventListener?r.addEventListener("load",n,{once:!0}):r.onload=n}}(window,document);
 
@@ -139,12 +139,12 @@
             prevent-default
             >
             <header id="_sidebar" class="sidebar" role="banner">
-               <div class="sidebar-bg sidebar-overlay" style="background-color:rgb(25,55,71);background-image:url(/assets/img/sidebar-bg.jpg)"></div>
+               <div class="sidebar-bg sidebar-overlay" style="background-color:rgb(25,55,71);background-image:url({{ site.accent_image }})"></div>
                <div class="sidebar-sticky">
                   <div class="sidebar-about">
                      <a class="no-hover" href="/" tabindex="-1">
-                     <!-- ⚡ Bolt Optimization: Removed lazy loading from above-the-fold image -->
-                     <img src="/assets/icons/profile_icon.png" class="avatar" alt="Jacob Celestine" data-ignore />
+                     <!-- ⚡ Bolt Optimization: Removed lazy loading and added high fetchpriority to above-the-fold image -->
+                     <img src="{{ site.logo }}" class="avatar" alt="Jacob Celestine" fetchpriority="high" data-ignore />
                      </a>
                      <h2 class="h1"><a href="/">Jacob Celestine</a></h2>
                      <p class="">
