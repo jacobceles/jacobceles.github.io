@@ -7,3 +7,8 @@
 **Vulnerability:** Found previously-noted HTTP external links, however upon investigation, the repository's source files (layouts, markdown, yml) had already mitigated or upgraded them to HTTPS. Missing Content-Security-Policy allowed potential execution of unauthorized scripts.
 **Learning:** Sometimes build artifacts (`_site/`) or binaries can retain older HTTP links, but the source truth is what matters. A permissive CSP with `unsafe-inline` might be necessary for Jekyll themes like Hydejack without extensive refactoring.
 **Prevention:** Always verify links in the actual source code (`grep --exclude-dir=_site`) before attempting to upgrade, and use a strong CSP in base layout `<head>` tags.
+
+## 2026-05-01 - Insecure Content Security Policy (unsafe-inline)
+**Vulnerability:** The Content Security Policy (CSP) allowed 'unsafe-inline' for scripts and styles, rendering the site vulnerable to Cross-Site Scripting (XSS) attacks.
+**Learning:** Refactoring inline scripts and styles that contain Jekyll Liquid variables (e.g. `{{ site.accent_image }}`) requires them to be extracted into `.scss` files with frontmatter (`--- \n ---`) to enable Jekyll processing, while pure JavaScript should be moved to separate `.js` files and included using the `defer` attribute.
+**Prevention:** Avoid using `'unsafe-inline'` in `script-src` and `style-src` directives. Consistently utilize external CSS/JS assets, relying on build systems like Jekyll to dynamically process configuration variables.
