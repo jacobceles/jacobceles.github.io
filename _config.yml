@@ -243,6 +243,7 @@ exclude:
   - package.json
   - package-lock.json
   - webpack.config.js
+  - assets/js/*.test.js
   - "*.gemspec"
   - _js
   - _plugins
