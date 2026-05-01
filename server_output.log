@@ -1,3 +1,0 @@
-127.0.0.1 - - [04/Apr/2026 17:17:46] "GET /storiesoflife/terms.html HTTP/1.1" 200 -
-127.0.0.1 - - [04/Apr/2026 17:17:46] code 404, message File not found
-127.0.0.1 - - [04/Apr/2026 17:17:46] "GET /css/main.css HTTP/1.1" 404 -
