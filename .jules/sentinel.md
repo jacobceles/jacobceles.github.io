@@ -1,3 +1,8 @@
+## 2026-05-01 - Hardening CSP by removing unsafe-eval
+**Vulnerability:** The Content Security Policy (CSP) in `_layouts/custom_base.html` included `'unsafe-eval'` in the `script-src` directive, allowing the execution of code generated from strings.
+**Learning:** Hardening CSP by removing `'unsafe-eval'` significantly mitigates XSS risks. Modern security standards prioritize its removal to prevent unauthorized code execution.
+**Prevention:** Always strive for a CSP that avoids `'unsafe-eval'`. Verify if scripts or libraries truly require it and look for CSP-compliant alternatives.
+
 ## 2024-05-25 - Insecure Content Security Policy (unsafe-eval)
 **Vulnerability:** The Content Security Policy (CSP) included `'unsafe-eval'` in the `script-src` directive, allowing the execution of code generated from strings.
 **Learning:** Hardening CSP by removing `'unsafe-eval'` significantly mitigates XSS risks. Even if legacy libraries might traditionally suggest it, modern security standards prioritize its removal to prevent unauthorized code execution.
