@@ -49,6 +49,7 @@ test('wow-init.js initialization', async (t) => {
     // Execute the callback
     eventListeners['DOMContentLoaded'][0]();
 
+    // Check WOW initialization
     assert.strictEqual(wowInitMock.init.mock.callCount(), 1);
     assert.strictEqual(global.$.mock.calls[0].arguments[0], '[data-toggle="tooltip"]');
     assert.strictEqual(tooltipMock.mock.callCount(), 1);
