@@ -41,29 +41,19 @@ test('wow-init.js initialization', async (t) => {
   const scriptContent = fs.readFileSync(path.join(__dirname, 'wow-init.js'), 'utf8');
   eval(scriptContent);
 
-  await t.test('registers DOMContentLoaded listeners', () => {
-    assert.strictEqual(eventListeners['DOMContentLoaded'].length, 2);
+  await t.test('registers DOMContentLoaded listener', () => {
+    assert.strictEqual(eventListeners['DOMContentLoaded'].length, 1);
   });
 
-  await t.test('initializes WOW on DOMContentLoaded', () => {
-    // Clear mocks if necessary (not strictly needed here as it's the first time we call it)
-
-    // Execute the first callback
+  await t.test('initializes WOW and tooltips on DOMContentLoaded', () => {
+    // Execute the callback
     eventListeners['DOMContentLoaded'][0]();
 
+    // Check WOW initialization
     assert.strictEqual(wowInitMock.init.mock.callCount(), 1);
-  });
 
-  await t.test('initializes tooltips on DOMContentLoaded', () => {
-    // Execute the second callback
-    eventListeners['DOMContentLoaded'][1]();
-
-    const readyCallback = global.$.mock.calls[0].arguments[0];
-    assert.strictEqual(typeof readyCallback, 'function');
-
-    readyCallback();
-
-    assert.strictEqual(global.$.mock.calls[1].arguments[0], '[data-toggle="tooltip"]');
+    // Check tooltip initialization
+    assert.strictEqual(global.$.mock.calls[0].arguments[0], '[data-toggle="tooltip"]');
     assert.strictEqual(tooltipMock.mock.callCount(), 1);
   });
 });
