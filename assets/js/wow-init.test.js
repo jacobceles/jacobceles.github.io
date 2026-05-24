@@ -41,7 +41,7 @@ test('wow-init.js initialization', async (t) => {
   const scriptContent = fs.readFileSync(path.join(__dirname, 'wow-init.js'), 'utf8');
   eval(scriptContent);
 
-  await t.test('registers DOMContentLoaded listener', () => {
+  await t.test('registers DOMContentLoaded listeners', () => {
     assert.strictEqual(eventListeners['DOMContentLoaded'].length, 1);
   });
 
@@ -51,8 +51,6 @@ test('wow-init.js initialization', async (t) => {
 
     // Check WOW initialization
     assert.strictEqual(wowInitMock.init.mock.callCount(), 1);
-
-    // Check tooltip initialization
     assert.strictEqual(global.$.mock.calls[0].arguments[0], '[data-toggle="tooltip"]');
     assert.strictEqual(tooltipMock.mock.callCount(), 1);
   });
