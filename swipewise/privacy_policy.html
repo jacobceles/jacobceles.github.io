@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <title>SwipeWise Privacy Policy</title>
+</head>
+
+<body>
+
+   <h1>SwipeWise Privacy Policy</h1>
+
+   <p><em>Last updated: 2026-06-01.</em></p>
+
+   <p>SwipeWise is a credit-card recommendation app. This document explains what
+      data the app handles, where it goes, and what we never store.</p>
+
+   <h2>What we collect on your device</h2>
+
+   <ul>
+      <li><strong>Card and transaction data.</strong> We sync your linked card metadata,
+         balances, and transactions from the third-party account provider you
+         authorize, using the FDX open-finance data standard. This data is stored
+         exclusively in a local SQLite database on your device
+         (<code>swipewise.db</code>) — it never leaves the device by SwipeWise's hand.
+         (Recurring-payment detection and reward estimates are computed locally
+         from this data, not collected from the provider.)</li>
+
+      <li><strong>Authentication tokens.</strong> Issued by the same third-party provider so
+         the app can refresh your data. Stored locally; refresh requests go
+         back to the provider, not to SwipeWise.</li>
+   </ul>
+
+   <h2>What we collect for nearby-store features</h2>
+
+   <ul>
+      <li><strong>Location.</strong> When you open the Stores tab or move out of a
+         pre-registered zone, the app reads a one-shot location fix on your
+         device. Before it asks Foursquare's Places API for stores near you, the
+         latitude/longitude are <strong>rounded to 3 decimal places</strong> (~110 m) — the
+         full-precision fix never leaves the device. Your location is used only
+         for nearby search and the on-device geofences; SwipeWise has no server,
+         so it is never sent anywhere except Foursquare, and no location
+         <em>history</em> is kept (see <em>What we never store</em>).
+      </li>
+
+      <li><strong>Foreground vs. background.</strong> "While using the app" permission is
+         enough to populate the Stores list. "Allow all the time" is required
+         only if you want notifications when you arrive at a registered
+         merchant — Android's geofence service runs the dwell detection inside
+         the OS; SwipeWise is woken only when an arrival fires.</li>
+   </ul>
+
+   <h2>What we never store</h2>
+
+   <ul>
+      <li><strong>Location history, or any location off your device.</strong> SwipeWise keeps
+         no trail of where you've been and never transmits your location except
+         the rounded Foursquare nearby-search request described above. The one
+         place a location is <em>at rest</em> is a single-row on-device geofence
+         boundary (<code>boundary_geofence</code> in <code>swipewise.db</code>): your position —
+         rounded to ~110 m — when geofences were last registered, overwritten on
+         every refresh and used only to detect when you've left the area. It
+         never leaves your device and is removed when you uninstall.</li>
+
+      <li><strong>Usage telemetry.</strong> The app does not phone home — not which cards
+         you're shown, which notifications fire, nor what you tap. There is no
+         analytics service.</li>
+   </ul>
+
+   <h2>Where data goes</h2>
+
+   <ul>
+      <li><strong>Foursquare Places API.</strong> Receives your latitude/longitude rounded to
+         ~110 m, the search radius, and a category filter. Returns nearby merchants.
+         See <a href="https://foursquare.com/legal/privacy/">https://foursquare.com/legal/privacy/</a> for their terms.
+      </li>
+
+      <li><strong>Your account provider.</strong> Receives auth refresh requests and returns
+         card/transaction data. Their privacy policy applies.</li>
+
+      <li><strong>No SwipeWise server.</strong> SwipeWise has no backend. There is nowhere on
+         the SwipeWise side for your data to leak to.</li>
+   </ul>
+
+   <h2>Permissions we ask for and why</h2>
+
+   <table border="1">
+      <thead>
+         <tr>
+            <th>Permission</th>
+            <th>Purpose</th>
+            <th>Required?</th>
+         </tr>
+      </thead>
+      <tbody>
+         <tr>
+            <td><code>ACCESS_FINE_LOCATION</code></td>
+            <td>Find stores near you</td>
+            <td>Required for nearby-stores</td>
+         </tr>
+         <tr>
+            <td><code>ACCESS_COARSE_LOCATION</code></td>
+            <td>Approximate-location fallback for nearby stores</td>
+            <td>Required for nearby-stores</td>
+         </tr>
+         <tr>
+            <td><code>ACCESS_BACKGROUND_LOCATION</code></td>
+            <td>Geofence dwell detection while app closed</td>
+            <td>Optional (notifications won't fire without it)</td>
+         </tr>
+         <tr>
+            <td><code>ACTIVITY_RECOGNITION</code></td>
+            <td>Tell a real store visit from driving past, so you aren't pinged at red lights</td>
+            <td>Optional (improves notification accuracy)</td>
+         </tr>
+         <tr>
+            <td><code>POST_NOTIFICATIONS</code></td>
+            <td>"You're at Kohl's, use Citi Custom Cash" alerts</td>
+            <td>Optional (Android 13+)</td>
+         </tr>
+         <tr>
+            <td><code>RECEIVE_BOOT_COMPLETED</code></td>
+            <td>Re-arm geofences after a phone reboot</td>
+            <td>Required for the notification feature to survive reboots</td>
+         </tr>
+         <tr>
+            <td><code>FOREGROUND_SERVICE</code>, <code>FOREGROUND_SERVICE_DATA_SYNC</code></td>
+            <td>Finish syncing your accounts if you background the app mid-sync — shown as a visible "syncing"
+               notification. No data leaves the device; this only keeps the on-device sync alive so the OS doesn't
+               suspend it</td>
+            <td>Required for reliable sync</td>
+         </tr>
+         <tr>
+            <td><code>INTERNET</code></td>
+            <td>Foursquare API + your account provider</td>
+            <td>Required</td>
+         </tr>
+      </tbody>
+   </table>
+
+   <p>You can revoke any of these in Android Settings → Apps → SwipeWise →
+      Permissions at any time. The app degrades gracefully (e.g. denying
+      background location keeps the Stores tab working but disables arrival
+      notifications).</p>
+
+   <h2>Children</h2>
+
+   <p>SwipeWise is not intended for children under 13. Don't sign up if that's
+      you.</p>
+
+   <h2>Contact</h2>
+
+   <p>Questions: open an issue at
+      <a href="https://github.com/jacobceles/swipewise">https://github.com/jacobceles/swipewise</a>.
+   </p>
+
+</body>
+
+</html>
