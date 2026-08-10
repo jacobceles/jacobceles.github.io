@@ -221,6 +221,26 @@
       background location keeps the Stores tab working but disables arrival
       notifications).</p>
 
+   <h2>Deleting your data</h2>
+
+   <p>There is no "delete my account" button because there is no account, and no server-side
+      record of you to delete.</p>
+
+   <ul>
+      <li><strong>On your device</strong> — your wallet, the local identifier and the single
+         geofence boundary row live in <code>swipewise.db</code>. Uninstalling the app removes all
+         of it. Android's <em>Clear storage</em> does the same without uninstalling.</li>
+      <li><strong>Location</strong> — nothing to delete. The lookup service stores and logs
+         nothing, and no location history is kept anywhere.</li>
+      <li><strong>Crash reports</strong> — these are the only data retained on our behalf, and
+         they are pseudonymous: they are keyed to a Firebase installation id that you do not see
+         and that we cannot map back to a person. That means we could not identify your reports
+         even if you asked us to remove them. They expire on Firebase's own retention
+         schedule.</li>
+   </ul>
+
+   <p>If you have a question about any of this, the contact route is below.</p>
+
    <h2>Children</h2>
 
    <p>SwipeWise is not intended for children under 13.</p>
