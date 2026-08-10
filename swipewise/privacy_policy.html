@@ -7,29 +7,54 @@
    <title>SwipeWise Privacy Policy</title>
 </head>
 
+<!--
+   Generated from docs/PRIVACY.md in the SwipeWise repo
+   (https://github.com/jacobceles/swipewise). Change both together — this is the
+   copy users and Google Play are shown, so drift between the two means showing
+   people a policy the app does not implement.
+
+   Note for future edits: an earlier version of this page named Foursquare as the
+   nearby-search provider. The app has used the Google Places API for some time;
+   that was stale, and naming the wrong recipient of location data in a published
+   policy is the kind of error worth checking for deliberately.
+-->
+
 <body>
 
    <h1>SwipeWise Privacy Policy</h1>
 
-   <p><em>Last updated: 2026-06-01.</em></p>
+   <p><em>Last updated: 2026-08-10.</em></p>
 
    <p>SwipeWise is a credit-card recommendation app. This document explains what
       data the app handles, where it goes, and what we never store.</p>
 
+   <p><strong>Which version you have matters.</strong> SwipeWise on Google Play is the free
+      version: it has <strong>no account and no bank connectivity</strong>. Sections below marked
+      <strong>(Pro only)</strong> describe a separate build distributed privately to testers; if
+      you installed from Play, they do not apply to you.</p>
+
    <h2>What we collect on your device</h2>
 
    <ul>
-      <li><strong>Card and transaction data.</strong> We sync your linked card metadata,
-         balances, and transactions from the third-party account provider you
-         authorize, using the FDX open-finance data standard. This data is stored
-         exclusively in a local SQLite database on your device
-         (<code>swipewise.db</code>) — it never leaves the device by SwipeWise's hand.
-         (Recurring-payment detection and reward estimates are computed locally
-         from this data, not collected from the provider.)</li>
+      <li><strong>Your wallet.</strong> The cards you pick from the built-in catalog, plus
+         anything optional you add about them (last four digits, credit limit, statement due
+         day). Stored exclusively in a local SQLite database on your device
+         (<code>swipewise.db</code>).</li>
 
-      <li><strong>Authentication tokens.</strong> Issued by the same third-party provider so
-         the app can refresh your data. Stored locally; refresh requests go
-         back to the provider, not to SwipeWise.</li>
+      <li><strong>A local identifier.</strong> A random ID generated on your device on first
+         launch so the local database has something to key your wallet to. It is not an
+         account, it is never sent anywhere, and it is destroyed when you uninstall. The free
+         version asks for <strong>no email, no password, and no sign-in</strong>.</li>
+
+      <li><strong>Card and transaction data. (Pro only)</strong> Linked card metadata, balances
+         and transactions from the third-party account provider you authorize, using the FDX
+         open-finance data standard, stored exclusively in the same local database.
+         (Recurring-payment detection and reward estimates are computed locally from this data,
+         not collected from the provider.)</li>
+
+      <li><strong>Authentication tokens. (Pro only)</strong> Issued by the same third-party
+         provider so the app can refresh your data. Stored locally; refresh requests go back to
+         the provider, not to SwipeWise.</li>
    </ul>
 
    <h2>What we collect for nearby-store features</h2>
@@ -37,11 +62,11 @@
    <ul>
       <li><strong>Location.</strong> When you open the Stores tab or move out of a
          pre-registered zone, the app reads a one-shot location fix on your
-         device. Before it asks Foursquare's Places API for stores near you, the
+         device. Before it asks the Google Places API for stores near you, the
          latitude/longitude are <strong>rounded to 3 decimal places</strong> (~110 m) — the
          full-precision fix never leaves the device. Your location is used only
          for nearby search and the on-device geofences; SwipeWise has no server,
-         so it is never sent anywhere except Foursquare, and no location
+         so it is never sent anywhere except Google Places, and no location
          <em>history</em> is kept (see <em>What we never store</em>).
       </li>
 
@@ -57,7 +82,7 @@
    <ul>
       <li><strong>Location history, or any location off your device.</strong> SwipeWise keeps
          no trail of where you've been and never transmits your location except
-         the rounded Foursquare nearby-search request described above. The one
+         the rounded Google Places nearby-search request described above. The one
          place a location is <em>at rest</em> is a single-row on-device geofence
          boundary (<code>boundary_geofence</code> in <code>swipewise.db</code>): your position —
          rounded to ~110 m — when geofences were last registered, overwritten on
@@ -72,13 +97,19 @@
    <h2>Where data goes</h2>
 
    <ul>
-      <li><strong>Foursquare Places API.</strong> Receives your latitude/longitude rounded to
-         ~110 m, the search radius, and a category filter. Returns nearby merchants.
-         See <a href="https://foursquare.com/legal/privacy/">https://foursquare.com/legal/privacy/</a> for their terms.
+      <li><strong>Google Places API.</strong> Receives your latitude/longitude rounded to
+         ~110 m, the search radius, and a place-type filter. Returns nearby merchants.
+         See <a href="https://policies.google.com/privacy">https://policies.google.com/privacy</a>
+         for their terms.
       </li>
 
-      <li><strong>Your account provider.</strong> Receives auth refresh requests and returns
-         card/transaction data. Their privacy policy applies.</li>
+      <li><strong>The catalog service.</strong> The app downloads the public credit-card
+         catalog (which cards exist and what they earn). This is a plain file download: the
+         request carries no wallet, no location and no identifier, so it says nothing about you
+         beyond that some device asked for the catalog.</li>
+
+      <li><strong>Your account provider. (Pro only)</strong> Receives auth refresh requests and
+         returns card/transaction data. Their privacy policy applies.</li>
 
       <li><strong>No SwipeWise server.</strong> SwipeWise has no backend. There is nowhere on
          the SwipeWise side for your data to leak to.</li>
@@ -126,15 +157,27 @@
             <td>Required for the notification feature to survive reboots</td>
          </tr>
          <tr>
-            <td><code>FOREGROUND_SERVICE</code>, <code>FOREGROUND_SERVICE_DATA_SYNC</code></td>
-            <td>Finish syncing your accounts if you background the app mid-sync — shown as a visible "syncing"
-               notification. No data leaves the device; this only keeps the on-device sync alive so the OS doesn't
-               suspend it</td>
-            <td>Required for reliable sync</td>
+            <td><code>SCHEDULE_EXACT_ALARM</code></td>
+            <td>Fire the arrival alert about a minute after you walk in, rather than whenever
+               the OS gets round to it</td>
+            <td>Optional (alerts land late without it)</td>
+         </tr>
+         <tr>
+            <td><code>FOREGROUND_SERVICE</code></td>
+            <td>Keep a short-lived task alive if you background the app mid-operation</td>
+            <td>Required</td>
+         </tr>
+         <tr>
+            <td><code>FOREGROUND_SERVICE_DATA_SYNC</code> <strong>(Pro only)</strong></td>
+            <td>Finish syncing your accounts if you background the app mid-sync — shown as a
+               visible "syncing" notification. No data leaves the device; this only keeps the
+               on-device sync alive so the OS doesn't suspend it.
+               <strong>Not present in the free version.</strong></td>
+            <td>Pro only</td>
          </tr>
          <tr>
             <td><code>INTERNET</code></td>
-            <td>Foursquare API + your account provider</td>
+            <td>Google Places API, the card catalog, and (Pro only) your account provider</td>
             <td>Required</td>
          </tr>
       </tbody>
@@ -147,8 +190,7 @@
 
    <h2>Children</h2>
 
-   <p>SwipeWise is not intended for children under 13. Don't sign up if that's
-      you.</p>
+   <p>SwipeWise is not intended for children under 13.</p>
 
    <h2>Contact</h2>
 
