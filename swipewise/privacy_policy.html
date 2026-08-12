@@ -7,254 +7,183 @@
    <title>SwipeWise Privacy Policy</title>
 </head>
 
-<!--
-   Generated from docs/PRIVACY.md in the SwipeWise repo
-   (https://github.com/jacobceles/swipewise). Change both together — this is the
-   copy users and Google Play are shown, so drift between the two means showing
-   people a policy the app does not implement.
--->
-
 <body>
 
    <h1>SwipeWise Privacy Policy</h1>
 
-   <p><em>Last updated: 2026-08-10.</em></p>
+   <p><em>Last updated: 2026-08-12.</em></p>
 
-   <p>SwipeWise is a credit-card recommendation app. This document explains what
-      data the app handles, where it goes, and what we never store.</p>
+   <p>SwipeWise tells you which of your credit cards to use where. It works without an account,
+      and unless you choose otherwise, nothing about you leaves your phone. There is no
+      advertising, no analytics, and nothing is sold or shared for marketing.</p>
 
-   <p><strong>Which parts apply to you.</strong> Signing in to SwipeWise is <strong>optional</strong>
-      — skip it and the app works exactly the same, with no account and nothing sent off your
-      device. Signing in adds an account you can back your wallet up to; backup is separately
-      opt-in and off until you turn it on. Sections below marked <strong>(Pro only)</strong>
-      describe bank-linking features sold as an in-app subscription; they are not on sale today.
-      The app ships as a single binary for both tiers, so that code is present in your install but
-      dormant — it holds no credentials and connects to nothing. It is documented here in advance so
-      this policy already covers you if you subscribe later. Until then, none of it applies to
-      you.</p>
+   <h2>What stays on your phone</h2>
 
-   <h2>What we collect on your device</h2>
+   <p>Your cards and anything you add about them (nickname, last four digits, credit limit,
+      statement due day), your transactions if you connect a bank, and a random id the app
+      generates so its own database has something to file your wallet under. That id is not an
+      account and is never sent anywhere. Uninstalling the app deletes all of it.</p>
 
-   <ul>
-      <li><strong>Your wallet.</strong> The cards you pick from the built-in catalog, plus
-         anything optional you add about them (last four digits, credit limit, statement due
-         day). Stored exclusively in a local SQLite database on your device
-         (<code>swipewise.db</code>).</li>
+   <h2>If you sign in</h2>
 
-      <li><strong>A local identifier.</strong> A random ID generated on your device on first
-         launch so the local database has something to key your wallet to. It is not an
-         account, it is never sent anywhere, and it is destroyed when you uninstall. The free
-         version asks for <strong>no email, no password, and no sign-in</strong>.</li>
-
-      <li><strong>Card and transaction data. (Pro only)</strong> Linked card metadata, balances
-         and transactions from the third-party account provider you authorize, using the FDX
-         open-finance data standard, stored exclusively in the same local database.
-         (Recurring-payment detection and reward estimates are computed locally from this data,
-         not collected from the provider.)</li>
-
-      <li><strong>Authentication tokens. (Pro only)</strong> Issued by the same third-party
-         provider so the app can refresh your data. Stored locally; refresh requests go back to
-         the provider, not to SwipeWise.</li>
-   </ul>
-
-   <h2>What we collect for nearby-store features</h2>
+   <p>Signing in is optional and creates an account, nothing more. We then hold:</p>
 
    <ul>
-      <li><strong>Location.</strong> When you open the Stores tab or move out of a
-         pre-registered zone, the app reads a one-shot location fix on your
-         device. Before it asks the Google Places API for stores near you, the
-         latitude/longitude are <strong>rounded to 3 decimal places</strong> (~110 m) — the
-         full-precision fix never leaves the device.
-         The rounded coordinate is sent to the SwipeWise lookup service, which forwards it
-         to Google Places and returns the results — it holds the Google API key so the app
-         does not have to, and it neither stores nor logs the coordinate. Your location is
-         used only for nearby search and the on-device geofences, and no location
-         <em>history</em> is kept (see <em>What we never store</em>).
-      </li>
-
-      <li><strong>Foreground vs. background.</strong> "While using the app" permission is
-         enough to populate the Stores list. "Allow all the time" is required
-         only if you want notifications when you arrive at a registered
-         merchant — Android's geofence service runs the dwell detection inside
-         the OS; SwipeWise is woken only when an arrival fires.</li>
+      <li>Your Google account id, email address and display name.</li>
+      <li><strong>A backup of your wallet — only if you switch on <em>Back Up My Wallet</em>:</strong>
+         your cards, your edits to them, your muted stores and your display preferences. Only the
+         most recent copy is kept. <strong>Your transactions are not included</strong> and are
+         never uploaded.</li>
+      <li>Whether your account may use paid features, and when that ends.</li>
+      <li>If you connect a bank: an identifier issued for you by our bank-data provider.</li>
    </ul>
 
-   <h2>What we never store</h2>
+   <p>Signing out does not delete any of this, so that changing phones does not cost you your
+      wallet. Deleting is a separate step — see <em>Deleting your data</em>.</p>
 
-   <ul>
-      <li><strong>Location history, or any location off your device.</strong> SwipeWise keeps
-         no trail of where you've been and never transmits your location except
-         the rounded nearby-search request described above. The one
-         place a location is <em>at rest</em> is a single-row on-device geofence
-         boundary (<code>boundary_geofence</code> in <code>swipewise.db</code>): your position —
-         rounded to ~110 m — when geofences were last registered, overwritten on
-         every refresh and used only to detect when you've left the area. It
-         never leaves your device and is removed when you uninstall.</li>
+   <h2>Location, for nearby stores</h2>
 
-      <li><strong>Usage telemetry.</strong> There is no analytics and no advertising. Nothing
-         records which cards you are shown, which notifications fire, or what you tap.</li>
-   </ul>
+   <p>When you open the Stores tab, or leave the area your store alerts were set up in, the app
+      takes a single location reading. Before anything is sent it is <strong>rounded to about
+         110 metres</strong>; the precise reading never leaves your phone. The rounded position
+      goes to our lookup service, which passes it to the Google Places API and returns the shops
+      near you. It is not stored or logged.</p>
+
+   <p>One rounded position is saved on your phone — where your alerts were last set up — so the
+      app can tell when you have left that area. It is overwritten each time alerts refresh and
+      removed when you uninstall. No history of where you have been is kept, by us or on your
+      phone.</p>
+
+   <p>"While using the app" is enough for the Stores list. "Allow all the time" is needed only if
+      you want a notification when you arrive somewhere; Android performs that detection itself
+      and wakes SwipeWise only on arrival.</p>
+
+   <h2>Connecting a bank</h2>
+
+   <p>This is a paid feature. The subscription is not on sale yet, so it is currently available
+      only to accounts granted access individually. If that is not you, this section does not
+      apply.</p>
+
+   <p>If you connect a bank, what you enter reaches our bank-data provider through our own
+      service, which signs the request on your behalf and does not store or log it. The provider
+      returns your cards, balances and transactions, which are saved only on your phone. What the
+      provider itself keeps is governed by its own privacy policy.</p>
 
    <h2>Crash reports</h2>
 
-   <p>When the app fails, a crash report goes to <strong>Firebase Crashlytics</strong> so the
-      failure can be fixed. This is the only thing SwipeWise sends off your device that is not a
-      direct response to something you asked for, so it is worth being precise about what it
-      contains.</p>
+   <p>When the app crashes, a report goes to Firebase Crashlytics so the fault can be fixed. It
+      contains the error, your device model, Android version, app version and a few diagnostic
+      numbers. It does <strong>not</strong> contain your wallet, transactions, location or email.
+      Reports are tied to an anonymous installation id that we cannot trace back to a person, and
+      they expire on Google's schedule, typically within 90 days.</p>
+
+   <h2>Who else receives data</h2>
 
    <ul>
-      <li><strong>What is sent:</strong> the stack trace, your device model, OS and app version,
-         and a small set of diagnostic values — for example whether a location fix was fresh or
-         stale, how many geofences were registered, and whether Google Play services were
-         available.</li>
-      <li><strong>What is not sent:</strong> your wallet, your cards, your transactions, your
-         coordinates, your email, or any account identifier. No latitude or longitude is ever
-         attached to a report. (Two of the diagnostic values are <em>distances</em> — how far the
-         device had moved, in kilometres — never positions.)</li>
-      <li><strong>Identity:</strong> reports carry the pseudonymous Firebase installation id that
-         Crashlytics assigns. It is not your local SwipeWise id, and it is not linked to your
-         SwipeWise account even if you have one.</li>
+      <li><strong>Google</strong> — the rounded location, via the Places API; sign-in, if you sign
+         in; crash reports.
+         See <a href="https://policies.google.com/privacy">Google's privacy policy</a> and
+         <a href="https://firebase.google.com/support/privacy">Firebase's</a>.</li>
+      <li><strong>Cloudflare</strong> — hosts our services and the database holding your account
+         and your backup.</li>
+      <li><strong>Our bank-data provider</strong> — only if you connect a bank, as above.</li>
    </ul>
 
-   <p>Google's handling is covered by
-      <a href="https://firebase.google.com/support/privacy">https://firebase.google.com/support/privacy</a>.</p>
+   <p>The app also downloads a public list of credit cards and their rewards. That request says
+      nothing about you.</p>
 
-   <h2>Where data goes</h2>
-
-   <ul>
-      <li><strong>The SwipeWise lookup service.</strong> A Cloudflare Worker that receives your
-         rounded coordinate, the search radius and a place-type filter, and forwards them to
-         Google Places. It exists so the Google API key lives on a server instead of inside the
-         app. It keeps no record of the request: nothing is written to storage, the response is
-         marked <code>no-store</code>, and no request body is logged.</li>
-
-      <li><strong>Google Places API.</strong> Receives that same rounded coordinate via the
-         service above, and returns nearby merchants.
-         See <a href="https://policies.google.com/privacy">https://policies.google.com/privacy</a>
-         for their terms.
-      </li>
-
-      <li><strong>Firebase Crashlytics.</strong> Receives crash reports as described above.</li>
-
-      <li><strong>The catalog service.</strong> The app downloads the public credit-card
-         catalog (which cards exist and what they earn). This is a plain file download: the
-         request carries no wallet, no location and no identifier, so it says nothing about you
-         beyond that some device asked for the catalog.</li>
-
-      <li><strong>Your account provider. (Pro only)</strong> Receives auth refresh requests and
-         returns card/transaction data. Their privacy policy applies.</li>
-
-      <li><strong>No SwipeWise account database.</strong> The only SwipeWise-operated service is
-         the stateless lookup/catalog Worker described above. It has no user accounts, no database
-         and no storage of anything you send it, so there is nowhere on the SwipeWise side for
-         your data to accumulate.</li>
-   </ul>
-
-   <h2>Permissions we ask for and why</h2>
+   <h2>Permissions</h2>
 
    <table border="1">
       <thead>
          <tr>
             <th>Permission</th>
-            <th>Purpose</th>
-            <th>Required?</th>
+            <th>Why</th>
+            <th>Needed?</th>
          </tr>
       </thead>
       <tbody>
          <tr>
-            <td><code>ACCESS_FINE_LOCATION</code></td>
-            <td>Find stores near you</td>
-            <td>Required for nearby-stores</td>
+            <td>Location (precise and approximate)</td>
+            <td>Find shops near you</td>
+            <td>Only for nearby stores</td>
          </tr>
          <tr>
-            <td><code>ACCESS_COARSE_LOCATION</code></td>
-            <td>Approximate-location fallback for nearby stores</td>
-            <td>Required for nearby-stores</td>
+            <td>Location in the background</td>
+            <td>Notify you when you arrive at a shop</td>
+            <td>Optional</td>
          </tr>
          <tr>
-            <td><code>ACCESS_BACKGROUND_LOCATION</code></td>
-            <td>Geofence dwell detection while app closed</td>
-            <td>Optional (notifications won't fire without it)</td>
+            <td>Physical activity</td>
+            <td>Tell a real visit from driving past, so you are not pinged at a red light</td>
+            <td>Optional</td>
          </tr>
          <tr>
-            <td><code>ACTIVITY_RECOGNITION</code></td>
-            <td>Tell a real store visit from driving past, so you aren't pinged at red lights</td>
-            <td>Optional (improves notification accuracy)</td>
+            <td>Notifications</td>
+            <td>Arrival alerts and card reminders</td>
+            <td>Optional</td>
          </tr>
          <tr>
-            <td><code>POST_NOTIFICATIONS</code></td>
-            <td>"You're at Kohl's, use Citi Custom Cash" alerts</td>
-            <td>Optional (Android 13+)</td>
+            <td>Run at startup</td>
+            <td>Restore your store alerts after a reboot</td>
+            <td>Needed for alerts to survive restarting your phone</td>
          </tr>
          <tr>
-            <td><code>RECEIVE_BOOT_COMPLETED</code></td>
-            <td>Re-arm geofences after a phone reboot</td>
-            <td>Required for the notification feature to survive reboots</td>
+            <td>Exact alarms, ignore battery optimisation</td>
+            <td>Deliver an alert shortly after you arrive, rather than whenever Android
+               gets round to it</td>
+            <td>Optional</td>
          </tr>
          <tr>
-            <td><code>SCHEDULE_EXACT_ALARM</code></td>
-            <td>Fire the arrival alert about a minute after you walk in, rather than whenever
-               the OS gets round to it</td>
-            <td>Optional (alerts land late without it)</td>
-         </tr>
-         <tr>
-            <td><code>FOREGROUND_SERVICE</code></td>
-            <td>Keep a short-lived task alive if you background the app mid-operation</td>
+            <td>Foreground service</td>
+            <td>Finish a task you started if you switch away mid-way</td>
             <td>Required</td>
          </tr>
          <tr>
-            <td><code>FOREGROUND_SERVICE_DATA_SYNC</code> <strong>(Pro only)</strong></td>
-            <td>Finish syncing your accounts if you background the app mid-sync — shown as a
-               visible "syncing" notification. No data leaves the device; this only keeps the
-               on-device sync alive so the OS doesn't suspend it.
-               <strong>Not present in the free version.</strong></td>
-            <td>Pro only</td>
-         </tr>
-         <tr>
-            <td><code>INTERNET</code></td>
-            <td>Google Places API, the card catalog, and (Pro only) your account provider</td>
+            <td>Internet</td>
+            <td>Nearby search, the card list, and your bank if you connect one</td>
             <td>Required</td>
          </tr>
       </tbody>
    </table>
 
-   <p>You can revoke any of these in Android Settings → Apps → SwipeWise →
-      Permissions at any time. The app degrades gracefully (e.g. denying
-      background location keeps the Stores tab working but disables arrival
-      notifications).</p>
+   <p>You can withdraw any of these in Android Settings at any time. The app carries on without
+      them — denying background location keeps the Stores tab working and simply stops arrival
+      notifications.</p>
 
    <h2>Deleting your data</h2>
 
-   <p>If you never signed in, there is no account and no server-side record of you to delete —
-      uninstalling removes everything. If you did sign in, <strong>Profile → Delete my account</strong>
-      removes the account, any wallet backup, any linked bank, and the local database. Full
-      details, including how to request deletion once you no longer have the app, are on the
+   <p><strong>In the app:</strong> Profile → Delete my account. This removes your account, your
+      backup, any bank connection and the data on your phone. It is immediate and permanent.</p>
+
+   <p><strong>If you no longer have the app:</strong> email
+      <a href="mailto:jacobceles@gmail.com">jacobceles@gmail.com</a> from the address you signed
+      in with. Requests are completed within 30 days.</p>
+
+   <p>Switching backup off stops further uploads but keeps the copy already stored, so you can
+      still restore it; deleting your account is what erases it. Crash reports cannot be traced to
+      you and expire on their own. Full details are on the
       <a href="delete_account.html">account deletion page</a>.</p>
 
-   <ul>
-      <li><strong>On your device</strong> — your wallet, the local identifier and the single
-         geofence boundary row live in <code>swipewise.db</code>. Uninstalling the app removes all
-         of it. Android's <em>Clear storage</em> does the same without uninstalling.</li>
-      <li><strong>Location</strong> — nothing to delete. The lookup service stores and logs
-         nothing, and no location history is kept anywhere.</li>
-      <li><strong>Crash reports</strong> — these are the only data retained on our behalf, and
-         they are pseudonymous: they are keyed to a Firebase installation id that you do not see
-         and that we cannot map back to a person. That means we could not identify your reports
-         even if you asked us to remove them. They expire on Firebase's own retention
-         schedule.</li>
-   </ul>
+   <h2>Security</h2>
 
-   <p>If you have a question about any of this, the contact route is below.</p>
+   <p>Everything the app sends travels over an encrypted connection, and every request to our own
+      services is authenticated as you, so an account can only ever reach its own data.</p>
 
    <h2>Children</h2>
 
-   <p>SwipeWise is not intended for children under 13.</p>
+   <p>SwipeWise is not intended for children under 13, and we do not knowingly collect their
+      data.</p>
+
+   <h2>Changes</h2>
+
+   <p>If this policy changes materially, the updated version is posted here with a new date, and
+      the app links to this page rather than carrying its own copy.</p>
 
    <h2>Contact</h2>
 
-   <p>Questions: open an issue at
-      <a href="https://github.com/jacobceles/swipewise">https://github.com/jacobceles/swipewise</a>.
-   </p>
+   <p><a href="mailto:jacobceles@gmail.com">jacobceles@gmail.com</a>, or open an issue at
+      <a href="https://github.com/jacobceles/swipewise">github.com/jacobceles/swipewise</a>.</p>
 
 </body>
 
