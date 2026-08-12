@@ -23,9 +23,11 @@
    <p>SwipeWise is a credit-card recommendation app. This document explains what
       data the app handles, where it goes, and what we never store.</p>
 
-   <p><strong>Which parts apply to you.</strong> SwipeWise on Google Play has <strong>no account
-      and no bank connectivity</strong>. Sections below marked <strong>(Pro only)</strong> describe
-      bank-linking features planned as a future in-app subscription; they are not available today.
+   <p><strong>Which parts apply to you.</strong> Signing in to SwipeWise is <strong>optional</strong>
+      — skip it and the app works exactly the same, with no account and nothing sent off your
+      device. Signing in adds an account you can back your wallet up to; backup is separately
+      opt-in and off until you turn it on. Sections below marked <strong>(Pro only)</strong>
+      describe bank-linking features sold as an in-app subscription; they are not on sale today.
       The app ships as a single binary for both tiers, so that code is present in your install but
       dormant — it holds no credentials and connects to nothing. It is documented here in advance so
       this policy already covers you if you subscribe later. Until then, none of it applies to
@@ -110,8 +112,8 @@
          attached to a report. (Two of the diagnostic values are <em>distances</em> — how far the
          device had moved, in kilometres — never positions.)</li>
       <li><strong>Identity:</strong> reports carry the pseudonymous Firebase installation id that
-         Crashlytics assigns. It is not your local SwipeWise id and is not linked to any account,
-         because there is no account.</li>
+         Crashlytics assigns. It is not your local SwipeWise id, and it is not linked to your
+         SwipeWise account even if you have one.</li>
    </ul>
 
    <p>Google's handling is covered by
@@ -223,8 +225,11 @@
 
    <h2>Deleting your data</h2>
 
-   <p>There is no "delete my account" button because there is no account, and no server-side
-      record of you to delete.</p>
+   <p>If you never signed in, there is no account and no server-side record of you to delete —
+      uninstalling removes everything. If you did sign in, <strong>Profile → Delete my account</strong>
+      removes the account, any wallet backup, any linked bank, and the local database. Full
+      details, including how to request deletion once you no longer have the app, are on the
+      <a href="delete_account.html">account deletion page</a>.</p>
 
    <ul>
       <li><strong>On your device</strong> — your wallet, the local identifier and the single

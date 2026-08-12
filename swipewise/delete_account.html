@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <title>SwipeWise — Delete your account and data</title>
+</head>
+
+<!--
+   The URL Google Play requires under its account-deletion policy: any app that
+   lets people create an account must offer deletion both in-app AND at a web
+   address, because someone who has already uninstalled has no in-app path left.
+   That is the entire reason this page exists separately from the app.
+
+   Keep it consistent with docs/PRIVACY.md and the privacy policy page. Google
+   reviews all three together, and a contradiction between them is worse than
+   any one of them being incomplete.
+-->
+
+<body>
+
+   <h1>Delete your SwipeWise account and data</h1>
+
+   <p><em>Last updated: 2026-08-12.</em></p>
+
+   <p>SwipeWise does not require an account. If you never signed in, there is nothing here to
+      delete — everything the app knows lives on your phone, and uninstalling removes it.</p>
+
+   <p>If you did sign in, this page explains how to delete that account and everything stored
+      with it.</p>
+
+   <h2>From inside the app</h2>
+
+   <ol>
+      <li>Open SwipeWise.</li>
+      <li>Go to <strong>Profile</strong>.</li>
+      <li>Tap <strong>Delete my account</strong> and confirm.</li>
+   </ol>
+
+   <p>This is immediate and cannot be undone.</p>
+
+   <h2>If you no longer have the app</h2>
+
+   <p>Email <a href="mailto:jacobceles@gmail.com">jacobceles@gmail.com</a> from the address you
+      signed in with, asking for your SwipeWise account to be deleted. Requests are actioned
+      within 30 days. We ask you to write from the signed-in address because it is the only way
+      to tell that the account is yours — we hold no other identifying information about you.</p>
+
+   <h2>What is deleted</h2>
+
+   <ul>
+      <li><strong>Your account</strong> — the Google sign-in record itself.</li>
+      <li><strong>Your wallet backup</strong>, if you turned backup on: the cards you added, your
+         edits to them (nicknames, credit limits, due dates), which catalog product each card
+         maps to, your preferences and your muted stores.</li>
+      <li><strong>Your bank connection</strong>, if you linked one: the customer record held with
+         our bank-data provider, and every bank connected under it.</li>
+      <li><strong>Everything on your phone</strong> — the local database, including your
+         transaction history.</li>
+   </ul>
+
+   <p>Deletion is immediate and permanent. There is no recovery window and no archived copy, so a
+      deleted wallet cannot be restored onto a new phone afterwards.</p>
+
+   <h2>What is not deleted, and why</h2>
+
+   <ul>
+      <li><strong>Crash reports.</strong> These are pseudonymous — keyed to a Firebase
+         installation id that you never see and that we cannot map back to a person. We could not
+         find your reports in order to delete them even if you asked. They expire on Firebase's
+         own retention schedule, typically within 90 days.</li>
+   </ul>
+
+   <p>Nothing else is retained. Your transactions were never uploaded in the first place, so there
+      is no server-side copy of them to delete.</p>
+
+   <h2>Deleting without deleting your account</h2>
+
+   <p>If you only want to stop backing up, turn <strong>Back Up My Wallet</strong> off in
+      <strong>Profile</strong> and delete the stored backup from the same screen. Your account
+      remains, and the app keeps working.</p>
+
+   <p>Signing out is not deletion: it leaves your data on the phone and your backup on our
+      servers, so that changing phones does not cost you your wallet.</p>
+
+   <h2>Contact</h2>
+
+   <p>Questions: <a href="mailto:jacobceles@gmail.com">jacobceles@gmail.com</a>, or open an issue
+      at <a href="https://github.com/jacobceles/swipewise">https://github.com/jacobceles/swipewise</a>.</p>
+
+   <p>See also the <a href="privacy_policy.html">SwipeWise Privacy Policy</a>.</p>
+
+</body>
+
+</html>
