@@ -11,12 +11,13 @@
 
    <h1>SwipeWise Privacy Policy</h1>
 
-   <p><em>Last updated: 2026-08-16.</em></p>
+   <p><em>Last updated: 2026-10-28.</em></p>
 
    <p>SwipeWise tells you which of your credit cards to use where. It works without an account,
-      and unless you choose otherwise, nothing about you leaves your phone. There is no
-      advertising, no usage analytics, and nothing is sold or shared for marketing. The only thing
-      sent automatically is a crash report when the app fails.</p>
+      and your wallet is stored locally unless you enable backup or use optional account features.
+      Nearby search, travel detection, fonts, images and Firebase diagnostics can also make network
+      requests, as described below. There is no advertising or tracking of what you view or tap,
+      and nothing is sold or shared for marketing. The free app has no bank connection.</p>
 
    <h2>What stays on your phone</h2>
 
@@ -31,7 +32,8 @@
 
    <ul>
       <li>Your Google account id, email address and display name.</li>
-      <li><strong>A backup of your wallet — only if you switch on <em>Back Up My Wallet</em>:</strong>
+      <li><strong>A backup of your wallet — if you enable <em>Back Up My Wallet</em>, or your
+            account already has an existing backup and backup resumes when you sign in:</strong>
          your cards, your edits to them, your muted stores and your display preferences. Only the
          most recent copy is kept. <strong>Your transactions are not included</strong> and are
          never uploaded.</li>
@@ -39,14 +41,15 @@
       <li>If you connect a bank: an identifier issued for you by our bank-data provider.</li>
    </ul>
 
-   <p>Signing out does not delete any of this, so that changing phones does not cost you your
-      wallet. Deleting is a separate step — see <em>Deleting your data</em>.</p>
+   <p>Signing out does not delete your server account or its existing backup. Updated app builds
+      clear the local wallet on sign-out; older versions may retain bare card details locally.
+      Deleting your server data is a separate step — see <em>Deleting your data</em>.</p>
 
    <h2>Location, for nearby stores</h2>
 
    <p>When you open the Stores tab, or leave the area your store alerts were set up in, the app
-      takes a single location reading. Before anything is sent it is <strong>rounded to about
-         110 metres</strong>; the precise reading never leaves your phone. The rounded position
+      takes a location reading. For the nearby lookup it is <strong>rounded to about
+         110 metres</strong>. The rounded position
       goes to our lookup service, which passes it to the Google Places API and returns the shops
       near you. It is not stored or logged.</p>
 
@@ -54,13 +57,20 @@
       up — so the app can tell when you have left that area; it is overwritten each time alerts
       refresh. And the lists of shops returned for areas you have looked in, kept so the app does
       not ask for the same area twice; that cache holds at most 200 areas and drops anything older
-      than a week. Neither leaves your phone, and both go when you uninstall. We keep no record of
-      where you have been.</p>
+      than a week. Neither is uploaded as location history, and both go when you uninstall.
+      On-device arrival diagnostics can also record store names, event times, activity state and
+      location accuracy to troubleshoot notifications; these logs are not attached to crash reports.</p>
+
+   <p>Foreign-travel mode checks whether you are abroad so recommendations can account for foreign
+      transaction fees. The app may pass your <strong>precise coordinate to Android's OS geocoder</strong>,
+      which may use Google's network services on Google devices. Updated builds first use bundled
+      country-boundary polygons for confidently interior US and Canadian locations; uncertain locations
+      still use the OS geocoder. Nearby-search rounding does not apply to that geocoder request.</p>
 
    <p>If you turn arrival alerts on, the app also re-checks about twice a day that they are still
       registered, because Android can drop them silently. That check usually uses what it already
       has; if it needs fresh results it makes the same rounded lookup described above. It is the
-      only thing SwipeWise does on a schedule.</p>
+      same lookup used by foreground search. Card reminders may also run on a schedule.</p>
 
    <p>"While using the app" is enough for the Stores list. "Allow all the time" is needed only if
       you want a notification when you arrive somewhere; Android performs that detection itself
@@ -80,24 +90,29 @@
    <p>Your bank is contacted <strong>only when you ask</strong> — when you link it, or when you
       pull to refresh. Your accounts are never synced on a schedule or in the background.</p>
 
-   <h2>Crash reports</h2>
+   <h2>Crash and diagnostic reports</h2>
 
-   <p>When the app crashes, a report goes to Firebase Crashlytics so the fault can be fixed. It
+   <p>Crash and diagnostic reports go to Firebase Crashlytics so faults can be fixed. A report
       contains the error, your device model, Android version, app version and a few diagnostic
       numbers. It does <strong>not</strong> contain your wallet, transactions, location or email.
-      Reports are tied to an anonymous installation id that we cannot trace back to a person, and
+      Firebase also uses an anonymous installation id and records session starts. We do not attach
+      wallet or location data. Reports are tied to an installation rather than your sign-in account, and
       they expire on Google's schedule, typically within 90 days.</p>
 
    <h2>Who else receives data</h2>
 
    <ul>
-      <li><strong>Google</strong> — the rounded location, via the Places API; sign-in, if you sign
-         in; crash reports.
+      <li><strong>Google</strong> — the rounded location via the Places API; precise coordinates
+         if the OS geocoder uses Google; sign-in if you sign in; crash and diagnostic reports,
+         installation identifiers and session starts; font requests through Google Fonts.
          See <a href="https://policies.google.com/privacy">Google's privacy policy</a> and
          <a href="https://firebase.google.com/support/privacy">Firebase's</a>.</li>
       <li><strong>Cloudflare</strong> — hosts our services and the database holding your account
          and your backup.</li>
       <li><strong>Our bank-data provider</strong> — only if you connect a bank, as above.</li>
+      <li><strong>Card-image hosts</strong> — card art may load from issuer websites or CDNs,
+         or from our catalog service, and may then be cached on your phone. Font and image hosts
+         receive ordinary network-request information, including your IP address.</li>
    </ul>
 
    <p>The app also downloads a public list of credit cards and their rewards. That request says
@@ -181,8 +196,10 @@
 
    <h2>Security</h2>
 
-   <p>Everything the app sends travels over an encrypted connection, and every request to our own
-      services is authenticated as you, so an account can only ever reach its own data.</p>
+   <p>Requests to our own services travel over encrypted connections. Requests that touch your account
+      are authenticated as you, so an account can only reach its own data. Nearby search uses app
+      attestation rather than requiring sign-in; public catalog downloads do not identify you as an
+      account holder.</p>
 
    <h2>Children</h2>
 
