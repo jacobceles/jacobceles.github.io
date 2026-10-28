@@ -53,7 +53,7 @@
       goes to our lookup service, which passes it to the Google Places API and returns the shops
       near you. It is not stored or logged.</p>
 
-   <p>Two things are saved on your phone. One rounded position — where your alerts were last set
+   <p>Two things are saved on your phone. One position — where your alerts were last set
       up — so the app can tell when you have left that area; it is overwritten each time alerts
       refresh. And the lists of shops returned for areas you have looked in, kept so the app does
       not ask for the same area twice; that cache holds at most 200 areas and drops anything older
@@ -69,8 +69,8 @@
 
    <p>If you turn arrival alerts on, the app also re-checks about twice a day that they are still
       registered, because Android can drop them silently. That check usually uses what it already
-      has; if it needs fresh results it makes the same rounded lookup described above. It is the
-      same lookup used by foreground search. Card reminders may also run on a schedule.</p>
+      has; if it needs fresh results it makes the same rounded lookup described above.
+      Card reminders may also run on a schedule.</p>
 
    <p>"While using the app" is enough for the Stores list. "Allow all the time" is needed only if
       you want a notification when you arrive somewhere; Android performs that detection itself
